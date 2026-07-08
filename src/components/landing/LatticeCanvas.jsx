@@ -135,8 +135,12 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
       if (animRefTime.last === null) animRefTime.last = now;
       const rawDelta = now - animRefTime.last;
       animRefTime.last = now;
-      // Clamp to avoid a huge jump after a tab was backgrounded/throttled.
-      const dt = Math.min(rawDelta, 50) / (1000 / 60); // ~1.0 at 60fps
+      // Clamp to avoid a huge jump after a tab was backgrounded/throttled,
+      // and guard against any non-finite timestamp ever reaching the math
+      // below (which would otherwise NaN-out every node position and
+      // crash the canvas draw calls).
+      const safeDelta = Number.isFinite(rawDelta) ? rawDelta : 16.67;
+      const dt = Math.min(Math.max(safeDelta, 0), 50) / (1000 / 60); // ~1.0 at 60fps
 
       ctx.clearRect(0, 0, w, h);
 
@@ -224,7 +228,7 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
       animRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    animRef.current = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener("resize", resize);
