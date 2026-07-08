@@ -28,7 +28,7 @@ export default function EncryptionVisual() {
             </p>
           </div>
           <p className="font-mono text-[9px] tracking-wider text-emerald-400/70 mt-2">
-            CRYSTALS-KYBER · CRYSTALS-DILITHIUM · SPHINCS+
+            ML-KEM · ML-DSA · SLH-DSA
           </p>
         </motion.div>
       </div>

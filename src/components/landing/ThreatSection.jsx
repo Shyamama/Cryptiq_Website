@@ -66,8 +66,8 @@ export default function ThreatSection() {
               THE POST-QUANTUM PATH
             </p>
             <p className="font-body text-sm text-foreground/70 leading-relaxed">
-              NIST has standardized lattice-based algorithms — CRYSTALS-Kyber and
-              CRYSTALS-Dilithium — that resist both classical and quantum attacks.
+              NIST has standardized lattice-based algorithms — ML-KEM, 
+              ML-DSA, and SLH-DSA — that resist both classical and quantum attacks.
               We help you understand where you're exposed and migrate your assets to
               these new standards.
             </p>
