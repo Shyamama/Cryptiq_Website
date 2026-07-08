@@ -66,7 +66,7 @@ export default function AuditCTA() {
 
             <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <a
-                href="mailto:rishi@cryp-iq.com"
+                href="#contact"
                 className="font-mono text-xs tracking-widest text-foreground/80 hover:text-foreground transition-colors border border-white/20 px-6 py-3 hover:border-white/30"
               >
                 REQUEST AUDIT →

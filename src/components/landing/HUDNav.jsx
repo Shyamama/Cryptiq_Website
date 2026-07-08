@@ -40,6 +40,12 @@ export default function HUDNav() {
           >
             ABOUT
           </Link>
+          <a
+            href="/#contact"
+            className="font-mono text-xs tracking-wider text-foreground/40 hover:text-foreground/70 transition-colors"
+          >
+            CONTACT
+          </a>
         </div>
       </div>
     </nav>

@@ -6,6 +6,7 @@ import ProtocolSection from "@/components/landing/ProtocolSection";
 import ThreatSection from "@/components/landing/ThreatSection";
 import EncryptionVisual from "@/components/landing/EncryptionVisual";
 import AuditCTA from "@/components/landing/AuditCTA";
+import ContactSection from "@/components/landing/ContactSection";
 import DataFooter from "@/components/landing/DataFooter";
 
 export default function Home() {
@@ -31,6 +32,7 @@ export default function Home() {
       <ThreatSection />
       <EncryptionVisual />
       <AuditCTA />
+      <ContactSection />
       <DataFooter />
     </div>
   );

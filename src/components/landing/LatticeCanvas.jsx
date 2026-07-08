@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useCallback } from "react";
 
-const NODE_COUNT = 65;
-const CONNECTION_DIST = 180;
+const CONNECTION_DIST = 190;
 
 // Readability tuning — brighter lattice overall, with a tight veil that
 // only darkens the area directly behind text instead of the whole screen.
@@ -10,24 +9,35 @@ const GLOW_ALPHA = 0.18;       // was 0.25 originally, 0.10 too dim
 const NODE_MIN_OPACITY = 0.32; // was 0.4 originally, 0.22 too dim
 const NODE_OPACITY_SPREAD = 0.34; // was 0.4 originally, 0.28 too dim
 
-function createNodes(width, height, phase) {
+function getNodeCount(width) {
+  // Fewer nodes on small/mobile screens to protect frame rate,
+  // more on desktop for denser full-screen coverage.
+  if (width < 640) return 55;
+  if (width < 1024) return 85;
+  return 130;
+}
+
+function createNodes(width, height, phase, count) {
   const nodes = [];
-  for (let i = 0; i < NODE_COUNT; i++) {
+  for (let i = 0; i < count; i++) {
     const centerX = width / 2;
     const centerY = height / 2;
     let x, y;
 
     if (phase === "center") {
-      const angle = (i / NODE_COUNT) * Math.PI * 2 + Math.random() * 0.5;
-      const radius = 50 + Math.random() * Math.min(width, height) * 0.3;
+      const angle = (i / count) * Math.PI * 2 + Math.random() * 0.5;
+      // Wider radius so the "center" formation reaches further
+      // across the viewport instead of staying tightly clustered.
+      const radius = 40 + Math.random() * Math.min(width, height) * 0.46;
       x = centerX + Math.cos(angle) * radius;
       y = centerY + Math.sin(angle) * radius;
     } else {
+      // Spread across the full width in bands, not just narrow
+      // 10%-wide strips at the very edges.
       const side = i % 2 === 0 ? 0 : 1;
-      const margin = width * 0.06;
       x = side === 0
-        ? margin + Math.random() * width * 0.1
-        : width - margin - Math.random() * width * 0.1;
+        ? Math.random() * width * 0.32
+        : width - Math.random() * width * 0.32;
       y = Math.random() * height;
     }
 
@@ -57,8 +67,9 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
   progressRef.current = scrollProgress;
 
   const initNodes = useCallback((w, h) => {
-    centerNodesRef.current = createNodes(w, h, "center");
-    sideNodesRef.current = createNodes(w, h, "side");
+    const count = getNodeCount(w);
+    centerNodesRef.current = createNodes(w, h, "center", count);
+    sideNodesRef.current = createNodes(w, h, "side", count);
     nodesRef.current = centerNodesRef.current.map(n => ({ ...n }));
   }, []);
 
@@ -67,7 +78,7 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
     const ctx = canvas.getContext("2d");
 
     const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = window.innerWidth;
       const h = window.innerHeight;
       canvas.width = w * dpr;
@@ -88,7 +99,22 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
     };
     window.addEventListener("mousemove", handleMouse);
 
-    const animate = () => {
+    // Touch support — without this, phones/tablets never trigger the
+    // repulsion effect since they never fire mousemove.
+    const handleTouchMove = (e) => {
+      if (e.touches && e.touches.length > 0) {
+        mouseRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    };
+    const handleTouchEnd = () => {
+      mouseRef.current = { x: -9999, y: -9999 };
+    };
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    window.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+    const animRefTime = { last: null };
+
+    const animate = (now) => {
       const { w, h } = sizeRef.current;
       const progress = progressRef.current;
       const nodes = nodesRef.current;
@@ -99,6 +125,18 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
         animRef.current = requestAnimationFrame(animate);
         return;
       }
+
+      // Delta-time normalization — without this, motion speed is tied to
+      // actual frame rate. A busier page (more DOM, more competing scripts)
+      // can run at a lower real FPS than local dev, which would otherwise
+      // make the lattice visibly slower and less responsive to the mouse,
+      // even though the code is identical. Normalizing to a 60fps baseline
+      // keeps the motion speed consistent no matter the real frame rate.
+      if (animRefTime.last === null) animRefTime.last = now;
+      const rawDelta = now - animRefTime.last;
+      animRefTime.last = now;
+      // Clamp to avoid a huge jump after a tab was backgrounded/throttled.
+      const dt = Math.min(rawDelta, 50) / (1000 / 60); // ~1.0 at 60fps
 
       ctx.clearRect(0, 0, w, h);
 
@@ -118,18 +156,19 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
         const dy = nodes[i].y - my;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < 150 && dist > 0) {
-          const force = (150 - dist) / 150 * 3;
+          const force = (150 - dist) / 150 * 3 * dt;
           nodes[i].x += (dx / dist) * force;
           nodes[i].y += (dy / dist) * force;
         }
 
         // Ease toward target
-        nodes[i].x += (nodes[i].targetX - nodes[i].x) * 0.04;
-        nodes[i].y += (nodes[i].targetY - nodes[i].y) * 0.04;
+        const ease = 1 - Math.pow(1 - 0.04, dt);
+        nodes[i].x += (nodes[i].targetX - nodes[i].x) * ease;
+        nodes[i].y += (nodes[i].targetY - nodes[i].y) * ease;
 
         // Drift
-        nodes[i].x += nodes[i].vx;
-        nodes[i].y += nodes[i].vy;
+        nodes[i].x += nodes[i].vx * dt;
+        nodes[i].y += nodes[i].vy * dt;
 
         // Boundary wrap
         if (nodes[i].x < -30) nodes[i].x = w + 30;
@@ -190,6 +229,8 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
     return () => {
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouse);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
       cancelAnimationFrame(animRef.current);
     };
   }, [initNodes]);
