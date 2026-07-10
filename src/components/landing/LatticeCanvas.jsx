@@ -77,6 +77,11 @@ export default function LatticeCanvas({ progressRef }) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
+    // Honor prefers-reduced-motion: draw a single static lattice frame
+    // (plus one per resize) instead of running the animation loop, and
+    // skip the pointer-repulsion listeners entirely.
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = window.innerWidth;
@@ -94,15 +99,14 @@ export default function LatticeCanvas({ progressRef }) {
       // formations then makes the whole lattice visibly scramble, so only
       // rebuild when the width changes (real resize or rotation).
       if (w !== prevW) initNodes(w, h);
+      // No animation loop in reduced-motion mode, so redraw explicitly.
+      // (Safe here: resize is first invoked after animate is defined.)
+      if (prefersReduced) requestAnimationFrame(animate);
     };
-
-    resize();
-    window.addEventListener("resize", resize);
 
     const handleMouse = (e) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
     };
-    window.addEventListener("mousemove", handleMouse);
 
     // Touch support — without this, phones/tablets never trigger the
     // repulsion effect since they never fire mousemove.
@@ -114,8 +118,11 @@ export default function LatticeCanvas({ progressRef }) {
     const handleTouchEnd = () => {
       mouseRef.current = { x: -9999, y: -9999 };
     };
-    window.addEventListener("touchmove", handleTouchMove, { passive: true });
-    window.addEventListener("touchend", handleTouchEnd, { passive: true });
+    if (!prefersReduced) {
+      window.addEventListener("mousemove", handleMouse);
+      window.addEventListener("touchmove", handleTouchMove, { passive: true });
+      window.addEventListener("touchend", handleTouchEnd, { passive: true });
+    }
 
     const animRefTime = { last: null };
 
@@ -230,10 +237,12 @@ export default function LatticeCanvas({ progressRef }) {
         ctx.fill();
       }
 
-      animRef.current = requestAnimationFrame(animate);
+      if (!prefersReduced) animRef.current = requestAnimationFrame(animate);
     };
 
-    animRef.current = requestAnimationFrame(animate);
+    resize();
+    window.addEventListener("resize", resize);
+    if (!prefersReduced) animRef.current = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener("resize", resize);

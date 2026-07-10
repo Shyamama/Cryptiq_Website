@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import LatticeCanvas from "@/components/landing/LatticeCanvas";
 import HUDNav from "@/components/landing/HUDNav";
 import Timeline from "@/components/about/Timeline";
@@ -26,7 +27,9 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-[#080808] text-[#E2E2E2]">
-      <LatticeCanvas progressRef={progressRef} />
+      <ErrorBoundary>
+        <LatticeCanvas progressRef={progressRef} />
+      </ErrorBoundary>
       <HUDNav />
 
       {/* Hero */}

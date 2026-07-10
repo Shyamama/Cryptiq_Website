@@ -81,6 +81,16 @@ export default function ContactSection() {
             </div>
           ) : (
             <form onSubmit={onSubmit} className="space-y-5">
+              {/* Web3Forms honeypot — hidden from humans; bots that check
+                  it get their submission silently discarded upstream. */}
+              <input
+                type="checkbox"
+                name="botcheck"
+                className="hidden"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+              />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label
