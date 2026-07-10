@@ -14,7 +14,9 @@ export default function Home() {
 
   useEffect(() => {
     const onScroll = () => {
-      const scrollY = window.scrollY;
+      // Clamp at 0 — mobile rubber-band overscroll at the top reports
+      // negative scrollY, which would otherwise jolt the lattice.
+      const scrollY = Math.max(0, window.scrollY);
       const trigger = window.innerHeight * 0.6;
       const progress = Math.min(1, scrollY / trigger);
       setScrollProgress(progress);

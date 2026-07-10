@@ -6,11 +6,11 @@ const EVENTS = [
   { year: "2001", title: "IBM demonstrates Shor's algorithm on a 7-qubit system (factors 15)" },
   { year: "2016", title: "NIST launches the Post-Quantum Cryptography standardization process" },
   { year: "2019", title: "Google achieves quantum supremacy with the Sycamore processor" },
-  { year: "2022", title: "NIST selects CRYSTALS-Kyber and CRYSTALS-Dilithium as PQC finalists" },
-  { year: "2024", title: "NIST publishes FIPS 203 (Kyber) and FIPS 204 (Dilithium) as standards" },
-  { year: "2024", title: "IBM unveils 1,121-qubit Condor processor" },
+  { year: "2022", title: "NIST selects the algorithms now standardized as ML-KEM and ML-DSA" },
+  { year: "2023", title: "IBM unveils 1,121-qubit Condor processor" },
+  { year: "2024", title: "NIST publishes FIPS 203 (ML-KEM), FIPS 204 (ML-DSA), and FIPS 205 (SLH-DSA) as final standards" },
   { year: "2025", title: "CISA mandates federal agencies submit PQC transition plans" },
-  { year: "2025", title: "NIST publishes FIPS 205 (SPHINCS+) as a third PQC standard" },
+  { year: "2025", title: "NIST selects HQC as a fifth PQC algorithm, a backup to ML-KEM" },
   { year: "2026", title: "CryptiQ helping organizations inventory and migrate assets at scale" },
 ];
 

@@ -87,8 +87,13 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
       canvas.style.height = h + "px";
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
+      const prevW = sizeRef.current.w;
       sizeRef.current = { w, h };
-      initNodes(w, h);
+      // Mobile browsers fire resize when the URL bar expands/collapses
+      // while scrolling — a height-only change. Regenerating the node
+      // formations then makes the whole lattice visibly scramble, so only
+      // rebuild when the width changes (real resize or rotation).
+      if (w !== prevW) initNodes(w, h);
     };
 
     resize();
@@ -243,6 +248,7 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
     <>
       <canvas
         ref={canvasRef}
+        aria-hidden="true"
         className="fixed inset-0 z-0 pointer-events-none"
         style={{ background: "transparent" }}
       />

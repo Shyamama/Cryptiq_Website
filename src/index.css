@@ -86,6 +86,15 @@
     @apply border-border outline-ring/50;
   }
 
+  html {
+    /* Disable the rubber-band bounce at the top/bottom of the page
+       (iOS 16+ Safari, Android Chrome). Without this, overscrolling past
+       the top visibly drags the fixed lattice canvas with the viewport.
+       Dark background so any residual overscroll area never flashes white. */
+    overscroll-behavior-y: none;
+    background-color: #080808;
+  }
+
   body {
     @apply bg-background text-foreground font-body;
     font-size: 18px;
