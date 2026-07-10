@@ -16,7 +16,10 @@ export default function AuditCTA() {
   const [visibleLines, setVisibleLines] = useState(0);
 
   useEffect(() => {
-    if (visibleLines < LINES.length) {
+    // visibleLines stays 0 until onViewportEnter fires — without that
+    // gate the typing animation runs at mount, finishes off-screen, then
+    // replays when scrolled into view.
+    if (visibleLines > 0 && visibleLines < LINES.length) {
       const timer = setTimeout(() => setVisibleLines(v => v + 1), 400);
       return () => clearTimeout(timer);
     }
