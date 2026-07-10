@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import LatticeCanvas from "@/components/landing/LatticeCanvas";
 import HUDNav from "@/components/landing/HUDNav";
 import HeroSection from "@/components/landing/HeroSection";
@@ -10,7 +10,9 @@ import ContactSection from "@/components/landing/ContactSection";
 import DataFooter from "@/components/landing/DataFooter";
 
 export default function Home() {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  // Ref, not state — the lattice reads it once per animation frame, so
+  // scroll position never triggers a React re-render of the page tree.
+  const progressRef = useRef(0);
 
   useEffect(() => {
     const onScroll = () => {
@@ -18,18 +20,18 @@ export default function Home() {
       // negative scrollY, which would otherwise jolt the lattice.
       const scrollY = Math.max(0, window.scrollY);
       const trigger = window.innerHeight * 0.6;
-      const progress = Math.min(1, scrollY / trigger);
-      setScrollProgress(progress);
+      progressRef.current = Math.min(1, scrollY / trigger);
     };
+    onScroll(); // initialize on mount so mid-page reloads start correct
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <div className="min-h-screen bg-[#080808] text-[#E2E2E2]">
-      <LatticeCanvas scrollProgress={scrollProgress} />
+      <LatticeCanvas progressRef={progressRef} />
       <HUDNav />
-      <HeroSection scrollProgress={scrollProgress} />
+      <HeroSection />
       <ProtocolSection />
       <ThreatSection />
       <EncryptionVisual />

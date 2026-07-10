@@ -54,7 +54,10 @@ function createNodes(width, height, phase, count) {
   return nodes;
 }
 
-export default function LatticeCanvas({ scrollProgress = 0 }) {
+// progressRef is a React ref whose .current holds the 0..1 scroll progress.
+// Taking a ref instead of a number keeps scroll updates out of React
+// rendering entirely — the rAF loop reads it fresh every frame.
+export default function LatticeCanvas({ progressRef }) {
   const canvasRef = useRef(null);
   const nodesRef = useRef(null);
   const centerNodesRef = useRef(null);
@@ -62,9 +65,6 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
   const mouseRef = useRef({ x: -9999, y: -9999 });
   const animRef = useRef(null);
   const sizeRef = useRef({ w: 0, h: 0 });
-  const progressRef = useRef(scrollProgress);
-
-  progressRef.current = scrollProgress;
 
   const initNodes = useCallback((w, h) => {
     const count = getNodeCount(w);
@@ -121,7 +121,7 @@ export default function LatticeCanvas({ scrollProgress = 0 }) {
 
     const animate = (now) => {
       const { w, h } = sizeRef.current;
-      const progress = progressRef.current;
+      const progress = progressRef?.current ?? 0;
       const nodes = nodesRef.current;
       const center = centerNodesRef.current;
       const side = sideNodesRef.current;
