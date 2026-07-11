@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import PageMeta from "@/components/PageMeta";
 import LatticeCanvas from "@/components/landing/LatticeCanvas";
 import HUDNav from "@/components/landing/HUDNav";
 import HeroSection from "@/components/landing/HeroSection";
@@ -30,6 +31,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#080808] text-[#E2E2E2]">
+      <PageMeta
+        title="CryptiQ — Post-Quantum Security Made Easy"
+        description="CryptiQ finds the vulnerable encryption across your company and migrates it to quantum-safe NIST standards — ML-KEM, ML-DSA, SLH-DSA — with your team approving every change."
+      />
       <ErrorBoundary>
         <LatticeCanvas progressRef={progressRef} />
       </ErrorBoundary>

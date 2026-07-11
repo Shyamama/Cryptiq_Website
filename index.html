@@ -7,18 +7,32 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/Logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- seo:start — per-route block. scripts/prerender.mjs swaps everything between
+         these markers on prerendered routes; on the SPA shell it stays as the
+         homepage defaults. Canonical is set per-route by CanonicalUrl.jsx client-side. -->
     <title>CryptiQ — Post-Quantum Security Made Easy</title>
     <meta name="description" content="CryptiQ finds the vulnerable encryption across your company and migrates it to quantum-safe NIST standards — ML-KEM, ML-DSA, SLH-DSA — with your team approving every change." />
-    <meta name="theme-color" content="#080808" />
-    <!-- Canonical URL is set per-route by CanonicalUrl.jsx (SPA: one HTML serves all routes). -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="CryptiQ" />
     <meta property="og:title" content="CryptiQ — Post-Quantum Security Made Easy" />
     <meta property="og:description" content="Cryptographic asset inventory, CBOM risk reporting, and migration to NIST post-quantum standards." />
     <meta property="og:url" content="https://www.cryp-iq.com/" />
+    <!-- seo:end -->
+    <meta name="theme-color" content="#080808" />
+    <meta property="og:site_name" content="CryptiQ" />
     <!-- TODO(og-image): replace interim Base44-hosted render with a branded 1200x630 OG image -->
     <meta property="og:image" content="https://media.base44.com/images/public/6a4d523b69df12a52591bae3/92afb56ce_generated_19418a10.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "CryptiQ",
+        "url": "https://www.cryp-iq.com/",
+        "logo": "https://www.cryp-iq.com/Logo.svg",
+        "description": "CryptiQ finds the vulnerable encryption across your company and migrates it to quantum-safe NIST standards — ML-KEM, ML-DSA, SLH-DSA — with your team approving every change.",
+        "sameAs": ["https://www.linkedin.com/company/cryp-iq/"]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

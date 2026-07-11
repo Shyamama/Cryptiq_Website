@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import PageMeta from "@/components/PageMeta";
 import LatticeCanvas from "@/components/landing/LatticeCanvas";
 import HUDNav from "@/components/landing/HUDNav";
 import Timeline from "@/components/about/Timeline";
@@ -27,6 +28,10 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-[#080808] text-[#E2E2E2]">
+      <PageMeta
+        title="About CryptiQ — Post-Quantum Cryptographic Migration"
+        description="CryptiQ was founded on a practical problem: organizations know quantum computing threatens their encryption, but most can't inventory their cryptographic assets, let alone migrate them."
+      />
       <ErrorBoundary>
         <LatticeCanvas progressRef={progressRef} />
       </ErrorBoundary>

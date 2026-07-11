@@ -59,11 +59,25 @@ export default function DataFooter() {
                 >
                   ABOUT
                 </Link>
+                <Link
+                  to="/glossary"
+                  className="font-mono text-xs text-foreground/60 hover:text-foreground transition-colors"
+                >
+                  GLOSSARY
+                </Link>
                 <a
                   href="#contact"
                   className="font-mono text-xs text-foreground/60 hover:text-foreground transition-colors"
                 >
                   CONTACT
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/cryp-iq/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-xs text-foreground/60 hover:text-foreground transition-colors"
+                >
+                  LINKEDIN ↗
                 </a>
               </div>
             </div>

@@ -41,6 +41,14 @@ export default function HUDNav() {
           >
             ABOUT
           </Link>
+          <Link
+            to="/glossary"
+            className={`font-mono text-xs tracking-wider transition-colors ${
+              location.pathname.startsWith("/glossary") ? "text-foreground" : "text-foreground/40 hover:text-foreground/70"
+            }`}
+          >
+            GLOSSARY
+          </Link>
           <a
             href="/#contact"
             className="font-mono text-xs tracking-wider text-foreground/40 hover:text-foreground/70 transition-colors"

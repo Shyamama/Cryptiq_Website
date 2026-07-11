@@ -1,0 +1,371 @@
+{
+  "$comment": "Canonical glossary taxonomy: every planned entry with its target cross-link graph and an editorial brief. scripts/validate-content.mjs treats these slugs as 'planned' (related links to them warn instead of fail until the content file exists). Content-generation agents take their briefs from here. Facts in briefs are outlines — writers verify every claim against primary sources before publishing.",
+  "terms": [
+    {
+      "slug": "fips-203",
+      "term": "FIPS 203",
+      "category": "standard",
+      "aliases": ["Module-Lattice-Based Key-Encapsulation Mechanism Standard"],
+      "related": ["ml-kem", "key-encapsulation-mechanism", "nist-pqc-standardization", "fips-204", "learning-with-errors"],
+      "brief": "US federal standard specifying ML-KEM. Finalized August 13, 2024 alongside FIPS 204/205. Derived from CRYSTALS-Kyber with FO-transform tweaks. Three parameter sets (512/768/1024). Cover: what a FIPS standard means (federal procurement, CMVP validation), scope, relationship to ML-KEM entry, adoption implications for vendors."
+    },
+    {
+      "slug": "fips-204",
+      "term": "FIPS 204",
+      "category": "standard",
+      "aliases": ["Module-Lattice-Based Digital Signature Standard"],
+      "related": ["ml-dsa", "digital-signature", "nist-pqc-standardization", "fips-205", "fips-203"],
+      "brief": "US federal standard specifying ML-DSA, the primary post-quantum signature. Finalized August 13, 2024. Derived from CRYSTALS-Dilithium. Parameter sets ML-DSA-44/65/87. Cover: scope, hedged vs deterministic signing, CMVP, where it applies (certs, code signing, documents)."
+    },
+    {
+      "slug": "fips-205",
+      "term": "FIPS 205",
+      "category": "standard",
+      "aliases": ["Stateless Hash-Based Digital Signature Standard"],
+      "related": ["slh-dsa", "hash-based-signatures", "digital-signature", "nist-pqc-standardization", "fips-204"],
+      "brief": "US federal standard specifying SLH-DSA (from SPHINCS+). Finalized August 13, 2024. Conservative hash-based fallback to ML-DSA: minimal assumptions, but signatures are 7.8-49 KB and signing is slow. Cover: parameter sets (128/192/256, s/f variants, SHA2/SHAKE), when to choose it over FIPS 204."
+    },
+    {
+      "slug": "nist-pqc-standardization",
+      "term": "NIST PQC Standardization",
+      "category": "standard",
+      "aliases": ["NIST Post-Quantum Cryptography project"],
+      "related": ["fips-203", "fips-204", "fips-205", "hqc", "cnsa-2-0"],
+      "brief": "The multi-year NIST program selecting quantum-resistant algorithms. Timeline: 2016 call, 69 round-1 submissions, July 2022 first selections (Kyber, Dilithium, Falcon, SPHINCS+), August 2024 FIPS 203/204/205 finalized, March 11 2025 HQC selected as backup KEM, ongoing additional-signatures on-ramp (verify current status). Cover: security categories 1-5, why diversity of math families, casualties along the way (SIKE, Rainbow), what's next (FIPS 206 FN-DSA, HQC standard)."
+    },
+    {
+      "slug": "cnsa-2-0",
+      "term": "CNSA 2.0",
+      "category": "standard",
+      "acronym": "Commercial National Security Algorithm Suite 2.0",
+      "related": ["nist-pqc-standardization", "ml-kem", "ml-dsa", "xmss", "pqc-migration"],
+      "brief": "NSA's algorithm suite for US National Security Systems, announced September 2022. Requires ML-KEM-1024, ML-DSA-87, AES-256, SHA-384/512, LMS/XMSS for firmware signing. Phased adoption timeline with 2025-2033 milestones per technology class — VERIFY the exact milestone table from the NSA CNSA 2.0 FAQ before writing. Cover: who it binds, category-5 parameter choices, no hybrid requirement (contrast with interim guidance), industry ripple effects."
+    },
+    {
+      "slug": "nsm-10",
+      "term": "NSM-10",
+      "category": "standard",
+      "acronym": "National Security Memorandum 10",
+      "related": ["cnsa-2-0", "harvest-now-decrypt-later", "pqc-migration", "cryptographic-inventory"],
+      "brief": "May 4, 2022 White House memorandum on quantum computing risk. Set the goal of migrating US federal systems off quantum-vulnerable cryptography by 2035, directed annual cryptographic inventories (leading to OMB M-23-02), established the harvest-now threat as policy baseline. Cover: what it requires, downstream mandates (OMB M-23-02, Quantum Computing Cybersecurity Preparedness Act Dec 2022), why it matters to private sector."
+    },
+    {
+      "slug": "ml-kem",
+      "term": "ML-KEM",
+      "category": "algorithm",
+      "status": "written",
+      "related": ["fips-203", "key-encapsulation-mechanism", "lattice-based-cryptography", "learning-with-errors", "hybrid-key-exchange", "ml-dsa"],
+      "brief": "SEED — already written (content/glossary/ml-kem.json). Use as the style exemplar."
+    },
+    {
+      "slug": "ml-dsa",
+      "term": "ML-DSA",
+      "category": "algorithm",
+      "acronym": "Module-Lattice-Based Digital Signature Algorithm",
+      "aliases": ["CRYSTALS-Dilithium", "Dilithium", "FIPS 204"],
+      "related": ["fips-204", "digital-signature", "lattice-based-cryptography", "ml-kem", "slh-dsa", "post-quantum-pki"],
+      "brief": "NIST's primary post-quantum signature (FIPS 204, August 2024), from CRYSTALS-Dilithium. Parameter sets ML-DSA-44/65/87 (categories 2/3/5). Signatures ~2.4-4.6 KB, public keys ~1.3-2.6 KB — roughly 40x ECDSA signatures; cover the operational impact (TLS handshake growth, cert chains). Where it lands first: code signing, TLS certs (CA/Browser Forum status — verify), firmware."
+    },
+    {
+      "slug": "slh-dsa",
+      "term": "SLH-DSA",
+      "category": "algorithm",
+      "acronym": "Stateless Hash-Based Digital Signature Algorithm",
+      "aliases": ["SPHINCS+", "FIPS 205"],
+      "related": ["fips-205", "hash-based-signatures", "xmss", "ml-dsa", "digital-signature"],
+      "brief": "Stateless hash-based signature standardized in FIPS 205 (from SPHINCS+). Security rests only on hash-function properties — the most conservative PQ assumption. Trade-off: 7.8-49 KB signatures, slow signing, fast-ish verify. 12 parameter sets (SHA2/SHAKE × 128/192/256 × s/f). Use cases: long-lived roots, firmware, anywhere state management (XMSS/LMS) is unacceptable."
+    },
+    {
+      "slug": "fn-dsa",
+      "term": "FN-DSA",
+      "category": "algorithm",
+      "acronym": "FFT-over-NTRU-Lattice-Based Digital Signature Algorithm",
+      "aliases": ["Falcon"],
+      "related": ["ml-dsa", "ntru", "lattice-based-cryptography", "digital-signature", "fips-204"],
+      "brief": "The fourth NIST selection (July 2022), to be standardized as FIPS 206 — VERIFY current draft status. Based on Falcon: NTRU lattices + fast Fourier sampling. Compact signatures (~666 B at level 1) and small keys — best size profile of the PQ signatures — but implementation is hard: floating-point Gaussian sampling, side-channel risk, tricky constant-time code. Niche: bandwidth-constrained signatures."
+    },
+    {
+      "slug": "hqc",
+      "term": "HQC",
+      "category": "algorithm",
+      "acronym": "Hamming Quasi-Cyclic",
+      "related": ["code-based-cryptography", "ml-kem", "nist-pqc-standardization", "key-encapsulation-mechanism", "classic-mceliece"],
+      "brief": "Code-based KEM selected by NIST on March 11, 2025 as the backup to ML-KEM — a deliberate hedge in a different math family in case lattice cryptanalysis advances. Draft standard expected ~2026, final ~2027 (VERIFY current status). Larger keys/ciphertexts than ML-KEM (~2.2-7.2 KB). Cover: why a backup KEM, what organizations should do about it now (answer: crypto-agility, not deployment)."
+    },
+    {
+      "slug": "xmss",
+      "term": "XMSS",
+      "category": "algorithm",
+      "acronym": "eXtended Merkle Signature Scheme",
+      "related": ["lms", "hash-based-signatures", "slh-dsa", "cnsa-2-0"],
+      "brief": "Stateful hash-based signature, RFC 8391, approved in NIST SP 800-208 and CNSA 2.0 for firmware/software signing. Merkle tree of one-time keys — each private-key state may sign exactly once; state reuse is catastrophic. Cover: state-management burden (backups, HA, virtualization hazards), multi-tree XMSS^MT, why stateful HBS ships in firmware pipelines today while general-purpose use went to SLH-DSA."
+    },
+    {
+      "slug": "lms",
+      "term": "LMS",
+      "category": "algorithm",
+      "acronym": "Leighton-Micali Signatures",
+      "related": ["xmss", "hash-based-signatures", "slh-dsa", "cnsa-2-0"],
+      "brief": "Stateful hash-based signature, RFC 8554, in NIST SP 800-208 and CNSA 2.0. Simpler design than XMSS, HSS hierarchical mode for more signatures. Same one-time-state hazard. Deployed in secure boot / firmware update chains (cover real examples — verify vendor adoption). Compare to XMSS and to stateless SLH-DSA."
+    },
+    {
+      "slug": "classic-mceliece",
+      "term": "Classic McEliece",
+      "category": "algorithm",
+      "related": ["code-based-cryptography", "hqc", "key-encapsulation-mechanism", "ml-kem"],
+      "brief": "KEM built on the 1978 McEliece cryptosystem — the oldest surviving public-key design, unbroken for 45+ years. Extreme size profile: public keys 261 KB-1.3 MB, ciphertexts ~100-200 B. NIST round-4 finalist passed over in favor of HQC (March 2025); on an ISO standardization track (verify status). Use cases: long-term static keys where the key ships once (VPN provisioning, secure elements)."
+    },
+    {
+      "slug": "ntru",
+      "term": "NTRU",
+      "category": "algorithm",
+      "related": ["lattice-based-cryptography", "ml-kem", "fn-dsa", "key-encapsulation-mechanism"],
+      "brief": "Lattice KEM family dating to 1996 — the earliest practical lattice cryptosystem. NIST round-3 finalist; Kyber was selected instead. Patents (now expired) shaped its history. Practical relevance today: OpenSSH's sntrup761x25519 hybrid (NTRU Prime variant) shipped as default key exchange starting OpenSSH 9.x (verify version details), and FN-DSA/Falcon builds on NTRU lattices."
+    },
+    {
+      "slug": "sike",
+      "term": "SIKE",
+      "category": "algorithm",
+      "acronym": "Supersingular Isogeny Key Encapsulation",
+      "related": ["isogeny-based-cryptography", "nist-pqc-standardization", "rainbow"],
+      "brief": "Isogeny-based KEM with the smallest keys of any PQC candidate — completely broken in July 2022 by Castryck and Decru with a classical attack recovering keys in minutes-to-hours on a laptop, while SIKE was a NIST round-4 candidate. Cover: what the attack exploited (auxiliary torsion points / glue-and-split, keep it accessible), why the break was healthy for the field, lessons: cryptanalytic maturity, diversity, hybrid deployment."
+    },
+    {
+      "slug": "rainbow",
+      "term": "Rainbow",
+      "category": "algorithm",
+      "related": ["multivariate-cryptography", "sike", "nist-pqc-standardization", "digital-signature"],
+      "brief": "Multivariate signature scheme, NIST round-3 finalist, broken by Ward Beullens in 2022 — key recovery for the level-1 parameters in ~53 hours on a laptop ('a weekend'). Cover: oil-and-vinegar lineage, what broke, aftermath for multivariate signatures (UOV variants still studied in the signature on-ramp — verify status), and the same maturity lesson as SIKE."
+    },
+    {
+      "slug": "lattice-based-cryptography",
+      "term": "Lattice-Based Cryptography",
+      "category": "foundation",
+      "related": ["learning-with-errors", "ml-kem", "ml-dsa", "fn-dsa", "ntru"],
+      "brief": "The math family behind most deployed PQC (ML-KEM, ML-DSA, FN-DSA). Explain lattices plainly (integer grids in high dimension), hard problems (SVP/CVP approximation), why no efficient quantum algorithm is known (contrast with Shor on factoring/discrete log), worst-case-to-average-case reductions as a distinctive strength, structured (module/ring) vs unstructured trade-offs."
+    },
+    {
+      "slug": "learning-with-errors",
+      "term": "Learning With Errors",
+      "category": "foundation",
+      "acronym": "LWE",
+      "related": ["lattice-based-cryptography", "ml-kem", "ml-dsa", "key-encapsulation-mechanism"],
+      "brief": "The hardness problem underneath ML-KEM and ML-DSA. Regev 2005: solving noisy linear equations mod q is as hard as worst-case lattice problems. Explain the noise intuition accessibly (linear algebra is easy; add small errors and it becomes intractable). Cover Ring-LWE and Module-LWE variants, why 'module' balances security confidence and performance, parameter choices → security categories."
+    },
+    {
+      "slug": "hash-based-signatures",
+      "term": "Hash-Based Signatures",
+      "category": "foundation",
+      "acronym": "HBS",
+      "related": ["slh-dsa", "xmss", "lms", "digital-signature", "grovers-algorithm"],
+      "brief": "Signatures whose security reduces only to hash-function properties — the most conservative post-quantum assumption, quantum threat limited to Grover-type speedups. Build up from Lamport one-time signatures → WOTS → Merkle trees → stateful (XMSS/LMS) vs stateless (SLH-DSA). Cover why 'only hashes' is a feature, and the cost: size and statefulness trade-offs."
+    },
+    {
+      "slug": "code-based-cryptography",
+      "term": "Code-Based Cryptography",
+      "category": "foundation",
+      "related": ["hqc", "classic-mceliece", "key-encapsulation-mechanism", "nist-pqc-standardization"],
+      "brief": "Cryptography from error-correcting codes: security = hardness of decoding random linear codes (syndrome decoding, NP-hard in general). McEliece 1978 lineage — scrutinized for 45+ years. Explain the encrypt-by-adding-errors intuition. Cover why NIST picked code-based HQC as the ML-KEM backup (family diversity), the size penalty vs lattices."
+    },
+    {
+      "slug": "multivariate-cryptography",
+      "term": "Multivariate Cryptography",
+      "category": "foundation",
+      "acronym": "MQ",
+      "related": ["rainbow", "digital-signature", "nist-pqc-standardization"],
+      "brief": "Cryptography from solving systems of multivariate quadratic equations over finite fields (MQ problem, NP-hard). Mostly signature-oriented (oil-and-vinegar family). Honest framing: a troubled cryptanalytic record — Rainbow broken 2022, GeMSS attacks — yet UOV-style schemes persist in NIST's additional-signatures on-ramp (verify current round status). Cover why the family stays attractive: tiny signatures, fast verify."
+    },
+    {
+      "slug": "isogeny-based-cryptography",
+      "term": "Isogeny-Based Cryptography",
+      "category": "foundation",
+      "related": ["sike", "elliptic-curve-cryptography", "nist-pqc-standardization"],
+      "brief": "Cryptography from maps (isogenies) between elliptic curves. Smallest key sizes in PQC, but the flagship KEM (SIKE) was classically broken in 2022. Distinguish clearly: elliptic curves here are the terrain, not the ECDLP assumption Shor breaks. Cover the post-SIKE landscape: SQIsign in the NIST signature on-ramp (verify status), CSIDH research, why the family is promising but not deployment-ready."
+    },
+    {
+      "slug": "key-encapsulation-mechanism",
+      "term": "Key-Encapsulation Mechanism",
+      "category": "foundation",
+      "acronym": "KEM",
+      "related": ["ml-kem", "hqc", "hybrid-key-exchange", "diffie-hellman"],
+      "brief": "The primitive PQC standardized for key establishment: KeyGen/Encaps/Decaps, one-shot key transport against a public key. Contrast with Diffie-Hellman-style interactive agreement and RSA key transport. Cover IND-CCA2 and the Fujisaki-Okamoto transform at a plain-language level, how TLS 1.3 slots KEMs into its handshake, and why KEM APIs (not DH APIs) are what libraries now expose."
+    },
+    {
+      "slug": "digital-signature",
+      "term": "Digital Signature",
+      "category": "foundation",
+      "related": ["ml-dsa", "slh-dsa", "fn-dsa", "post-quantum-pki", "rsa"],
+      "brief": "Frame for the PQ transition: what signatures protect (TLS certs, code/firmware signing, documents, tokens), how RSA/ECDSA break under Shor, and the replacement landscape — ML-DSA default, SLH-DSA conservative, FN-DSA compact, XMSS/LMS stateful-niche — with a size/speed comparison. Note the different urgency vs key exchange: no harvest-now risk, but signed artifacts and roots live for decades, so PKI lead times dominate."
+    },
+    {
+      "slug": "shors-algorithm",
+      "term": "Shor's Algorithm",
+      "category": "threat",
+      "related": ["rsa", "elliptic-curve-cryptography", "diffie-hellman", "cryptographically-relevant-quantum-computer", "grovers-algorithm"],
+      "brief": "Peter Shor, 1994: quantum algorithm solving integer factoring and discrete logarithms in polynomial time — breaking RSA, ECC, and Diffie-Hellman outright. Explain period-finding intuition accessibly (QFT finds the period of modular exponentiation). Cover resource estimates for RSA-2048 (e.g. Gidney-Ekerå 20M noisy qubits / 8h, and newer estimates — verify current literature), why it doesn't threaten AES or hashes, and its role as the entire reason PQC exists."
+    },
+    {
+      "slug": "grovers-algorithm",
+      "term": "Grover's Algorithm",
+      "category": "threat",
+      "related": ["aes-quantum-security", "shors-algorithm", "hash-based-signatures"],
+      "brief": "Lov Grover, 1996: quadratic quantum speedup for unstructured search — the reason symmetric crypto needs bigger keys, not replacement. Theoretical halving of effective key strength (AES-128 → 2^64 quantum operations), but cover the practical caveats honestly: Grover parallelizes poorly, circuit depth makes real attacks far costlier than the textbook bound. Consensus: AES-256 and SHA-384 are comfortable; no panic on symmetric."
+    },
+    {
+      "slug": "harvest-now-decrypt-later",
+      "term": "Harvest Now, Decrypt Later",
+      "category": "threat",
+      "status": "written",
+      "related": ["q-day", "shors-algorithm", "cryptographically-relevant-quantum-computer", "moscas-theorem", "hybrid-key-exchange", "pqc-migration"],
+      "brief": "SEED — already written (content/glossary/harvest-now-decrypt-later.json). Use as the style exemplar."
+    },
+    {
+      "slug": "q-day",
+      "term": "Q-Day",
+      "category": "threat",
+      "aliases": ["Y2Q"],
+      "related": ["cryptographically-relevant-quantum-computer", "harvest-now-decrypt-later", "moscas-theorem", "shors-algorithm"],
+      "brief": "The hypothetical date a quantum computer first breaks RSA-2048/ECC in practice. Cover: expert-survey estimate ranges (Global Risk Institute quantum threat timeline reports — verify latest), why you won't get advance notice (classified capabilities, gradual capability creep), why the exact date is the wrong planning variable (data lifetime + migration time per Mosca), Y2Q framing vs Y2K differences."
+    },
+    {
+      "slug": "cryptographically-relevant-quantum-computer",
+      "term": "Cryptographically Relevant Quantum Computer",
+      "category": "threat",
+      "acronym": "CRQC",
+      "related": ["q-day", "shors-algorithm", "logical-qubit", "quantum-advantage"],
+      "brief": "The capability threshold that matters: a quantum computer able to run Shor's algorithm against real key sizes. Defined by error-corrected logical qubits and circuit depth, not raw qubit counts. Cover: physical-to-logical overhead (thousands of physical qubits per logical), current state of the art vs requirement (millions of physical / thousands of logical), why press-release qubit counts mislead, government usage of the term (NSM-10, CNSA 2.0)."
+    },
+    {
+      "slug": "quantum-advantage",
+      "term": "Quantum Advantage",
+      "category": "threat",
+      "aliases": ["quantum supremacy"],
+      "related": ["cryptographically-relevant-quantum-computer", "logical-qubit", "q-day"],
+      "brief": "A quantum computer outperforming classical on some task — Google's 2019 Sycamore sampling claim, subsequent demonstrations (verify current landmark results). Core job of this entry: advantage ≠ cryptographic threat. Sampling benchmarks say nothing about running Shor at scale. Give readers the test: does the demo involve error-corrected logical qubits running structured algorithms? Cover the media-hype failure mode explicitly."
+    },
+    {
+      "slug": "logical-qubit",
+      "term": "Logical Qubit",
+      "category": "threat",
+      "related": ["cryptographically-relevant-quantum-computer", "quantum-advantage", "shors-algorithm"],
+      "brief": "An error-corrected qubit encoded across many noisy physical qubits — the unit that actually matters for CRQC timelines. Explain quantum error correction at plain-language level (physical qubits decohere; surface codes trade ~100-1000 physical per logical). Cover milestones: Google Willow below-threshold result (Dec 2024), logical-qubit demonstrations since (verify latest), and how to read roadmaps (IBM, Quantinuum) in logical-qubit terms."
+    },
+    {
+      "slug": "moscas-theorem",
+      "term": "Mosca's Theorem",
+      "category": "threat",
+      "aliases": ["Mosca's inequality"],
+      "related": ["harvest-now-decrypt-later", "q-day", "pqc-migration", "cryptographic-inventory"],
+      "brief": "Michele Mosca's planning inequality: if x (years data must stay secret) + y (years migration takes) > z (years until CRQC), you're already exposed. The glossary's most actionable entry: walk a concrete example (x=25 medical records, y=7 enterprise migration, z=10 estimate → exposed today). Cover: how to estimate each variable, using it to rank systems, its limits (z uncertainty), origin (Mosca ~2015 papers/talks — verify citation)."
+    },
+    {
+      "slug": "rsa",
+      "term": "RSA",
+      "category": "at-risk",
+      "acronym": "Rivest-Shamir-Adleman",
+      "related": ["shors-algorithm", "elliptic-curve-cryptography", "ml-kem", "ml-dsa", "harvest-now-decrypt-later"],
+      "brief": "The 1977 factoring-based workhorse — still everywhere (TLS certs, code signing, SSH, email, tokens, HSMs). Shor breaks all key sizes; RSA-4096 buys nothing against a CRQC. Cover: where RSA hides in enterprises (the inventory problem), split migration path — encryption/transport → ML-KEM, signatures → ML-DSA/SLH-DSA — and why RSA persists (compatibility inertia, hardware)."
+    },
+    {
+      "slug": "elliptic-curve-cryptography",
+      "term": "Elliptic Curve Cryptography",
+      "category": "at-risk",
+      "acronym": "ECC",
+      "related": ["shors-algorithm", "rsa", "diffie-hellman", "ml-kem", "isogeny-based-cryptography"],
+      "brief": "The modern classical default: ECDSA/EdDSA signatures, ECDH/X25519 key agreement — smaller and faster than RSA, equally dead under Shor (discrete-log variant). Cover: ubiquity (TLS, SSH, JWTs, blockchains, mobile), the irony that the 'upgrade' from RSA is just as quantum-vulnerable, curve inventory (P-256, X25519, secp256k1), migration mapping to ML-KEM/ML-DSA, and the isogeny nuance (curves as terrain elsewhere)."
+    },
+    {
+      "slug": "diffie-hellman",
+      "term": "Diffie-Hellman Key Exchange",
+      "category": "at-risk",
+      "acronym": "DH",
+      "related": ["key-encapsulation-mechanism", "elliptic-curve-cryptography", "shors-algorithm", "hybrid-key-exchange"],
+      "brief": "The 1976 primitive that started public-key cryptography — interactive key agreement over an open channel, discrete-log security. Cover: finite-field vs elliptic-curve variants, ephemeral DH = forward secrecy (and why that still fails vs a quantum adversary recording handshakes), Shor breaking discrete log, and the conceptual handoff: PQC replaces DH with KEMs, changing protocol shape (TLS, IKEv2, Signal-style ratchets)."
+    },
+    {
+      "slug": "aes-quantum-security",
+      "term": "AES and Quantum Computing",
+      "category": "at-risk",
+      "aliases": ["AES quantum security", "symmetric cryptography quantum threat"],
+      "related": ["grovers-algorithm", "quantum-safe-cryptography", "ml-kem", "shors-algorithm"],
+      "brief": "The clarifying entry: symmetric crypto mostly survives. Grover gives at most quadratic speedup — AES-128's theoretical margin thins but practical attacks are far costlier (depth limits); AES-256 is comfortable, CNSA 2.0 mandates it. Same story for SHA-2/SHA-3 collision resistance (verify precise claims). The punchline: the quantum problem is the public-key wrapper around AES keys, not AES — which is exactly what ML-KEM fixes."
+    },
+    {
+      "slug": "cbom",
+      "term": "Cryptography Bill of Materials",
+      "category": "migration",
+      "status": "written",
+      "related": ["cryptographic-inventory", "cryptographic-discovery", "crypto-agility", "pqc-migration", "moscas-theorem"],
+      "brief": "SEED — already written (content/glossary/cbom.json). Use as the style exemplar."
+    },
+    {
+      "slug": "cryptographic-inventory",
+      "term": "Cryptographic Inventory",
+      "category": "migration",
+      "related": ["cbom", "cryptographic-discovery", "pqc-migration", "moscas-theorem", "nsm-10"],
+      "brief": "The complete, current record of where an organization uses cryptography — the mandated first step of every migration framework (NSM-10/OMB M-23-02 for federal, CISA quantum-readiness for critical infrastructure). Cover: what to inventory (protocols, certs, keys, libraries, vendor products, data flows), why organizations consistently underestimate scope, evidence sources, one-off spreadsheet vs continuous inventory, how it feeds risk ranking."
+    },
+    {
+      "slug": "cryptographic-discovery",
+      "term": "Cryptographic Discovery",
+      "category": "migration",
+      "related": ["cryptographic-inventory", "cbom", "crypto-agility", "pqc-migration"],
+      "brief": "The tooling/practice layer that builds inventories: static code scanning for crypto APIs, dependency analysis, TLS/SSH config inspection, certificate and key-store enumeration, network traffic observation, binary analysis for embedded crypto. Cover each technique's blind spots honestly (encrypted traffic hides algorithms negotiated inside, vendor appliances resist scanning), why multiple evidence sources must be correlated, discovery as continuous control."
+    },
+    {
+      "slug": "crypto-agility",
+      "term": "Crypto-Agility",
+      "category": "migration",
+      "aliases": ["cryptographic agility"],
+      "related": ["cbom", "pqc-migration", "hybrid-key-exchange", "nist-pqc-standardization"],
+      "brief": "The ability to swap cryptographic algorithms without rearchitecting systems. Historical motivation: MD5→SHA-1→SHA-2 and 3DES retirements each took a decade+. Cover: what agility looks like concretely (abstraction layers, negotiated algorithms, automated cert/key lifecycle, config-driven crypto, vendor contract clauses), HQC-as-backup making agility the official NIST hedge, agility as the durable end-state beyond this one migration."
+    },
+    {
+      "slug": "hybrid-key-exchange",
+      "term": "Hybrid Key Exchange",
+      "category": "migration",
+      "aliases": ["composite key exchange", "X25519MLKEM768"],
+      "related": ["ml-kem", "key-encapsulation-mechanism", "post-quantum-tls", "harvest-now-decrypt-later", "diffie-hellman"],
+      "brief": "Deriving one session secret from both a classical exchange (X25519) and a PQ KEM (ML-KEM) — secure if either holds. The dominant deployment pattern: X25519MLKEM768 in TLS (Chrome/Firefox defaults, CDN support — verify current numbers), OpenSSH hybrids. Cover: why hybrid first (hedge against lattice surprises AND implementation bugs), costs (~1.2 KB extra handshake), IETF standardization status (verify), when pure ML-KEM becomes reasonable, CNSA 2.0's no-hybrid-required stance as contrast."
+    },
+    {
+      "slug": "pqc-migration",
+      "term": "Post-Quantum Migration",
+      "category": "migration",
+      "aliases": ["PQC transition", "quantum-safe migration"],
+      "related": ["cryptographic-inventory", "cbom", "crypto-agility", "hybrid-key-exchange", "moscas-theorem", "post-quantum-pki"],
+      "brief": "The umbrella entry: the multi-year program moving an organization off quantum-vulnerable cryptography. Phases: inventory → risk-rank (Mosca) → prioritize data-in-transit (HNDL) → migrate → verify → maintain agility. Cover timeline anchors (NSM-10 2035, CNSA 2.0 2033, international equivalents — verify), vendor-dependency reality (most crypto is in products you don't control), cost/effort findings from early migrations, why starting late compounds."
+    },
+    {
+      "slug": "post-quantum-tls",
+      "term": "Post-Quantum TLS",
+      "category": "migration",
+      "aliases": ["PQ-TLS", "quantum-safe TLS"],
+      "related": ["hybrid-key-exchange", "ml-kem", "post-quantum-pki", "harvest-now-decrypt-later"],
+      "brief": "The most advanced PQC deployment surface. Key exchange: X25519MLKEM768 shipping by default (Chrome 131+, Firefox 132+, OpenSSL 3.5, major CDNs — verify current versions/percentages). Authentication: still classical certs; ML-DSA certificates await CA/Browser Forum + root programs (verify status). Cover: measured handshake overhead findings, enabling PQ-TLS across common stacks (nginx/BoringSSL/JVM), how to check your own endpoints, the two-halves mental model (KEX done, PKI pending)."
+    },
+    {
+      "slug": "post-quantum-pki",
+      "term": "Post-Quantum PKI",
+      "category": "migration",
+      "related": ["digital-signature", "ml-dsa", "post-quantum-tls", "crypto-agility", "slh-dsa"],
+      "brief": "The longest-lead-time migration: certificate hierarchies signed with quantum-vulnerable RSA/ECDSA. Cover: why roots are decades-lived (offline ceremonies, device trust stores, embedded anchors), ML-DSA certificate standardization status (IETF LAMPS profiles, CA/Browser Forum — verify), composite/hybrid certificates debate, size impact on chains and constrained devices, practical sequencing (new roots now, cross-signing, private PKI first)."
+    },
+    {
+      "slug": "quantum-key-distribution",
+      "term": "Quantum Key Distribution",
+      "category": "migration",
+      "acronym": "QKD",
+      "related": ["quantum-safe-cryptography", "ml-kem", "hybrid-key-exchange"],
+      "brief": "Physics-based key agreement over dedicated optical channels — and NOT post-quantum cryptography. The entry's job is the distinction: QKD needs special hardware, point-to-point links, and classical authentication anyway; NSA and UK NCSC explicitly recommend PQC over QKD for virtually all use cases (cite their published positions — verify quotes). Cover how QKD works at intuition level (measurement disturbs quantum states), real niches (metro fiber links, research networks), why 'quantum' marketing conflates it with PQC."
+    },
+    {
+      "slug": "quantum-safe-cryptography",
+      "term": "Quantum-Safe Cryptography",
+      "category": "migration",
+      "aliases": ["quantum-resistant cryptography", "post-quantum cryptography"],
+      "related": ["pqc-migration", "ml-kem", "aes-quantum-security", "quantum-key-distribution", "nist-pqc-standardization"],
+      "brief": "The terminology-map entry: quantum-safe / quantum-resistant / post-quantum are near-synonyms for cryptography believed secure against quantum attack — spanning PQC public-key algorithms (ML-KEM, ML-DSA...), adequately-sized symmetric crypto (AES-256), and sometimes QKD (distinguish!). Cover: what 'safe' actually claims (no known efficient quantum attack, not proof), vendor-marketing red flags ('quantum encryption', 'unbreakable'), how to parse claims into the three buckets."
+    }
+  ]
+}

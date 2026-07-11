@@ -17,6 +17,9 @@ Why it matters: "harvest now, decrypt later" attacks are underway — adversarie
 
 - [Home](https://www.cryp-iq.com/): Product overview — the quantum threat landscape, the three-phase migration protocol (Inventory, Report, Migrate), and an audit request form
 - [About](https://www.cryp-iq.com/about): Company story and a timeline of quantum computing milestones, from Shor's algorithm (1994) through NIST standardization and the CISA federal migration mandate
+- [Glossary](https://www.cryp-iq.com/glossary): Post-quantum cryptography glossary — plain-language reference entries on the algorithms, standards, threats, and migration practices below
+
+<!-- glossary:insert -->
 
 ## Contact
 
