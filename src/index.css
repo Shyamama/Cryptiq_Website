@@ -13,10 +13,12 @@
                            so schemes without a threat hue stay mono
        --accent-glow-rgb   lattice node glow + connection tint (canvas)
        --selection-rgb     text-selection highlight tint */
-    --accent-rgb: 52 211 153;
-    --accent-threat-rgb: 226 226 226;
-    --accent-glow-rgb: 130 180 240;
-    --selection-rgb: 226 226 226;
+    /* Crimson & gold: crimson marks what quantum breaks (vulnerability),
+       antique gold marks the standard that replaces it (NIST PQC). */
+    --accent-rgb: 224 177 94;
+    --accent-threat-rgb: 229 72 77;
+    --accent-glow-rgb: 212 164 76;
+    --selection-rgb: 224 177 94;
     --background: 0 0% 3.1%;
     --foreground: 0 0% 88.6%;
     --card: 0 0% 7.1%;

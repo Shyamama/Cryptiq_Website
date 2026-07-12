@@ -20,7 +20,7 @@ export default function ThreatSection() {
           </p>
           <h2 className="font-mono text-xl md:text-2xl font-light tracking-tight max-w-2xl">
             Harvest now,
-            <span className="text-foreground/70"> decrypt later.</span>
+            <span className="text-threat/85"> decrypt later.</span>
           </h2>
         </motion.div>
 
@@ -38,7 +38,7 @@ export default function ThreatSection() {
                 className="w-full h-full object-cover opacity-60"
               />
             </div>
-            <p className="font-mono text-[10px] tracking-widest text-threat/60 mb-3">
+            <p className="font-mono text-[10px] tracking-widest text-threat/85 mb-3">
               CLASSICAL VULNERABILITY
             </p>
             <p className="font-body text-sm text-foreground/70 leading-relaxed">
