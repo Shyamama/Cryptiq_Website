@@ -56,7 +56,8 @@ export default function AuditCTA() {
             <div className="font-mono text-xs leading-6 text-foreground/70 min-h-[200px]">
               {LINES.slice(0, visibleLines).map((line, i) => (
                 <div key={i} className={`${
-                  line.includes("CRITICAL") ? "text-foreground/90" :
+                  line.includes("CRITICAL") ? "text-threat/90" :
+                  line.includes("IMMEDIATE MIGRATION") ? "text-brand/80" :
                   line.startsWith("$") ? "text-foreground/80" : ""
                 }`}>
                   {line}

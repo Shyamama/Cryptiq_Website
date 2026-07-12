@@ -59,7 +59,7 @@ export default function ProtocolSection() {
                 <span className="font-mono text-6xl md:text-7xl font-light text-foreground/35">
                   {step.index}
                 </span>
-                <p className="font-mono text-[10px] tracking-widest text-emerald-400/90 font-medium mt-2">
+                <p className="font-mono text-[10px] tracking-widest text-brand/90 font-medium mt-2">
                   {step.label}
                 </p>
               </div>

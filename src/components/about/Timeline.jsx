@@ -52,7 +52,7 @@ export default function Timeline() {
                 <div className="absolute left-3 md:left-1/2 top-1 w-2.5 h-2.5 rounded-full border border-foreground/30 bg-[#080808] md:-translate-x-1/2 z-10" />
 
                 <div className="md:col-span-1">
-                  <span className="font-mono text-sm tracking-widest text-[#7AA8F0] block mb-1">
+                  <span className="font-mono text-sm tracking-widest text-brand block mb-1">
                     {event.year}
                   </span>
                 </div>

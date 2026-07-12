@@ -4,6 +4,19 @@
 
 @layer base {
   :root {
+    /* Accent tokens — space-separated RGB triplets so Tailwind opacity
+       modifiers (text-brand/70) and canvas code can both consume them.
+       Theme branches override ONLY these values; components reference
+       the brand/threat utilities and never hardcode an accent hue.
+       --accent-rgb        primary accent: status, labels, focus, links
+       --accent-threat-rgb threat emphasis: defaults to plain foreground
+                           so schemes without a threat hue stay mono
+       --accent-glow-rgb   lattice node glow + connection tint (canvas)
+       --selection-rgb     text-selection highlight tint */
+    --accent-rgb: 52 211 153;
+    --accent-threat-rgb: 226 226 226;
+    --accent-glow-rgb: 130 180 240;
+    --selection-rgb: 226 226 226;
     --background: 0 0% 3.1%;
     --foreground: 0 0% 88.6%;
     --card: 0 0% 7.1%;
@@ -102,7 +115,7 @@
   }
 
   ::selection {
-    background: rgba(226, 226, 226, 0.15);
+    background: rgb(var(--selection-rgb) / 0.15);
   }
 
   ::-webkit-scrollbar {

@@ -22,12 +22,12 @@ export default function EncryptionVisual() {
             />
           </div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-            <p className="font-mono text-[10px] tracking-widest text-emerald-400 text-center max-w-lg font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand shadow-[0_0_8px_rgb(var(--accent-rgb)_/_0.8)]" />
+            <p className="font-mono text-[10px] tracking-widest text-brand text-center max-w-lg font-medium">
               NIST FIPS 203 · FIPS 204 · FIPS 205 COMPLIANT
             </p>
           </div>
-          <p className="font-mono text-[9px] tracking-wider text-emerald-400/70 mt-2">
+          <p className="font-mono text-[9px] tracking-wider text-brand/70 mt-2">
             ML-KEM · ML-DSA · SLH-DSA
           </p>
         </motion.div>

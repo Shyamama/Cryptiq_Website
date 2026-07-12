@@ -29,7 +29,7 @@ export default function DataFooter() {
                   <span
                     className={
                       c.status === "AVAILABLE"
-                        ? "text-emerald-400/90"
+                        ? "text-brand/90"
                         : "text-foreground/40"
                     }
                   >
@@ -89,7 +89,7 @@ export default function DataFooter() {
                   QUANTUM THREAT LEVEL
                 </span>
               </div>
-              <p className="font-mono text-sm text-foreground/80">ELEVATED</p>
+              <p className="font-mono text-sm text-threat/80">ELEVATED</p>
               <p className="font-mono text-[9px] text-foreground/40 mt-1">
                 ESTIMATED Q-DAY: 2028–2032
               </p>

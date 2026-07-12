@@ -77,6 +77,25 @@ export default function LatticeCanvas({ progressRef }) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
+    // Glow/connection tint comes from the theme's --accent-glow-rgb token
+    // ("R G B" triplet) so color-scheme branches restyle the lattice
+    // without touching canvas code. Falls back to the classic blue.
+    const glowRaw = getComputedStyle(document.documentElement)
+      .getPropertyValue("--accent-glow-rgb")
+      .trim();
+    const [gr, gg, gb] = glowRaw.split(/[\s,]+/).map(Number);
+    const glowRgb = Number.isFinite(gr) && Number.isFinite(gg) && Number.isFinite(gb)
+      ? { r: gr, g: gg, b: gb }
+      : { r: 130, g: 180, b: 240 };
+    // Connection lines sit slightly darker than the glow and brighten
+    // toward the node-core gray as nodes get closer (same ramp the old
+    // hardcoded blue used: 120→195 red channel at full proximity).
+    const lineBase = {
+      r: Math.max(0, glowRgb.r - 10),
+      g: Math.max(0, glowRgb.g - 10),
+      b: Math.max(0, glowRgb.b - 10),
+    };
+
     // Honor prefers-reduced-motion: draw a single static lattice frame
     // (plus one per resize) instead of running the animation loop, and
     // skip the pointer-repulsion listeners entirely.
@@ -203,9 +222,10 @@ export default function LatticeCanvas({ progressRef }) {
             const proximity = 1 - dist / CONNECTION_DIST;
             const alpha = proximity * LINE_MAX_ALPHA;
             // Accent tint on stronger connections
-            const r = 120 + Math.floor(proximity * 75);
-            const g = 170 + Math.floor(proximity * 50);
-            const b = 230;
+            const lift = proximity * 0.7;
+            const r = Math.round(lineBase.r + (226 - lineBase.r) * lift);
+            const g = Math.round(lineBase.g + (226 - lineBase.g) * lift);
+            const b = Math.round(lineBase.b + (226 - lineBase.b) * lift);
             ctx.beginPath();
             ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
             ctx.lineWidth = 0.6 + proximity * 0.3;
@@ -223,8 +243,8 @@ export default function LatticeCanvas({ progressRef }) {
           nodes[i].x, nodes[i].y, 0,
           nodes[i].x, nodes[i].y, nodes[i].radius * 3
         );
-        glow.addColorStop(0, `rgba(130, 180, 240, ${nodes[i].opacity * GLOW_ALPHA})`);
-        glow.addColorStop(1, "rgba(130, 180, 240, 0)");
+        glow.addColorStop(0, `rgba(${glowRgb.r}, ${glowRgb.g}, ${glowRgb.b}, ${nodes[i].opacity * GLOW_ALPHA})`);
+        glow.addColorStop(1, `rgba(${glowRgb.r}, ${glowRgb.g}, ${glowRgb.b}, 0)`);
         ctx.beginPath();
         ctx.arc(nodes[i].x, nodes[i].y, nodes[i].radius * 3, 0, Math.PI * 2);
         ctx.fillStyle = glow;

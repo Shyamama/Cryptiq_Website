@@ -68,10 +68,10 @@ export default function ContactSection() {
           viewport={{ once: true, margin: "-50px" }}
         >
           {status === "success" ? (
-            <div className="flex items-start gap-3 border border-emerald-400/30 bg-emerald-400/5 rounded-md px-5 py-4">
-              <Check size={16} className="text-emerald-400 mt-0.5 shrink-0" />
+            <div className="flex items-start gap-3 border border-brand/30 bg-brand/5 rounded-md px-5 py-4">
+              <Check size={16} className="text-brand mt-0.5 shrink-0" />
               <div>
-                <p className="font-mono text-xs text-emerald-400 tracking-wide">
+                <p className="font-mono text-xs text-brand tracking-wide">
                   MESSAGE SENT
                 </p>
                 <p className="font-body text-sm text-foreground/70 mt-1">
@@ -105,7 +105,7 @@ export default function ContactSection() {
                     name="name"
                     required
                     placeholder="Your Name"
-                    className="w-full bg-transparent border border-white/15 rounded-md px-4 py-3 font-body text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-emerald-400/50 transition-colors"
+                    className="w-full bg-transparent border border-white/15 rounded-md px-4 py-3 font-body text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-brand/50 transition-colors"
                   />
                 </div>
                 <div>
@@ -121,7 +121,7 @@ export default function ContactSection() {
                     name="email"
                     required
                     placeholder="you@company.com"
-                    className="w-full bg-transparent border border-white/15 rounded-md px-4 py-3 font-body text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-emerald-400/50 transition-colors"
+                    className="w-full bg-transparent border border-white/15 rounded-md px-4 py-3 font-body text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-brand/50 transition-colors"
                   />
                 </div>
               </div>
@@ -138,7 +138,7 @@ export default function ContactSection() {
                   type="text"
                   name="company"
                   placeholder="Your Company"
-                  className="w-full bg-transparent border border-white/15 rounded-md px-4 py-3 font-body text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-emerald-400/50 transition-colors"
+                  className="w-full bg-transparent border border-white/15 rounded-md px-4 py-3 font-body text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-brand/50 transition-colors"
                 />
               </div>
 
@@ -155,7 +155,7 @@ export default function ContactSection() {
                   required
                   rows={4}
                   placeholder="What are you working with, and what's prompting the search?"
-                  className="w-full bg-transparent border border-white/15 rounded-md px-4 py-3 font-body text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-emerald-400/50 transition-colors resize-none"
+                  className="w-full bg-transparent border border-white/15 rounded-md px-4 py-3 font-body text-sm text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-brand/50 transition-colors resize-none"
                 />
               </div>
 
@@ -166,7 +166,7 @@ export default function ContactSection() {
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="group inline-flex items-center gap-2 font-mono text-xs tracking-widest bg-foreground text-background px-6 py-3 rounded-md hover:bg-emerald-400 transition-colors disabled:opacity-60 disabled:cursor-wait"
+                className="group inline-flex items-center gap-2 font-mono text-xs tracking-widest bg-foreground text-background px-6 py-3 rounded-md hover:bg-brand transition-colors disabled:opacity-60 disabled:cursor-wait"
               >
                 {status === "sending" ? (
                   <>
