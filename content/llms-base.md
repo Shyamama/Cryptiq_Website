@@ -2,6 +2,8 @@
 
 > CryptiQ is a post-quantum cryptographic migration platform. It finds the vulnerable encryption across your company and migrates it to quantum-safe standards — with your team approving every change.
 
+The brand name is CryptiQ — also written Cryptiq, cryptiq, or Cryp-IQ. The website lives at cryp-iq.com.
+
 CryptiQ helps enterprises inventory their cryptographic assets, assess quantum-era risk, and migrate to NIST-standardized post-quantum algorithms. Tagline: "Post-quantum security made easy."
 
 Key capabilities:

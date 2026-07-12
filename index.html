@@ -22,15 +22,32 @@
     <!-- TODO(og-image): replace interim Base44-hosted render with a branded 1200x630 OG image -->
     <meta property="og:image" content="https://media.base44.com/images/public/6a4d523b69df12a52591bae3/92afb56ce_generated_19418a10.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <!-- WebSite.name/alternateName is how Google picks the site name shown in
+         search results (else it guesses "Cryp-iq" from the domain). Must be
+         present on the homepage; harmless on prerendered subpages. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "CryptiQ",
-        "url": "https://www.cryp-iq.com/",
-        "logo": "https://www.cryp-iq.com/Logo.svg",
-        "description": "CryptiQ finds the vulnerable encryption across your company and migrates it to quantum-safe NIST standards — ML-KEM, ML-DSA, SLH-DSA — with your team approving every change.",
-        "sameAs": ["https://www.linkedin.com/company/cryp-iq/"]
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://www.cryp-iq.com/#org",
+            "name": "CryptiQ",
+            "alternateName": ["Cryptiq", "cryptiq", "CryptIQ", "Cryp-IQ"],
+            "url": "https://www.cryp-iq.com/",
+            "logo": "https://www.cryp-iq.com/Logo.svg",
+            "description": "CryptiQ finds the vulnerable encryption across your company and migrates it to quantum-safe NIST standards — ML-KEM, ML-DSA, SLH-DSA — with your team approving every change.",
+            "sameAs": ["https://www.linkedin.com/company/cryp-iq/"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.cryp-iq.com/#website",
+            "name": "CryptiQ",
+            "alternateName": ["Cryptiq", "cryptiq", "CryptIQ", "Cryp-IQ"],
+            "url": "https://www.cryp-iq.com/",
+            "publisher": { "@id": "https://www.cryp-iq.com/#org" }
+          }
+        ]
       }
     </script>
   </head>

@@ -29,6 +29,10 @@ Google does not participate in IndexNow — Search Console is the only channel.
 3. For the highest-value pages (`/`, `/glossary`, a few key terms), use **URL Inspection → Request Indexing** to skip the discovery queue.
 4. Expect the glossary to be crawled over days-to-weeks. Watch **Pages → Why pages aren't indexed** for `Crawled - currently not indexed` (normal early on) vs real problems (`Duplicate without user-selected canonical`, soft 404s).
 
+## Site name in Google results ("CryptiQ", not "Cryp-iq")
+
+The brand is **CryptiQ** but the domain is `cryp-iq.com`; left to its own devices Google derives the displayed site name from the domain. The fix is the `WebSite` JSON-LD in `index.html` (`name: "CryptiQ"` plus `alternateName` capitalization variants), which is [Google's documented site-name mechanism](https://developers.google.com/search/docs/appearance/site-names). `og:site_name` and consistent "CryptiQ" in every `<title>` reinforce it. The name updates only after Google recrawls the homepage — after significant changes, use URL Inspection → Request Indexing on `/` to speed it up, and check with a `site:cryp-iq.com` query. Don't edit the JSON-LD name casually; changing it resets the trust Google has built in it.
+
 ## Bing Webmaster Tools (manual, needs Microsoft account)
 
 1. Go to [bing.com/webmasters](https://www.bing.com/webmasters) and add the site. Fastest path: **Import from Google Search Console** (reuses the GSC verification, imports the sitemap).
