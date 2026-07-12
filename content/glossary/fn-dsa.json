@@ -1,0 +1,103 @@
+{
+  "slug": "fn-dsa",
+  "term": "FN-DSA",
+  "acronym": "FFT-over-NTRU-Lattice-Based Digital Signature Algorithm",
+  "aliases": ["Falcon", "FIPS 206"],
+  "category": "algorithm",
+  "shortDefinition": "FN-DSA is NIST's forthcoming Falcon-based post-quantum signature standard (FIPS 206), notable for the smallest signatures of the NIST PQ signature schemes.",
+  "definition": [
+    "FN-DSA (FFT-over-NTRU-Lattice-Based Digital Signature Algorithm) is the post-quantum digital signature scheme NIST is standardizing as FIPS 206, based on the Falcon algorithm selected in July 2022. It is the fourth and last of NIST's original post-quantum selections to be standardized: ML-KEM, ML-DSA, and SLH-DSA were finalized in August 2024, while FIPS 206 remains in draft as of mid-2026.",
+    "FN-DSA is a hash-and-sign scheme built on the Gentry–Peikert–Vaikuntanathan (GPV) framework instantiated over NTRU lattices, with a trapdoor sampler called fast Fourier sampling — the 'FFT over NTRU' in the name. Its security rests on the short integer solution (SIS) problem over NTRU lattices, a different lattice assumption from the Module-LWE/SIS problems underlying ML-KEM and ML-DSA.",
+    "Its selling point is size: FN-DSA has the most compact public-key-plus-signature footprint of the NIST post-quantum signatures. The trade-off is implementation difficulty — signing requires floating-point Gaussian sampling that is hard to make constant-time, which is why FN-DSA is positioned as a special-purpose scheme rather than the general-purpose default that ML-DSA is."
+  ],
+  "sections": [
+    {
+      "heading": "Parameter sets and sizes",
+      "paragraphs": [
+        "Falcon defines two parameter sets over power-of-two ring degrees: Falcon-512 targets NIST security category 1 and Falcon-1024 targets category 5. Because the construction requires ring degrees that are powers of two, there is no category-3 option — a gap for policies that mandate intermediate strength.",
+        "The size advantage is what keeps FN-DSA on migration roadmaps. Falcon-512's 666-byte signature is roughly a quarter the size of ML-DSA-44's 2,420 bytes at the same security category, and its 897-byte public key is smaller too. In a certificate chain carrying several signatures and keys per handshake, that difference compounds quickly."
+      ],
+      "bullets": [
+        "Falcon-512 — category 1, public key 897 B, signature ~666 B",
+        "Falcon-1024 — category 5, public key 1,793 B, signature ~1,280 B",
+        "Signatures are variable-length; the figures above are typical encoded sizes",
+        "Comparison: ML-DSA-44 uses a 1,312 B public key and 2,420 B signature at category 2"
+      ]
+    },
+    {
+      "heading": "Why FN-DSA is hard to implement",
+      "paragraphs": [
+        "FN-DSA signing samples signatures from a discrete Gaussian distribution over the NTRU lattice, and the reference approach uses double-precision floating-point arithmetic inside the fast Fourier sampler. Floating-point operations are difficult to make constant-time — on platforms without compliant hardware FPUs they may be emulated in software with data-dependent timing — so naive implementations leak secret-dependent information through timing and power side channels. Published attacks on Falcon implementations have recovered keys from exactly these leakages.",
+        "Verification has none of these problems: it is fast, integer-only, and simple. This asymmetry shapes FN-DSA's niche — environments where a few well-audited signers produce signatures that many constrained verifiers check. Key generation is also more complex than ML-DSA's, involving NTRU trapdoor generation, though its modest RAM footprint suits embedded targets."
+      ]
+    },
+    {
+      "heading": "Standardization status",
+      "paragraphs": [
+        "NIST announced Falcon as one of its four initial post-quantum selections in July 2022 and assigned it the name FN-DSA and the number FIPS 206. Unlike FIPS 203–205, the draft has taken longer, largely because of the floating-point implementation questions. At the Sixth PQC Standardization Conference in September 2025, NIST presented a status update describing proposed changes for the draft: separate pure and pre-hash variants, randomized (hedged) signing only, the BUFF transform for stronger beyond-unforgeability properties, and consideration of fixed-point arithmetic to ease constant-time implementation.",
+        "As of mid-2026 the initial public draft of FIPS 206 has not been finalized as a standard; a public comment period and final publication follow the draft's release. Until FIPS 206 is final, 'Falcon' implementations target the round-3 submission specification and should be expected to change — final FN-DSA will likely not be byte-compatible with today's Falcon code, mirroring the Kyber-to-ML-KEM and Dilithium-to-ML-DSA transitions."
+      ]
+    },
+    {
+      "heading": "Where FN-DSA fits in a migration",
+      "paragraphs": [
+        "For most signing workloads, ML-DSA (FIPS 204) is the default post-quantum choice and SLH-DSA (FIPS 205) the conservative hedge. FN-DSA earns its place where bytes are the constraint: certificate chains where root and intermediate CA signatures are verified constantly but generated rarely, DNSSEC responses that must fit UDP packet budgets, firmware and code signing for constrained verifiers, and blockchain or messaging protocols sensitive to per-signature overhead.",
+        "The practical guidance is to plan for FN-DSA where its size profile matters, but not to deploy pre-standard Falcon in production signing paths. Track the FIPS 206 draft, prefer implementations that address the floating-point side-channel problem (or the fixed-point approach NIST is evaluating), and keep ML-DSA as the interoperable default in the meantime."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is FN-DSA the same as Falcon?",
+      "answer": "FN-DSA is the NIST standard name for the algorithm submitted as Falcon, which NIST selected in July 2022. The final FIPS 206 specification is expected to differ from the original Falcon submission — NIST has proposed changes including randomized-only signing, pre-hash variants, and the BUFF transform — so current Falcon implementations should not be assumed compatible with final FN-DSA."
+    },
+    {
+      "question": "When will FIPS 206 be finalized?",
+      "answer": "NIST has not committed to a date. The other three standards (FIPS 203, 204, 205) were finalized in August 2024, but FN-DSA's draft has taken longer because of open questions around floating-point Gaussian sampling and constant-time implementation. NIST presented a status update with proposed changes in September 2025; a draft public comment period precedes final publication, putting a final standard realistically in the late-2026-or-later window."
+    },
+    {
+      "question": "Why choose FN-DSA over ML-DSA?",
+      "answer": "Size. Falcon-512 signatures are about 666 bytes with an 897-byte public key, versus 2,420-byte signatures and a 1,312-byte key for ML-DSA-44. In certificate chains, DNSSEC, and bandwidth-constrained protocols that difference compounds. ML-DSA remains the general-purpose default because it is already final (FIPS 204) and far easier to implement safely; FN-DSA is the specialist option where bytes dominate."
+    },
+    {
+      "question": "What makes FN-DSA implementations risky?",
+      "answer": "Signing requires sampling from a discrete Gaussian distribution using floating-point arithmetic in the fast Fourier sampler. Floating-point operations are hard to make constant-time, especially where FP is emulated in software, and researchers have demonstrated key-recovery attacks against Falcon implementations via timing and power side channels. Verification is integer-only and unaffected. NIST is evaluating fixed-point arithmetic for the standard to reduce this risk."
+    },
+    {
+      "question": "Does FN-DSA have a security level between Falcon-512 and Falcon-1024?",
+      "answer": "No. The construction works over ring degrees that are powers of two, so the parameter sets are Falcon-512 (NIST category 1) and Falcon-1024 (category 5) with no category-3 option. Deployments required to hit category 3 — a common floor in some government recommendations — must jump to Falcon-1024 or use ML-DSA-65 instead."
+    }
+  ],
+  "related": [
+    "ml-dsa",
+    "ntru",
+    "lattice-based-cryptography",
+    "digital-signature",
+    "fips-204"
+  ],
+  "sources": [
+    {
+      "title": "NIST Announces First Four Quantum-Resistant Cryptographic Algorithms",
+      "url": "https://www.nist.gov/news-events/news/2022/07/nist-announces-first-four-quantum-resistant-cryptographic-algorithms",
+      "publisher": "NIST"
+    },
+    {
+      "title": "FIPS 206: FN-DSA (Falcon) — status update, 6th PQC Standardization Conference",
+      "url": "https://csrc.nist.gov/presentations/2025/fips-206-fn-dsa-falcon",
+      "publisher": "NIST"
+    },
+    {
+      "title": "Falcon: Fast-Fourier Lattice-based Compact Signatures over NTRU",
+      "url": "https://falcon-sign.info/",
+      "publisher": "Falcon team"
+    },
+    {
+      "title": "NIST Post-Quantum Cryptography project",
+      "url": "https://csrc.nist.gov/projects/post-quantum-cryptography",
+      "publisher": "NIST"
+    }
+  ],
+  "cryptiqAngle": "FN-DSA changes migration planning even before FIPS 206 is final: systems where signature size is the binding constraint — PKI hierarchies, DNSSEC, firmware verification — may end up on FN-DSA rather than ML-DSA, and any pre-standard Falcon usage in your estate will need re-migration to the final standard. CryptiQ's cryptographic inventory records which signature algorithm and parameter set each system uses, so CBOM entries flag Falcon deployments for the FIPS 206 transition and size-constrained RSA/ECDSA signers as FN-DSA candidates.",
+  "datePublished": "2026-07-11",
+  "dateModified": "2026-07-11"
+}

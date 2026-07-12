@@ -1,0 +1,107 @@
+{
+  "slug": "fips-203",
+  "term": "FIPS 203",
+  "acronym": "Federal Information Processing Standard 203",
+  "aliases": ["Module-Lattice-Based Key-Encapsulation Mechanism Standard"],
+  "category": "standard",
+  "shortDefinition": "FIPS 203 is the US federal standard specifying ML-KEM, NIST's post-quantum key-encapsulation mechanism, finalized on August 13, 2024.",
+  "definition": [
+    "FIPS 203, the Module-Lattice-Based Key-Encapsulation Mechanism Standard, is the US Federal Information Processing Standard that specifies ML-KEM, NIST's post-quantum algorithm for establishing shared secret keys over public channels. NIST published the final standard on August 13, 2024, alongside FIPS 204 (ML-DSA) and FIPS 205 (SLH-DSA) — the first finalized standards from its post-quantum cryptography standardization project.",
+    "The standard defines the complete algorithm — key generation, encapsulation, and decapsulation — in enough detail that independent implementations interoperate, and it fixes three parameter sets (ML-KEM-512, ML-KEM-768, ML-KEM-1024) spanning NIST security categories 1, 3, and 5. Security rests on the Module Learning-with-Errors problem, which has no known efficient attack on classical or quantum computers.",
+    "As a FIPS, the document is more than a specification: it is binding on US federal agencies, it defines the exact algorithm that NIST's validation programs test against, and it is the reference that protocols, libraries, and procurement requirements cite when they say 'ML-KEM'."
+  ],
+  "sections": [
+    {
+      "heading": "What a FIPS standard means in practice",
+      "paragraphs": [
+        "Federal Information Processing Standards are mandatory for US federal information systems under FISMA, which makes FIPS 203 the compliance anchor for post-quantum key establishment in government and government-adjacent environments. Vendors selling into federal, FedRAMP, or defense markets need implementations that conform to FIPS 203 exactly — not to an earlier Kyber draft.",
+        "Conformance is checked through NIST's validation pipeline: the Cryptographic Algorithm Validation Program (CAVP) tests that an implementation produces correct ML-KEM outputs, and the Cryptographic Module Validation Program (CMVP) validates the module containing it under FIPS 140-3. In December 2024, AWS-LC became the first open-source cryptographic module to enter the CMVP process with ML-KEM inside the FIPS boundary, and validations have been accumulating since. For regulated buyers, 'supports ML-KEM' increasingly means 'has or is pursuing a FIPS 140-3 validation covering FIPS 203'."
+      ]
+    },
+    {
+      "heading": "Scope: what FIPS 203 does and does not cover",
+      "paragraphs": [
+        "FIPS 203 specifies one thing: the ML-KEM key-encapsulation mechanism. It does not cover digital signatures (FIPS 204 and FIPS 205 do, with FIPS 206 planned for FN-DSA), and it does not prescribe how to use a KEM inside a protocol. Usage guidance — combining ML-KEM with other schemes, deriving keys from the shared secret, hybrid constructions — lives in NIST SP 800-227, Recommendations for Key-Encapsulation Mechanisms, finalized in September 2025."
+      ],
+      "bullets": [
+        "ML-KEM-512 — category 1, encapsulation key 800 B, ciphertext 768 B",
+        "ML-KEM-768 — category 3, encapsulation key 1,184 B, ciphertext 1,088 B",
+        "ML-KEM-1024 — category 5, encapsulation key 1,568 B, ciphertext 1,568 B",
+        "All parameter sets output a 32-byte shared secret"
+      ]
+    },
+    {
+      "heading": "From CRYSTALS-Kyber to FIPS 203",
+      "paragraphs": [
+        "FIPS 203 is derived from CRYSTALS-Kyber, the KEM selected in July 2022 at the end of NIST's third standardization round. Between the draft (released August 24, 2023) and the final standard, NIST made small but compatibility-breaking changes — adjustments to the Fujisaki-Okamoto transform and added input validation on keys and ciphertexts — so implementations of round-3 Kyber do not interoperate with final FIPS 203 ML-KEM.",
+        "The practical consequence: anything labeled 'Kyber' in a codebase, protocol identifier, or vendor datasheet needs checking. Early experimental TLS deployments used draft-Kyber code points; current standards and validated modules target final FIPS 203, and the two are distinct wire formats."
+      ]
+    },
+    {
+      "heading": "Adoption timeline and pressure",
+      "paragraphs": [
+        "NIST's guidance is to integrate the finalized standards immediately rather than wait for later additions to the portfolio. The draft transition plan, NIST IR 8547, sharpens the deadline: quantum-vulnerable public-key algorithms such as RSA and ECDH/ECDSA are proposed to be deprecated after 2030 and disallowed in US federal systems after 2035, with FIPS 203 ML-KEM as the replacement for key establishment.",
+        "Industry adoption is running ahead of the mandate. TLS 1.3's X25519MLKEM768 hybrid group, enabled by default in major browsers, encapsulates against FIPS 203 ML-KEM-768, and OpenSSH, VPN vendors, and cloud providers ship FIPS 203-conformant implementations. For most organizations the question is no longer whether FIPS 203 matters but which systems can already negotiate it."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "What is the difference between FIPS 203 and ML-KEM?",
+      "answer": "FIPS 203 is the standard document; ML-KEM is the algorithm it specifies. In practice the names are used almost interchangeably — 'FIPS 203 ML-KEM' means the final, standardized algorithm as opposed to earlier CRYSTALS-Kyber drafts. When compliance or validation is at stake, cite FIPS 203; when discussing the cryptography itself, ML-KEM is the algorithm name."
+    },
+    {
+      "question": "When was FIPS 203 finalized?",
+      "answer": "NIST published final FIPS 203 on August 13, 2024, together with FIPS 204 (ML-DSA) and FIPS 205 (SLH-DSA). The initial public draft had been released on August 24, 2023. The final version differs from round-3 CRYSTALS-Kyber in the Fujisaki-Okamoto transform details and added input validation, so draft-era implementations are not interoperable with the final standard."
+    },
+    {
+      "question": "Is FIPS 203 mandatory?",
+      "answer": "For US federal information systems, FIPS standards are mandatory under FISMA, and NIST's draft transition plan (IR 8547) proposes deprecating RSA and elliptic-curve key establishment after 2030 and disallowing them after 2035. Outside government, FIPS 203 is not legally required, but it is the de facto specification: TLS, SSH, and vendor implementations all target it, and regulated industries typically inherit the requirement through FedRAMP, HIPAA, or contractual baselines."
+    },
+    {
+      "question": "How do I know an implementation actually conforms to FIPS 203?",
+      "answer": "Look for CAVP algorithm certificates for ML-KEM and, for the module as a whole, a FIPS 140-3 validation (or modules-in-process listing) from the CMVP that covers FIPS 203. AWS-LC entered the CMVP process with ML-KEM in December 2024, and more libraries have followed. Absent validation, at minimum confirm the implementation targets final FIPS 203 rather than a Kyber draft — the two produce incompatible outputs."
+    },
+    {
+      "question": "Does FIPS 203 cover digital signatures too?",
+      "answer": "No. FIPS 203 specifies only the ML-KEM key-encapsulation mechanism. Post-quantum digital signatures are standardized separately: FIPS 204 specifies ML-DSA (from CRYSTALS-Dilithium), FIPS 205 specifies SLH-DSA (from SPHINCS+), and FIPS 206 is planned for FN-DSA (from Falcon). A full migration needs both work streams — key establishment and signatures."
+    }
+  ],
+  "related": [
+    "ml-kem",
+    "key-encapsulation-mechanism",
+    "nist-pqc-standardization",
+    "fips-204",
+    "learning-with-errors"
+  ],
+  "sources": [
+    {
+      "title": "FIPS 203: Module-Lattice-Based Key-Encapsulation Mechanism Standard",
+      "url": "https://csrc.nist.gov/pubs/fips/203/final",
+      "publisher": "NIST"
+    },
+    {
+      "title": "NIST Releases First 3 Finalized Post-Quantum Encryption Standards",
+      "url": "https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards",
+      "publisher": "NIST"
+    },
+    {
+      "title": "SP 800-227: Recommendations for Key-Encapsulation Mechanisms",
+      "url": "https://csrc.nist.gov/pubs/sp/800/227/final",
+      "publisher": "NIST"
+    },
+    {
+      "title": "NIST IR 8547 (Initial Public Draft): Transition to Post-Quantum Cryptography Standards",
+      "url": "https://csrc.nist.gov/pubs/ir/8547/ipd",
+      "publisher": "NIST"
+    },
+    {
+      "title": "AWS-LC FIPS 3.0: First cryptographic library to include ML-KEM in FIPS 140-3 validation",
+      "url": "https://aws.amazon.com/blogs/security/aws-lc-fips-3-0-first-cryptographic-library-to-include-ml-kem-in-fips-140-3-validation/",
+      "publisher": "AWS Security Blog"
+    }
+  ],
+  "cryptiqAngle": "FIPS 203 compliance starts with knowing which of your systems still do quantum-vulnerable key establishment and which libraries claim ML-KEM support at draft versus final level. CryptiQ's cryptographic inventory and CBOM record the exact algorithms, parameter sets, and library versions in use across your estate, so you can distinguish FIPS 203-conformant ML-KEM from legacy Kyber drafts and track migration progress against the 2030/2035 federal timeline.",
+  "datePublished": "2026-07-11",
+  "dateModified": "2026-07-11"
+}

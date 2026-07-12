@@ -1,0 +1,103 @@
+{
+  "slug": "fips-204",
+  "term": "FIPS 204",
+  "acronym": "Module-Lattice-Based Digital Signature Standard",
+  "aliases": ["Module-Lattice-Based Digital Signature Standard"],
+  "category": "standard",
+  "shortDefinition": "FIPS 204 is the US federal standard specifying ML-DSA, NIST's primary post-quantum digital signature algorithm, finalized on August 13, 2024.",
+  "definition": [
+    "FIPS 204 (Module-Lattice-Based Digital Signature Standard) is the US federal standard that specifies ML-DSA, NIST's primary post-quantum digital signature algorithm. Finalized on August 13, 2024 alongside FIPS 203 (ML-KEM) and FIPS 205 (SLH-DSA), it is the signature standard NIST expects most systems to adopt when replacing RSA and ECDSA.",
+    "ML-DSA is derived from CRYSTALS-Dilithium, one of the winners of NIST's post-quantum standardization project. Its security rests on module-lattice problems that have no known efficient attack on classical or quantum computers, so signatures made under FIPS 204 remain verifiable and unforgeable even after a cryptographically relevant quantum computer arrives.",
+    "The standard covers the full scheme — key generation, signing, and verification — for three parameter sets (ML-DSA-44, ML-DSA-65, ML-DSA-87), and defines both a randomized 'hedged' signing mode and a deterministic variant, plus a domain-separated pre-hash scheme called HashML-DSA."
+  ],
+  "sections": [
+    {
+      "heading": "What FIPS 204 specifies",
+      "paragraphs": [
+        "FIPS 204 defines the ML-DSA algorithms precisely enough to be implemented byte-for-byte: key generation from a 32-byte seed, signing over an arbitrary message plus an optional context string of up to 255 bytes, and verification with mandatory length checks on public keys and signatures. Because the private key can be regenerated from its 32-byte seed, implementations can store just the seed where space is tight.",
+        "It also defines HashML-DSA, a pre-hash variant that signs a digest of the message rather than the message itself, for environments where the whole message cannot be streamed to the signing module. HashML-DSA is domain-separated from pure ML-DSA — signatures from one do not verify under the other — and some protocol profiles, including the X.509 algorithm identifiers in RFC 9881, deliberately exclude it for interoperability."
+      ]
+    },
+    {
+      "heading": "Parameter sets",
+      "paragraphs": [
+        "FIPS 204 defines three parameter sets, named after the dimensions of the underlying matrix. ML-DSA-65 is the general-purpose default in most profiles; ML-DSA-87 is what CNSA 2.0 requires for US national security systems. Signatures are kilobytes rather than the ~64-96 bytes of ECDSA — the main practical cost of migrating."
+      ],
+      "bullets": [
+        "ML-DSA-44 — security category 2, public key 1,312 B, private key 2,560 B, signature 2,420 B",
+        "ML-DSA-65 — security category 3, public key 1,952 B, private key 4,032 B, signature 3,309 B",
+        "ML-DSA-87 — security category 5, public key 2,592 B, private key 4,896 B, signature 4,627 B",
+        "All private keys can be stored as a 32-byte seed and re-expanded at load time"
+      ]
+    },
+    {
+      "heading": "Hedged vs. deterministic signing",
+      "paragraphs": [
+        "By default, FIPS 204 signing is 'hedged': each signature mixes 32 bytes of fresh randomness from an approved RBG with precomputed randomness stored in the private key. Fresh randomness helps blunt side-channel attacks; the precomputed value protects against a flawed random number generator at signing time. This belt-and-braces design responds directly to the history of nonce-reuse disasters in ECDSA.",
+        "The standard also permits a fully deterministic variant — the fresh random input is replaced with 32 zero bytes — for signers with no usable randomness source at signing time. FIPS 204 warns that determinism makes fault and side-channel attacks harder to mitigate, and says the variant should not be used on platforms where such attacks are a concern and cannot be otherwise countered. Choose hedged unless the platform forces the issue."
+      ]
+    },
+    {
+      "heading": "Compliance and validation",
+      "paragraphs": [
+        "As a FIPS, the standard is binding for US federal agencies: signature implementations used to protect federal information must conform to it and be validated inside a FIPS 140-3 cryptographic module through NIST's Cryptographic Module Validation Program (CMVP). Algorithm testing runs through the automated ACVP program, and vendors selling into government are adding ML-DSA to their module validation scope.",
+        "Beyond the US federal mandate, FIPS 204 anchors a growing ecosystem of protocol standards: RFC 9881 defines ML-DSA algorithm identifiers for X.509 certificates and CRLs, IETF work covers TLS, SSH, and CMS, and CA/Browser-facing PKI planning for post-quantum certificate hierarchies centers on ML-DSA."
+      ]
+    },
+    {
+      "heading": "Where FIPS 204 signatures apply",
+      "paragraphs": [
+        "Anywhere RSA or ECDSA signs today is in scope: X.509 certificate chains and TLS server authentication, code and firmware signing, document signing, software update mechanisms, and token or message authentication in custom protocols. Signatures differ from key exchange in urgency — a recorded signature cannot be retroactively forged the way recorded ciphertext can be retroactively decrypted — but long-lived verification keys change the math.",
+        "Roots of trust baked into hardware, firmware signing keys, and CA hierarchies must verify correctly for a decade or more, so anything whose verification lifetime crosses the quantum horizon needs a FIPS 204 (or FIPS 205 / SP 800-208) plan now. That is why CNSA 2.0 front-loaded signature requirements for software and firmware signing ahead of most other categories."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "What is the difference between FIPS 204 and ML-DSA?",
+      "answer": "FIPS 204 is the standard document; ML-DSA is the algorithm it specifies. In practice the names are used almost interchangeably: a product claiming FIPS 204 support implements ML-DSA, and 'ML-DSA per FIPS 204' is the precise way to say it. The historical name CRYSTALS-Dilithium refers to the pre-standardization submission, which is not byte-compatible with final FIPS 204."
+    },
+    {
+      "question": "Which ML-DSA parameter set should I use?",
+      "answer": "ML-DSA-65 (security category 3) is the sensible default for general use and is the commonly profiled choice for X.509 and TLS. US national security systems under CNSA 2.0 must use ML-DSA-87. ML-DSA-44 sits at category 2 and mainly suits constrained systems where the smaller signature (2,420 bytes) matters and category 2 is acceptable."
+    },
+    {
+      "question": "Should I use hedged or deterministic ML-DSA signing?",
+      "answer": "Hedged — it is the FIPS 204 default and mixes fresh randomness with a precomputed secret value, protecting against both bad RNGs and some side-channel attacks. The deterministic variant exists for platforms with no randomness source at signing time, but the standard cautions against it where fault or side-channel attacks are a realistic concern, such as smart cards and embedded signers."
+    },
+    {
+      "question": "How much bigger are FIPS 204 signatures than RSA or ECDSA?",
+      "answer": "Substantially. An ML-DSA-65 signature is 3,309 bytes with a 1,952-byte public key, versus roughly 64-96 bytes for an ECDSA P-256 signature and 256 bytes for RSA-2048. Certificate chains carrying multiple signatures grow by tens of kilobytes, which affects TLS handshake size, constrained devices, and any protocol with tight message budgets. Signing and verification speed, by contrast, is competitive."
+    },
+    {
+      "question": "Does FIPS 204 replace FIPS 186 (RSA, ECDSA, EdDSA)?",
+      "answer": "Not yet — it stands alongside it. FIPS 186-5 signatures remain approved today, but they are breakable by a cryptographically relevant quantum computer, and NIST's transition guidance (IR 8547 initial public draft) proposes deprecating 112-bit-strength classical signatures around 2030 and disallowing classical public-key signatures by 2035. FIPS 204 is the designated successor for most applications."
+    }
+  ],
+  "related": ["ml-dsa", "digital-signature", "nist-pqc-standardization", "fips-205", "fips-203"],
+  "sources": [
+    {
+      "title": "FIPS 204: Module-Lattice-Based Digital Signature Standard",
+      "url": "https://csrc.nist.gov/pubs/fips/204/final",
+      "publisher": "NIST"
+    },
+    {
+      "title": "FIPS 204 (full text, PDF)",
+      "url": "https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.204.pdf",
+      "publisher": "NIST"
+    },
+    {
+      "title": "NIST Releases First 3 Finalized Post-Quantum Encryption Standards",
+      "url": "https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards",
+      "publisher": "NIST"
+    },
+    {
+      "title": "RFC 9881: Algorithm Identifiers for ML-DSA in X.509 PKI",
+      "url": "https://datatracker.ietf.org/doc/rfc9881/",
+      "publisher": "IETF"
+    }
+  ],
+  "cryptiqAngle": "FIPS 204 migration starts with knowing every place your estate creates or verifies RSA and ECDSA signatures — certificate chains, code-signing pipelines, firmware roots of trust, document workflows. CryptiQ's cryptographic inventory and CBOM surface those signature dependencies, flag where ML-DSA's larger keys and signatures will strain protocols or hardware, and track each system's move to FIPS 204-conformant signing.",
+  "datePublished": "2026-07-11",
+  "dateModified": "2026-07-11"
+}

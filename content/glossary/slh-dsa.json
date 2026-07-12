@@ -1,0 +1,105 @@
+{
+  "slug": "slh-dsa",
+  "term": "SLH-DSA",
+  "acronym": "Stateless Hash-Based Digital Signature Algorithm",
+  "aliases": ["SPHINCS+", "FIPS 205"],
+  "category": "algorithm",
+  "shortDefinition": "SLH-DSA is NIST's stateless hash-based post-quantum signature standard (FIPS 205), whose security rests only on the hash functions it is built from.",
+  "definition": [
+    "SLH-DSA (Stateless Hash-Based Digital Signature Algorithm) is the post-quantum digital signature scheme standardized by NIST in FIPS 205, finalized on August 13, 2024. It is based on SPHINCS+, one of the winners of NIST's post-quantum standardization project, and signs by combining many one-time and few-time hash-based signatures under a single long-lived key pair.",
+    "Its distinguishing property is the security assumption: SLH-DSA depends only on standard properties of the underlying hash functions (SHA-2 or SHAKE), not on lattice problems or any other structured mathematical assumption. That makes it the most conservative of the NIST post-quantum signatures — NIST explicitly positions it as a hedge in case ML-DSA's lattice assumptions prove weaker than expected.",
+    "The conservatism has a price. SLH-DSA signatures run from roughly 7.8 KB to nearly 50 KB depending on parameter set, and signing is orders of magnitude slower than ML-DSA. It is therefore aimed at places where trust matters more than throughput: firmware and software signing, root and issuing CAs, and other long-lived signing keys."
+  ],
+  "sections": [
+    {
+      "heading": "Security from hash functions alone",
+      "paragraphs": [
+        "Every other NIST post-quantum signature rests on a structured algebraic problem — module lattices for ML-DSA, NTRU lattices for FN-DSA. SLH-DSA rests on nothing but the preimage and collision resistance of SHA-2 or SHAKE, properties that have survived decades of cryptanalysis and that quantum computers only dent: Grover's algorithm gives a quadratic speedup against hash functions, which parameter sizes absorb, and Shor's algorithm does not apply at all.",
+        "This is why SLH-DSA is the standard of choice for signatures that must stay trustworthy for decades even if lattice cryptanalysis advances. If a mathematical breakthrough weakened ML-DSA, SLH-DSA signatures would be unaffected — the reverse of the usual trade, where performance is bought with newer, more structured assumptions."
+      ]
+    },
+    {
+      "heading": "Parameter sets and sizes",
+      "paragraphs": [
+        "FIPS 205 approves 12 parameter sets: each of three security categories can use SHA2 or SHAKE as the hash family, in an 's' (small — smaller signatures, slower signing) or 'f' (fast — faster signing, larger signatures) variant. Public keys are tiny at 32, 48, or 64 bytes; it is the signatures that are large. Each key pair may sign up to 2^64 messages, which is effectively unlimited in practice.",
+        "Verification is much cheaper than signing — and notably, the 's' variants verify faster than the 'f' variants — so signatures that are written once and checked many times, such as firmware images, suit SLH-DSA well. FIPS 205 defines hedged (randomized, the default) and deterministic signing variants; the hedged form is recommended where side-channel attacks are a concern."
+      ],
+      "bullets": [
+        "SLH-DSA-128s — category 1, public key 32 B, signature 7,856 B",
+        "SLH-DSA-128f — category 1, public key 32 B, signature 17,088 B",
+        "SLH-DSA-192s — category 3, public key 48 B, signature 16,224 B",
+        "SLH-DSA-192f — category 3, public key 48 B, signature 35,664 B",
+        "SLH-DSA-256s — category 5, public key 64 B, signature 29,792 B",
+        "SLH-DSA-256f — category 5, public key 64 B, signature 49,856 B"
+      ]
+    },
+    {
+      "heading": "Stateless versus stateful hash-based signatures",
+      "paragraphs": [
+        "Earlier hash-based schemes — XMSS and LMS, approved in NIST SP 800-208 — are stateful: the signer must record which one-time key was used for every signature, and reusing one (after a restore from backup, a cloned VM, or an HSM failover) breaks security catastrophically. That state-management burden confines them to tightly controlled environments like firmware-signing ceremonies.",
+        "SLH-DSA removes the requirement entirely. It uses a few-time signature scheme (FORS) at the bottom of a large hypertree and selects signing leaves pseudorandomly, so occasional index collisions are accounted for in the security analysis and no state needs to be kept. The cost of statelessness is exactly the size and speed penalty: SLH-DSA signatures are far larger and slower to produce than XMSS or LMS signatures at the same security level. Where operational discipline around state cannot be guaranteed — which is most places — SLH-DSA is the safe choice."
+      ]
+    },
+    {
+      "heading": "Where SLH-DSA fits, and the emerging ecosystem",
+      "paragraphs": [
+        "SLH-DSA is a poor fit for interactive protocols: a 7.8-49 KB signature in every TLS handshake is impractical, so ML-DSA (and eventually FN-DSA) covers that ground. SLH-DSA's territory is high-value, low-volume signing — secure-boot and firmware update chains, code signing, timestamping, and root CA keys whose signatures must remain verifiable for 20+ years.",
+        "Protocol plumbing is in place: RFC 9909 defines SLH-DSA algorithm identifiers for X.509 certificates and CRLs, and RFC 9814 covers its use in Cryptographic Message Syntax (CMS). NIST is also extending the standard — draft SP 800-230 (initial public draft, April 2026) proposes six additional parameter sets with smaller signatures and faster verification, capped at 2^24 signatures per key, targeted specifically at software, firmware, and certificate signing."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is SLH-DSA the same as SPHINCS+?",
+      "answer": "SLH-DSA is the standardized form of SPHINCS+. NIST renamed the scheme when publishing FIPS 205 in August 2024, and the finalized standard is what implementations and protocol registries (such as RFC 9909 for X.509) reference. Treat SPHINCS+ as the historical name and target FIPS 205 SLH-DSA for new work."
+    },
+    {
+      "question": "When should I choose SLH-DSA over ML-DSA?",
+      "answer": "Choose SLH-DSA when the signature must stay trustworthy for decades and volume is low: firmware and software signing, root CA keys, long-lived document signing. Its hash-only security assumption is the most conservative available. Choose ML-DSA for interactive protocols and high-volume signing, where SLH-DSA's 7.8-49 KB signatures and slow signing are impractical."
+    },
+    {
+      "question": "What does 'stateless' mean, and why does it matter?",
+      "answer": "Stateful hash-based schemes like XMSS and LMS (NIST SP 800-208) require the signer to track which one-time key each signature consumed; accidentally reusing one — via a backup restore or HSM failover — destroys security. SLH-DSA is designed so no such state is kept, eliminating that entire failure class at the cost of much larger, slower signatures."
+    },
+    {
+      "question": "How many signatures can one SLH-DSA key produce?",
+      "answer": "FIPS 205 parameter sets are designed for up to 2^64 signatures per key pair — effectively unlimited (at 10 billion signatures per second it would take over 58 years to exhaust). The additional parameter sets proposed in draft SP 800-230 trade that headroom for smaller signatures, capping keys at 2^24 signatures for use cases like firmware and certificate signing."
+    },
+    {
+      "question": "Can SLH-DSA be used in TLS certificates?",
+      "answer": "Technically yes — RFC 9909 defines the X.509 algorithm identifiers — but a certificate chain carrying multiple multi-kilobyte signatures per handshake is a poor fit for TLS today. The realistic pattern is SLH-DSA at the root or for offline trust anchors, with ML-DSA in end-entity certificates and handshake signatures."
+    }
+  ],
+  "related": [
+    "fips-205",
+    "hash-based-signatures",
+    "xmss",
+    "ml-dsa",
+    "digital-signature"
+  ],
+  "sources": [
+    {
+      "title": "FIPS 205: Stateless Hash-Based Digital Signature Standard",
+      "url": "https://csrc.nist.gov/pubs/fips/205/final",
+      "publisher": "NIST"
+    },
+    {
+      "title": "NIST Releases First 3 Finalized Post-Quantum Encryption Standards",
+      "url": "https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards",
+      "publisher": "NIST"
+    },
+    {
+      "title": "RFC 9909: Internet X.509 PKI — Algorithm Identifiers for SLH-DSA",
+      "url": "https://www.rfc-editor.org/info/rfc9909/",
+      "publisher": "IETF"
+    },
+    {
+      "title": "SP 800-230 (Draft): Additional SLH-DSA Parameter Sets for Limited Signature Use Cases",
+      "url": "https://csrc.nist.gov/pubs/sp/800/230/ipd",
+      "publisher": "NIST"
+    }
+  ],
+  "cryptiqAngle": "SLH-DSA decisions start with knowing which signing keys are long-lived and hard to rotate: firmware signing keys, root CAs, code-signing infrastructure. A cryptographic inventory and CBOM surface exactly those keys and their algorithms, so migration planning can route decades-lived trust anchors to SLH-DSA while high-volume signing moves to ML-DSA — and flag systems that cannot absorb multi-kilobyte signatures before the cutover, not after.",
+  "datePublished": "2026-07-11",
+  "dateModified": "2026-07-11"
+}

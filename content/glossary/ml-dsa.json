@@ -1,0 +1,102 @@
+{
+  "slug": "ml-dsa",
+  "term": "ML-DSA",
+  "acronym": "Module-Lattice-Based Digital Signature Algorithm",
+  "aliases": ["CRYSTALS-Dilithium", "Dilithium", "FIPS 204"],
+  "category": "algorithm",
+  "shortDefinition": "ML-DSA is NIST's primary post-quantum digital signature algorithm (FIPS 204), a lattice-based scheme replacing RSA and ECDSA signatures.",
+  "definition": [
+    "ML-DSA (Module-Lattice-Based Digital Signature Algorithm) is the post-quantum digital signature scheme standardized by NIST in FIPS 204, finalized on August 13, 2024. NIST designates it the primary standard for quantum-resistant signatures, replacing RSA and ECDSA in the roles those algorithms play today: certificates, code signing, firmware verification, document signing, and authentication tokens.",
+    "Like any signature scheme, ML-DSA lets a signer holding a private key produce a signature over a message that anyone with the public key can verify — proving origin authenticity, integrity, and non-repudiation. Its security rests on the Module Learning-with-Errors (Module-LWE) problem over structured lattices, the same family of hardness assumptions behind ML-KEM, with no known efficient attack on classical or quantum computers.",
+    "The practical difference from what it replaces is size. An ECDSA P-256 signature is 64 bytes and its public key 65 bytes; ML-DSA signatures run 2.4 to 4.6 KB and public keys 1.3 to 2.6 KB — roughly a 40-fold increase. Signing and verification are fast, so the migration cost shows up in bandwidth and message formats, not CPU."
+  ],
+  "sections": [
+    {
+      "heading": "Parameter sets and security levels",
+      "paragraphs": [
+        "FIPS 204 defines three parameter sets, named after the dimensions of the underlying matrix. ML-DSA-44 targets NIST security category 2, ML-DSA-65 targets category 3 (comparable to AES-192), and ML-DSA-87 targets category 5 (AES-256). ML-DSA-65 is the common general-purpose choice; ML-DSA-87 is what NSA's CNSA 2.0 suite specifies for national security systems."
+      ],
+      "bullets": [
+        "ML-DSA-44 — category 2, public key 1,312 B, private key 2,560 B, signature 2,420 B",
+        "ML-DSA-65 — category 3, public key 1,952 B, private key 4,032 B, signature 3,309 B",
+        "ML-DSA-87 — category 5, public key 2,592 B, private key 4,896 B, signature 4,627 B",
+        "Private keys can be stored as the 32-byte seed and regenerated, useful for HSMs and smartcards"
+      ]
+    },
+    {
+      "heading": "Signing modes: hedged, deterministic, and pre-hash",
+      "paragraphs": [
+        "The default signing mode in FIPS 204 is 'hedged': each signature mixes a fresh 32-byte random value into the computation, which limits the damage from randomness failures and some side-channel and fault attacks. A deterministic variant — setting that value to all zeros — is permitted for platforms without a random bit generator.",
+        "FIPS 204 also defines HashML-DSA, a pre-hash variant that signs a digest of the message rather than the message itself, for cases where the full message is unavailable at signing time or is processed by a separate module. Pure ML-DSA and HashML-DSA are distinct algorithms with distinct identifiers — protocol designers must pick one, and X.509 work at the IETF has standardized on the pure variant. Both signing interfaces also accept an optional context string, empty by default, to domain-separate signatures across applications."
+      ]
+    },
+    {
+      "heading": "From CRYSTALS-Dilithium to ML-DSA",
+      "paragraphs": [
+        "ML-DSA began as CRYSTALS-Dilithium, a signature finalist selected in NIST's post-quantum standardization project in July 2022. NIST renamed it ML-DSA when publishing FIPS 204 and made technical changes during standardization — documented in the standard's Appendix D — so implementations of round-3 Dilithium are not interoperable with final ML-DSA. New work should implement and advertise ML-DSA against FIPS 204, treating Dilithium as a historical name."
+      ]
+    },
+    {
+      "heading": "Where ML-DSA lands first",
+      "paragraphs": [
+        "The plumbing arrived first. RFC 9881 (October 2025) defines ML-DSA algorithm identifiers for X.509 certificates and CRLs at all three parameter sets, and NIST validates implementations through its usual CAVP/CMVP programs. The CA/Browser Forum adopted ballot SMC013 in August 2025, allowing non-hybrid ML-DSA certificates for S/MIME; publicly trusted TLS server certificates are further behind, with browser support beginning in private-PKI trust anchors rather than the public web PKI. Policy is pulling in the same direction: NSA's CNSA 2.0 requires ML-DSA-87 for national security systems, and NIST's draft transition guidance (IR 8547) proposes deprecating 112-bit-strength RSA and ECDSA after 2030 and disallowing quantum-vulnerable signatures entirely after 2035.",
+        "Operationally, the sizes compound in certificate chains: every certificate carries one public key and one signature, so a three-certificate ML-DSA-65 chain adds roughly 15 KB to a TLS handshake that today fits in a few kilobytes. That growth — extra round trips on constrained links, buffer limits in embedded TLS stacks, larger OCSP responses and CT entries — is why signature migration is expected to trail key-exchange migration, and why long-lived roots such as code-signing and firmware keys, which cannot be rotated quickly, are the sensible place to start."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is ML-DSA the same as Dilithium?",
+      "answer": "ML-DSA is the finalized, standardized version of CRYSTALS-Dilithium. NIST renamed the algorithm when publishing FIPS 204 in August 2024 and made technical changes during standardization, so round-3 Dilithium implementations are not interoperable with final ML-DSA. Use ML-DSA as the current name and target FIPS 204 for new work."
+    },
+    {
+      "question": "Should I use ML-DSA or SLH-DSA?",
+      "answer": "ML-DSA is the default: smaller signatures, much faster signing, and NIST's designated primary signature standard. SLH-DSA (FIPS 205) trades 8-50 KB signatures and slow signing for a more conservative security basis — plain hash functions rather than lattice assumptions — which suits firmware roots of trust and other places where an unfixable algorithm break would be catastrophic. Many programs deploy ML-DSA broadly and reserve SLH-DSA or the stateful hash-based schemes (LMS/XMSS) for long-lived signing roots."
+    },
+    {
+      "question": "Which ML-DSA parameter set should I use?",
+      "answer": "ML-DSA-65 is the sensible general-purpose default at security category 3. Use ML-DSA-87 where policy requires category 5 — CNSA 2.0 environments specify it for national security systems. ML-DSA-44 (category 2) saves about a kilobyte per signature and suits constrained systems, but check that the smaller margin satisfies whatever compliance regime governs the deployment."
+    },
+    {
+      "question": "How much bigger are ML-DSA signatures than ECDSA?",
+      "answer": "An ECDSA P-256 signature is 64 bytes; ML-DSA signatures are 2,420 to 4,627 bytes depending on parameter set — roughly 40 to 70 times larger, with public keys growing similarly. The arithmetic itself is fast, so the cost is bandwidth and format limits: certificate chains grow by tens of kilobytes, and protocols with tight size budgets (embedded TLS, constrained radio links, smartcard APDUs) need explicit testing."
+    },
+    {
+      "question": "Can I get publicly trusted ML-DSA certificates yet?",
+      "answer": "Partially. The CA/Browser Forum adopted ballot SMC013 in August 2025 permitting non-hybrid ML-DSA and ML-KEM certificates for S/MIME, and RFC 9881 defines the X.509 conventions. Publicly trusted ML-DSA TLS server certificates are not yet available — root program and baseline-requirement work is ongoing, and early browser support targets private PKI. Private and internal PKIs can issue ML-DSA certificates today."
+    }
+  ],
+  "related": [
+    "fips-204",
+    "digital-signature",
+    "lattice-based-cryptography",
+    "ml-kem",
+    "slh-dsa",
+    "post-quantum-pki"
+  ],
+  "sources": [
+    {
+      "title": "FIPS 204: Module-Lattice-Based Digital Signature Standard",
+      "url": "https://csrc.nist.gov/pubs/fips/204/final",
+      "publisher": "NIST"
+    },
+    {
+      "title": "NIST Releases First 3 Finalized Post-Quantum Encryption Standards",
+      "url": "https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards",
+      "publisher": "NIST"
+    },
+    {
+      "title": "RFC 9881: Internet X.509 PKI — Algorithm Identifiers for ML-DSA",
+      "url": "https://www.rfc-editor.org/rfc/rfc9881.html",
+      "publisher": "IETF"
+    },
+    {
+      "title": "Ballot SMC013: Enable PQC Algorithms for S/MIME",
+      "url": "https://cabforum.org/2025/07/02/ballot-smc-013/",
+      "publisher": "CA/Browser Forum"
+    }
+  ],
+  "cryptiqAngle": "Signature migration is harder to scope than key exchange because signing keys hide everywhere: certificate chains, code-signing pipelines, firmware update mechanisms, JWTs, document workflows. CryptiQ's cryptographic inventory and CBOM surface every RSA and ECDSA signing dependency across your estate, flag the size-sensitive paths where ML-DSA's larger artifacts need testing, and track each system's move to FIPS 204 through the migration workflow.",
+  "datePublished": "2026-07-11",
+  "dateModified": "2026-07-11"
+}

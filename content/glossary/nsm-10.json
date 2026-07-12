@@ -1,0 +1,92 @@
+{
+  "slug": "nsm-10",
+  "term": "NSM-10",
+  "acronym": "National Security Memorandum 10",
+  "category": "standard",
+  "shortDefinition": "NSM-10 is the May 2022 White House memorandum directing US federal agencies off quantum-vulnerable cryptography, with a risk-mitigation goal of 2035.",
+  "definition": [
+    "NSM-10 (National Security Memorandum 10) is the White House memorandum of May 4, 2022 — formally the National Security Memorandum on Promoting United States Leadership in Quantum Computing While Mitigating Risks to Vulnerable Cryptographic Systems — that made post-quantum migration official US federal policy. It set the goal of \"mitigating as much of the quantum risk as is feasible by 2035\" and started the clock on federal cryptographic inventories.",
+    "The memorandum has two halves: promoting US leadership in quantum information science, and mitigating the risk a cryptanalytically relevant quantum computer (CRQC) poses to public-key cryptography. The second half is what matters to security teams — it warns that a CRQC could jeopardize civilian and military communications, undermine control systems for critical infrastructure, and defeat the security protocols behind most internet-based financial transactions.",
+    "NSM-10 did not itself standardize any algorithms. It anticipated NIST's first post-quantum standards (which arrived in August 2024 as FIPS 203, 204, and 205) and built the policy machinery around them: inventory requirements from OMB, migration guidance from NIST, National Security Systems direction from NSA, and annual progress reporting through the Office of the National Cyber Director."
+  ],
+  "sections": [
+    {
+      "heading": "What NSM-10 requires",
+      "paragraphs": [
+        "The memorandum splits the federal estate into two migration tracks. For civilian federal systems, it directs OMB, in coordination with ONCD and CISA, to \"establish requirements for inventorying all currently deployed cryptographic systems, excluding National Security Systems,\" and to instruct agencies on prioritizing those inventories. Agencies must deliver inventories of quantum-vulnerable systems annually, with the first due within a year of issuance.",
+        "For National Security Systems, NSM-10 tasks NSA — as National Manager for NSS — with issuing quantum-resistant migration guidance, and requires NSS operators to document every use of quantum-vulnerable cryptography. NSA answered with the CNSA 2.0 suite in September 2022, which sets algorithm requirements and adoption timelines for NSS. NSM-10 also required symmetric-key protections for quantum-vulnerable key exchanges in NSS by December 31, 2023."
+      ],
+      "bullets": [
+        "2035 goal: mitigate as much of the quantum risk as is feasible",
+        "OMB to establish cryptographic inventory requirements for civilian agencies",
+        "Annual agency inventories of CRQC-vulnerable systems, prioritized by criticality",
+        "NSA to issue quantum-resistant guidance for National Security Systems (delivered as CNSA 2.0)",
+        "ONCD to report annually on government-wide migration progress",
+        "CISA to engage critical infrastructure operators on quantum risk"
+      ]
+    },
+    {
+      "heading": "Downstream mandates: M-23-02 and the Preparedness Act",
+      "paragraphs": [
+        "OMB memorandum M-23-02, Migrating to Post-Quantum Cryptography (November 18, 2022), turned NSM-10's inventory direction into concrete requirements. By May 4, 2023, and annually thereafter until 2035, agencies must submit a prioritized inventory of CRQC-vulnerable cryptographic systems to ONCD and CISA, focused on High Value Assets and high-impact systems. Each entry reports nine data items — the algorithm in use, the service it provides (key exchange, encrypted connections, or digital signatures), key lengths, vendor and hosting details, and how long the protected data must stay confidential. Within 30 days of each inventory, agencies must also submit an estimate of the funding required to migrate it.",
+        "Congress then codified the direction in the Quantum Computing Cybersecurity Preparedness Act (Public Law 117-260, signed December 21, 2022). The statute requires agencies to maintain current inventories of quantum-vulnerable IT, requires OMB to issue migration guidance within a year of NIST's post-quantum standards, and mandates annual reports to Congress on adoption progress. National Security Systems are excluded — they remain on the NSA/CNSA 2.0 track."
+      ]
+    },
+    {
+      "heading": "Why it matters outside the federal government",
+      "paragraphs": [
+        "NSM-10's 2035 goal has become the de facto planning horizon for post-quantum migration far beyond US agencies. Federal contractors and any vendor selling into government inherit the requirements through procurement, and regulators and standards bodies in finance, healthcare, and critical infrastructure routinely anchor their own guidance to the federal timeline.",
+        "The policy logic also travels. M-23-02 states the threat model plainly: agencies \"must remain cognizant that encrypted data can be recorded now and later decrypted by operators of a future CRQC.\" That harvest-now-decrypt-later assumption — migrate before a quantum computer exists, because ciphertext captured today is already exposed — applies identically to any organization holding data with a confidentiality lifetime that reaches into the 2030s.",
+        "Finally, NSM-10 established inventory-first as the canonical migration methodology: you cannot prioritize or fund a migration until you know where quantum-vulnerable cryptography lives. The nine-item inventory schema in M-23-02 is effectively a government-issued template for a cryptographic bill of materials."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "What is the NSM-10 deadline for post-quantum migration?",
+      "answer": "NSM-10 sets the goal of mitigating as much of the quantum risk as is feasible by 2035 — a goal, not a hard compliance deadline. The hard dates sit in the downstream mandates: OMB M-23-02 required the first agency cryptographic inventories by May 4, 2023, repeated annually until 2035, and NSM-10 itself required symmetric-key protections on National Security Systems by December 31, 2023."
+    },
+    {
+      "question": "Does NSM-10 apply to private companies?",
+      "answer": "Not directly — it binds federal executive agencies. But it reaches the private sector through procurement (vendors selling to agencies must support the migration), through CISA's mandate to engage critical infrastructure operators, and through its role as the reference timeline that regulators and industry standards bodies build on. If your customers include the US government, NSM-10's requirements are effectively yours too."
+    },
+    {
+      "question": "How do NSM-10, M-23-02, and the Quantum Computing Cybersecurity Preparedness Act relate?",
+      "answer": "NSM-10 (May 2022) is the presidential directive that set the policy and the 2035 goal. OMB M-23-02 (November 2022) is the implementing memorandum that defines exactly what agencies must inventory and when. The Quantum Computing Cybersecurity Preparedness Act (December 2022) wrote the inventory-and-migrate obligation into statute, so it survives changes of administration. National Security Systems follow a parallel track under NSA's CNSA 2.0."
+    },
+    {
+      "question": "What must agencies actually inventory under NSM-10 and M-23-02?",
+      "answer": "Every actively used CRQC-vulnerable cryptographic system on High Value Assets, high-impact systems, and systems holding data that must stay sensitive in 2035. For each, agencies report the algorithm, the service it provides (key exchange, encrypted connections, or signatures), key lengths, whether it ships in commercial or custom software, the operating system and hosting environment, and the data's required protection lifetime — then estimate migration funding within 30 days."
+    },
+    {
+      "question": "Did NSM-10 pick which post-quantum algorithms to use?",
+      "answer": "No. NSM-10 predates the final standards and simply anticipated that NIST would release them (it expected the first by 2024; FIPS 203, 204, and 205 were finalized in August 2024). Algorithm selection comes from NIST for civilian systems and from NSA's CNSA 2.0 suite for National Security Systems — NSM-10 supplies the timeline and the inventory-first process, not the cryptography."
+    }
+  ],
+  "related": [
+    "cnsa-2-0",
+    "harvest-now-decrypt-later",
+    "pqc-migration",
+    "cryptographic-inventory"
+  ],
+  "sources": [
+    {
+      "title": "National Security Memorandum on Promoting United States Leadership in Quantum Computing While Mitigating Risks to Vulnerable Cryptographic Systems (NSM-10)",
+      "url": "https://bidenwhitehouse.archives.gov/briefing-room/statements-releases/2022/05/04/national-security-memorandum-on-promoting-united-states-leadership-in-quantum-computing-while-mitigating-risks-to-vulnerable-cryptographic-systems/",
+      "publisher": "The White House"
+    },
+    {
+      "title": "OMB Memorandum M-23-02: Migrating to Post-Quantum Cryptography",
+      "url": "https://www.whitehouse.gov/wp-content/uploads/2022/11/M-23-02-M-Memo-on-Migrating-to-Post-Quantum-Cryptography.pdf",
+      "publisher": "Office of Management and Budget"
+    },
+    {
+      "title": "Quantum Computing Cybersecurity Preparedness Act (Public Law 117-260)",
+      "url": "https://www.govinfo.gov/app/details/PLAW-117publ260",
+      "publisher": "US Government Publishing Office"
+    }
+  ],
+  "cryptiqAngle": "NSM-10 made cryptographic inventory the mandatory first step of post-quantum migration, and M-23-02's nine-item reporting schema is a working definition of what a cryptographic bill of materials must capture: algorithm, service, key length, vendor, hosting, and data lifetime. CryptiQ automates exactly that discovery across code, configurations, and infrastructure, producing a CBOM that maps to the federal inventory format — whether you report to ONCD and CISA or simply plan against the same 2035 horizon.",
+  "datePublished": "2026-07-11",
+  "dateModified": "2026-07-11"
+}
