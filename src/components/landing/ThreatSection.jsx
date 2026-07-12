@@ -15,7 +15,7 @@ export default function ThreatSection() {
           viewport={{ once: true, margin: "-100px" }}
           className="mb-24"
         >
-          <p className="font-mono text-[10px] tracking-widest text-foreground/60 mb-4">
+          <p className="font-mono text-[11px] tracking-widest text-foreground/60 mb-4">
             THREAT LANDSCAPE
           </p>
           <h2 className="font-mono text-xl md:text-2xl font-light tracking-tight max-w-2xl">
@@ -38,13 +38,13 @@ export default function ThreatSection() {
                 className="w-full h-full object-cover opacity-60"
               />
             </div>
-            <p className="font-mono text-[10px] tracking-widest text-threat/85 mb-3">
+            <p className="font-mono text-[11px] tracking-widest text-threat/85 mb-3">
               CLASSICAL VULNERABILITY
             </p>
-            <p className="font-body text-sm text-foreground/70 leading-relaxed">
+            <p className="font-body text-base text-foreground/70 leading-relaxed">
               RSA-2048 and elliptic curve cryptography rely on the computational difficulty
               of integer factorization and discrete logarithms. Shor's algorithm renders
-              both solvable on a sufficiently powerful quantum computer — and your
+              both solvable on a sufficiently powerful quantum computer, and your
               encrypted data is being collected now for decryption later.
             </p>
           </motion.div>
@@ -62,12 +62,12 @@ export default function ThreatSection() {
                 className="w-full h-full object-cover opacity-60"
               />
             </div>
-            <p className="font-mono text-[10px] tracking-widest text-brand/60 mb-3">
+            <p className="font-mono text-[11px] tracking-widest text-brand/60 mb-3">
               THE POST-QUANTUM PATH
             </p>
-            <p className="font-body text-sm text-foreground/70 leading-relaxed">
-              NIST has standardized lattice-based algorithms — ML-KEM, 
-              ML-DSA, and SLH-DSA — that resist both classical and quantum attacks.
+            <p className="font-body text-base text-foreground/70 leading-relaxed">
+              NIST has standardized lattice-based algorithms (ML-KEM,
+              ML-DSA, and SLH-DSA) that resist both classical and quantum attacks.
               We help you understand where you're exposed and migrate your assets to
               these new standards.
             </p>

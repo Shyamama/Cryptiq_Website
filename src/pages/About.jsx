@@ -45,7 +45,7 @@ export default function About() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <p className="font-mono text-[10px] tracking-widest text-foreground/60 mb-8">
+            <p className="font-mono text-[11px] tracking-widest text-foreground/60 mb-8">
               02 // ORIGIN
             </p>
             <h1 className="font-mono text-2xl md:text-4xl font-light tracking-tight leading-tight mb-8">
@@ -55,12 +55,12 @@ export default function About() {
                 you can't protect what you can't see.
               </span>
             </h1>
-            <p className="font-body text-sm text-foreground/70 leading-relaxed max-w-2xl">
+            <p className="font-body text-base text-foreground/70 leading-relaxed max-w-2xl">
               CryptiQ was founded to solve a practical problem: organizations know quantum
               computing threatens their encryption, but most can't inventory their own
               cryptographic assets, let alone migrate them. We provide asset inventory, data
               management, CBOM reporting, and migration support to guide enterprises through
-              the post-quantum transition — step by step.
+              the post-quantum transition, step by step.
             </p>
           </motion.div>
         </div>
@@ -86,7 +86,7 @@ export default function About() {
                 <p className="font-mono text-2xl md:text-3xl font-light text-foreground/90">
                   {stat.value}
                 </p>
-                <p className="font-mono text-[9px] tracking-widest text-foreground/50 mt-2">
+                <p className="font-mono text-[10px] tracking-widest text-foreground/50 mt-2">
                   {stat.label}
                 </p>
               </motion.div>

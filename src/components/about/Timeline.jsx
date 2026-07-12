@@ -25,7 +25,7 @@ export default function Timeline() {
           viewport={{ once: true }}
           className="mb-24"
         >
-          <p className="font-mono text-[10px] tracking-widest text-foreground/60 mb-4">
+          <p className="font-mono text-[11px] tracking-widest text-foreground/60 mb-4">
             THE QUANTUM TIMELINE
           </p>
           <h2 className="font-mono text-xl md:text-2xl font-light tracking-tight">
@@ -57,7 +57,7 @@ export default function Timeline() {
                   </span>
                 </div>
                 <div className="md:col-span-1">
-                  <p className="font-body text-sm text-foreground/70 leading-relaxed">
+                  <p className="font-body text-base text-foreground/70 leading-relaxed">
                     {event.title}
                   </p>
                 </div>

@@ -35,7 +35,7 @@ export default function AuditCTA() {
           viewport={{ once: true, margin: "-100px" }}
           onViewportEnter={() => setVisibleLines(1)}
         >
-          <p className="font-mono text-[10px] tracking-widest text-foreground/60 mb-4">
+          <p className="font-mono text-[11px] tracking-widest text-foreground/60 mb-4">
             INITIATE
           </p>
           <h2 className="font-mono text-xl md:text-2xl font-light tracking-tight mb-16">

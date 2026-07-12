@@ -20,6 +20,8 @@ Marketing site for CryptiQ (post-quantum cryptographic migration). Vite + React 
 ## Conventions
 
 - Dark theme only (`#080808` background); monospace HUD aesthetic — match `font-mono` + `text-foreground/NN` opacity idiom of neighboring components.
+- Accent colors come from the CSS tokens at the top of `src/index.css` (`--accent-rgb` gold, `--accent-threat-rgb` crimson, `--accent-glow-rgb`, `--selection-rgb`), exposed as Tailwind `brand`/`threat` utilities. Never hardcode an accent hue in a component; to retheme the site, change only the token values.
+- No em-dashes (—) in user-facing copy, including glossary JSON, meta descriptions, and `content/llms-base.md`. Rewrite with commas, colons, parentheses, or separate sentences. Title-separator dashes in `<title>` patterns (`Page — CryptiQ`) are the one exception.
 - Algorithm naming: use final NIST names (ML-KEM, ML-DSA, SLH-DSA), never CRYSTALS-Kyber/Dilithium/SPHINCS+ as primary names (historical mentions and aliases are fine; the content validator enforces this for glossary entries).
 - Respect `prefers-reduced-motion` in any new animation (see `MotionConfig` in `App.jsx` and the static-frame path in `LatticeCanvas.jsx`).
 - Before finishing: `npm run build && npm run lint && npm run typecheck` must all pass.

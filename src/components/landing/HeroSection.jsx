@@ -39,14 +39,14 @@ export default function HeroSection() {
           transition={{ delay: 2, duration: 1.5 }}
           className="mt-16 flex flex-col items-center gap-4"
         >
-          <p className="font-body text-sm text-foreground/70 max-w-md">
+          <p className="font-body text-base text-foreground/70 max-w-md">
             CryptiQ finds the vulnerable encryption across your company and
-            migrates it to quantum-safe standards — with your team approving
+            migrates it to quantum-safe standards, with your team approving
             every change.
           </p>
           <div className="mt-8 flex items-center gap-2 text-brand/65">
             <div className="w-px h-8 bg-brand/50" />
-            <span className="font-mono text-[10px] tracking-widest animate-pulse">SCROLL</span>
+            <span className="font-mono text-[11px] tracking-widest animate-pulse">SCROLL</span>
             <div className="w-px h-8 bg-brand/50" />
           </div>
         </motion.div>

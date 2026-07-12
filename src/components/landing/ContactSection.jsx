@@ -47,14 +47,14 @@ export default function ContactSection() {
           transition={{ duration: 1 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <p className="font-mono text-[10px] tracking-widest text-foreground/60 mb-4">
+          <p className="font-mono text-[11px] tracking-widest text-foreground/60 mb-4">
             GET IN TOUCH
           </p>
           <h2 className="font-mono text-xl md:text-2xl font-light tracking-tight mb-4">
             Talk to us about
             <span className="text-foreground/70"> your migration.</span>
           </h2>
-          <p className="font-body text-sm text-foreground/70 leading-relaxed mb-12 max-w-lg">
+          <p className="font-body text-base text-foreground/70 leading-relaxed mb-12 max-w-lg">
             We're taking on a small number of design partners. Tell us a bit
             about what you're working with, and we'll get back to you within
             a business day.
@@ -74,8 +74,8 @@ export default function ContactSection() {
                 <p className="font-mono text-xs text-brand tracking-wide">
                   MESSAGE SENT
                 </p>
-                <p className="font-body text-sm text-foreground/70 mt-1">
-                  Thanks — we'll be in touch soon.
+                <p className="font-body text-base text-foreground/70 mt-1">
+                  Thanks. We'll be in touch soon.
                 </p>
               </div>
             </div>
@@ -95,7 +95,7 @@ export default function ContactSection() {
                 <div>
                   <label
                     htmlFor="name"
-                    className="font-mono text-[10px] tracking-widest text-foreground/50 mb-2 block"
+                    className="font-mono text-[11px] tracking-widest text-foreground/50 mb-2 block"
                   >
                     NAME
                   </label>
@@ -111,7 +111,7 @@ export default function ContactSection() {
                 <div>
                   <label
                     htmlFor="email"
-                    className="font-mono text-[10px] tracking-widest text-foreground/50 mb-2 block"
+                    className="font-mono text-[11px] tracking-widest text-foreground/50 mb-2 block"
                   >
                     WORK EMAIL
                   </label>
@@ -129,7 +129,7 @@ export default function ContactSection() {
               <div>
                 <label
                   htmlFor="company"
-                  className="font-mono text-[10px] tracking-widest text-foreground/50 mb-2 block"
+                  className="font-mono text-[11px] tracking-widest text-foreground/50 mb-2 block"
                 >
                   COMPANY
                 </label>
@@ -145,7 +145,7 @@ export default function ContactSection() {
               <div>
                 <label
                   htmlFor="message"
-                  className="font-mono text-[10px] tracking-widest text-foreground/50 mb-2 block"
+                  className="font-mono text-[11px] tracking-widest text-foreground/50 mb-2 block"
                 >
                   MESSAGE
                 </label>

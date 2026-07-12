@@ -15,14 +15,14 @@ export default function DataFooter() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-16">
           {/* Capabilities status */}
           <div className="md:col-span-7">
-            <p className="font-mono text-[9px] tracking-widest text-foreground/50 mb-6">
+            <p className="font-mono text-[10px] tracking-widest text-foreground/50 mb-6">
               CURRENT CAPABILITIES
             </p>
             <div className="space-y-3">
               {CAPABILITIES.map((c) => (
                 <div
                   key={c.id}
-                  className="flex items-center gap-4 font-mono text-[10px] text-foreground/50"
+                  className="flex items-center gap-4 font-mono text-[11px] text-foreground/50"
                 >
                   <span className="text-foreground/40 w-8">{c.id}</span>
                   <span className="flex-1">{c.label}</span>
@@ -43,7 +43,7 @@ export default function DataFooter() {
           {/* Links & status */}
           <div className="md:col-span-5 flex flex-col justify-between">
             <div>
-              <p className="font-mono text-[9px] tracking-widest text-foreground/50 mb-6">
+              <p className="font-mono text-[10px] tracking-widest text-foreground/50 mb-6">
                 NAVIGATION
               </p>
               <div className="flex flex-col gap-3">
@@ -85,12 +85,12 @@ export default function DataFooter() {
             <div className="mt-12 pt-8 border-t border-white/10">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-foreground/50 animate-pulse" />
-                <span className="font-mono text-[9px] tracking-widest text-foreground/50">
+                <span className="font-mono text-[10px] tracking-widest text-foreground/50">
                   QUANTUM THREAT LEVEL
                 </span>
               </div>
               <p className="font-mono text-sm text-threat/80">ELEVATED</p>
-              <p className="font-mono text-[9px] text-foreground/40 mt-1">
+              <p className="font-mono text-[10px] text-foreground/40 mt-1">
                 ESTIMATED Q-DAY: 2028–2032
               </p>
             </div>
@@ -98,10 +98,10 @@ export default function DataFooter() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <span className="font-mono text-[9px] text-foreground/40">
+          <span className="font-mono text-[10px] text-foreground/40">
             © 2026 CryptiQ. ALL RIGHTS RESERVED.
           </span>
-          <span className="font-mono text-[9px] text-foreground/30">
+          <span className="font-mono text-[10px] text-foreground/30">
             POST-QUANTUM CRYPTOGRAPHIC MIGRATION
           </span>
         </div>

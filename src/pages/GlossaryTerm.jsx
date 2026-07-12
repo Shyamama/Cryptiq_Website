@@ -50,7 +50,7 @@ export default function GlossaryTerm() {
             aria-label="Breadcrumb"
             className="flex items-center justify-between mb-10"
           >
-            <p className="font-mono text-[10px] tracking-widest text-foreground/50">
+            <p className="font-mono text-[11px] tracking-widest text-foreground/50">
               <Link
                 to="/glossary"
                 className="hover:text-foreground/80 transition-colors"
@@ -60,7 +60,7 @@ export default function GlossaryTerm() {
               <span className="text-foreground/30"> // </span>
               {categoryLabel(term.category)}
             </p>
-            <p className="font-mono text-[9px] tracking-widest text-foreground/30">
+            <p className="font-mono text-[10px] tracking-widest text-foreground/30">
               UPDATED {term.dateModified}
             </p>
           </nav>
@@ -76,7 +76,7 @@ export default function GlossaryTerm() {
               </p>
             )}
             {term.aliases?.length > 0 && (
-              <p className="font-mono text-[9px] tracking-widest text-foreground/40 mt-3">
+              <p className="font-mono text-[10px] tracking-widest text-foreground/40 mt-3">
                 ALSO: {term.aliases.join(" · ")}
               </p>
             )}
@@ -90,7 +90,7 @@ export default function GlossaryTerm() {
                 className={`font-body leading-relaxed ${
                   i === 0
                     ? "text-base text-foreground/90"
-                    : "text-sm text-foreground/70"
+                    : "text-base text-foreground/70"
                 }`}
               >
                 {renderInline(p)}
@@ -111,7 +111,7 @@ export default function GlossaryTerm() {
                 {section.paragraphs.map((p, j) => (
                   <p
                     key={j}
-                    className="font-body text-sm text-foreground/70 leading-relaxed"
+                    className="font-body text-base text-foreground/70 leading-relaxed"
                   >
                     {renderInline(p)}
                   </p>
@@ -122,7 +122,7 @@ export default function GlossaryTerm() {
                   {section.bullets.map((b, j) => (
                     <li
                       key={j}
-                      className="font-body text-sm text-foreground/60 leading-relaxed"
+                      className="font-body text-base text-foreground/60 leading-relaxed"
                     >
                       {renderInline(b)}
                     </li>
@@ -134,7 +134,7 @@ export default function GlossaryTerm() {
 
           {/* FAQ */}
           <section className="mb-14 border-t border-white/10 pt-10">
-            <p className="font-mono text-[9px] tracking-widest text-foreground/50 mb-8">
+            <p className="font-mono text-[10px] tracking-widest text-foreground/50 mb-8">
               FREQUENTLY ASKED
             </p>
             <div className="space-y-8">
@@ -143,7 +143,7 @@ export default function GlossaryTerm() {
                   <h3 className="font-mono text-sm text-foreground/90 mb-3">
                     {f.question}
                   </h3>
-                  <p className="font-body text-sm text-foreground/70 leading-relaxed">
+                  <p className="font-body text-base text-foreground/70 leading-relaxed">
                     {renderInline(f.answer)}
                   </p>
                 </div>
@@ -153,10 +153,10 @@ export default function GlossaryTerm() {
 
           {/* CryptiQ angle */}
           <aside className="mb-14 border border-white/10 bg-[#0A0A0A] p-6 md:p-8">
-            <p className="font-mono text-[9px] tracking-widest text-foreground/50 mb-4">
+            <p className="font-mono text-[10px] tracking-widest text-foreground/50 mb-4">
               WHERE CRYPTIQ FITS
             </p>
-            <p className="font-body text-sm text-foreground/70 leading-relaxed mb-6">
+            <p className="font-body text-base text-foreground/70 leading-relaxed mb-6">
               {renderInline(term.cryptiqAngle)}
             </p>
             <a
@@ -170,7 +170,7 @@ export default function GlossaryTerm() {
           {/* Related terms */}
           {related.length > 0 && (
             <section className="mb-14">
-              <p className="font-mono text-[9px] tracking-widest text-foreground/50 mb-6">
+              <p className="font-mono text-[10px] tracking-widest text-foreground/50 mb-6">
                 RELATED ENTRIES
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -183,7 +183,7 @@ export default function GlossaryTerm() {
                     <p className="font-mono text-xs text-foreground/80 group-hover:text-foreground transition-colors">
                       {r.term}
                     </p>
-                    <p className="font-mono text-[9px] tracking-widest text-foreground/40 mt-1">
+                    <p className="font-mono text-[10px] tracking-widest text-foreground/40 mt-1">
                       {categoryLabel(r.category)}
                     </p>
                   </Link>
@@ -194,7 +194,7 @@ export default function GlossaryTerm() {
 
           {/* Sources */}
           <section className="border-t border-white/10 pt-8">
-            <p className="font-mono text-[9px] tracking-widest text-foreground/50 mb-5">
+            <p className="font-mono text-[10px] tracking-widest text-foreground/50 mb-5">
               SOURCES
             </p>
             <ul className="space-y-2">
@@ -208,7 +208,7 @@ export default function GlossaryTerm() {
                   >
                     {s.title}
                     {s.publisher && (
-                      <span className="text-foreground/40"> — {s.publisher}</span>
+                      <span className="text-foreground/40"> · {s.publisher}</span>
                     )}{" "}
                     ↗
                   </a>

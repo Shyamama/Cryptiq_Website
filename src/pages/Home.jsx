@@ -33,7 +33,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#080808] text-[#E2E2E2]">
       <PageMeta
         title="CryptiQ — Post-Quantum Security Made Easy"
-        description="CryptiQ finds the vulnerable encryption across your company and migrates it to quantum-safe NIST standards — ML-KEM, ML-DSA, SLH-DSA — with your team approving every change."
+        description="CryptiQ finds the vulnerable encryption across your company and migrates it to quantum-safe NIST standards (ML-KEM, ML-DSA, SLH-DSA), with your team approving every change."
       />
       <ErrorBoundary>
         <LatticeCanvas progressRef={progressRef} />

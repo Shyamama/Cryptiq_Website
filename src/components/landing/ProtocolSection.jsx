@@ -8,7 +8,7 @@ const STEPS = [
     label: "INVENTORY",
     title: "Cryptographic Asset Discovery",
     description:
-      "We enumerate every cryptographic asset across your infrastructure — certificates, keys, protocols, and hidden dependencies. Every RSA, ECC, and Diffie-Hellman instance is catalogued and classified by exposure and criticality.",
+      "We enumerate every cryptographic asset across your infrastructure: certificates, keys, protocols, and hidden dependencies. Every RSA, ECC, and Diffie-Hellman instance is catalogued and classified by exposure and criticality.",
   },
   {
     index: "02",
@@ -36,7 +36,7 @@ export default function ProtocolSection() {
           transition={{ duration: 1 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          <p className="font-mono text-[10px] tracking-widest text-foreground/60 mb-4">
+          <p className="font-mono text-[11px] tracking-widest text-foreground/60 mb-4">
             MIGRATION PROTOCOL
           </p>
           <h2 className="font-mono text-xl md:text-2xl font-light tracking-tight mb-24">
@@ -59,7 +59,7 @@ export default function ProtocolSection() {
                 <span className="font-mono text-6xl md:text-7xl font-light text-foreground/35">
                   {step.index}
                 </span>
-                <p className="font-mono text-[10px] tracking-widest text-brand/90 font-medium mt-2">
+                <p className="font-mono text-[11px] tracking-widest text-brand/90 font-medium mt-2">
                   {step.label}
                 </p>
               </div>
@@ -67,7 +67,7 @@ export default function ProtocolSection() {
                 <h3 className="font-mono text-lg font-light tracking-tight mb-4 text-foreground">
                   {step.title}
                 </h3>
-                <p className="font-body text-sm text-foreground/80 leading-relaxed max-w-xl">
+                <p className="font-body text-base text-foreground/80 leading-relaxed max-w-xl">
                   {step.description}
                 </p>
                 {i < STEPS.length - 1 && (
