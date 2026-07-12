@@ -1,42 +1,42 @@
 {
   "slug": "fips-205",
   "term": "FIPS 205",
-  "acronym": "Federal Information Processing Standard 205 — Stateless Hash-Based Digital Signature Standard",
+  "acronym": "Federal Information Processing Standard 205: Stateless Hash-Based Digital Signature Standard",
   "aliases": ["Stateless Hash-Based Digital Signature Standard"],
   "category": "standard",
   "shortDefinition": "FIPS 205 is the NIST standard specifying SLH-DSA, the stateless hash-based post-quantum digital signature scheme, finalized August 13, 2024.",
   "definition": [
     "FIPS 205, the Stateless Hash-Based Digital Signature Standard, is the US federal standard that specifies SLH-DSA, a quantum-resistant digital signature algorithm derived from SPHINCS+. NIST finalized it on August 13, 2024, alongside FIPS 203 (ML-KEM) and FIPS 204 (ML-DSA) as the first completed standards of its post-quantum cryptography project.",
-    "SLH-DSA occupies a deliberate position in the standards portfolio: NIST describes it as a backup to ML-DSA, standardized so that a signature scheme built on entirely different mathematics exists if lattice-based cryptography is ever weakened. Its security rests only on the properties of well-studied hash functions — SHA-2 or SHAKE — with no structured algebraic assumption to attack.",
-    "That conservatism has a cost. FIPS 205 signatures run from 7,856 to 49,856 bytes depending on parameter set — orders of magnitude larger than ECDSA's ~64 bytes and far larger than ML-DSA's 2.4–4.6 KB — and signing is slow. FIPS 205 is therefore chosen where trust assumptions matter more than throughput: firmware and software signing, long-lived roots of trust, and code-signing keys that must stay valid for decades."
+    "SLH-DSA occupies a deliberate position in the standards portfolio: NIST describes it as a backup to ML-DSA, standardized so that a signature scheme built on entirely different mathematics exists if lattice-based cryptography is ever weakened. Its security rests only on the properties of well-studied hash functions (SHA-2 or SHAKE), with no structured algebraic assumption to attack.",
+    "That conservatism has a cost. FIPS 205 signatures run from 7,856 to 49,856 bytes depending on parameter set (orders of magnitude larger than ECDSA's ~64 bytes and far larger than ML-DSA's 2.4–4.6 KB), and signing is slow. FIPS 205 is therefore chosen where trust assumptions matter more than throughput: firmware and software signing, long-lived roots of trust, and code-signing keys that must stay valid for decades."
   ],
   "sections": [
     {
       "heading": "The twelve parameter sets",
       "paragraphs": [
         "FIPS 205 approves twelve parameter sets, formed from three choices: hash family (SHA2 or SHAKE), security level (128, 192, or 256 bits of the security parameter, mapping to NIST categories 1, 3, and 5), and an 's'/'f' trade-off. The 's' (small) variants minimize signature size at the cost of slower signing; the 'f' (fast) variants sign several times faster but produce roughly double the bytes. Verification is comparatively cheap in both, and 'f' variants actually verify slower than 's'.",
-        "Keys are tiny — the one dimension where SLH-DSA beats every lattice scheme. Public keys are 32, 48, or 64 bytes and private keys 64, 96, or 128 bytes across the categories. Every parameter set is rated for up to 2^64 signatures per key pair, which is effectively unlimited in practice."
+        "Keys are tiny, the one dimension where SLH-DSA beats every lattice scheme. Public keys are 32, 48, or 64 bytes and private keys 64, 96, or 128 bytes across the categories. Every parameter set is rated for up to 2^64 signatures per key pair, which is effectively unlimited in practice."
       ],
       "bullets": [
-        "SLH-DSA-{SHA2,SHAKE}-128s — category 1, public key 32 B, signature 7,856 B",
-        "SLH-DSA-{SHA2,SHAKE}-128f — category 1, public key 32 B, signature 17,088 B",
-        "SLH-DSA-{SHA2,SHAKE}-192s — category 3, public key 48 B, signature 16,224 B",
-        "SLH-DSA-{SHA2,SHAKE}-192f — category 3, public key 48 B, signature 35,664 B",
-        "SLH-DSA-{SHA2,SHAKE}-256s — category 5, public key 64 B, signature 29,792 B",
-        "SLH-DSA-{SHA2,SHAKE}-256f — category 5, public key 64 B, signature 49,856 B"
+        "SLH-DSA-{SHA2,SHAKE}-128s: category 1, public key 32 B, signature 7,856 B",
+        "SLH-DSA-{SHA2,SHAKE}-128f: category 1, public key 32 B, signature 17,088 B",
+        "SLH-DSA-{SHA2,SHAKE}-192s: category 3, public key 48 B, signature 16,224 B",
+        "SLH-DSA-{SHA2,SHAKE}-192f: category 3, public key 48 B, signature 35,664 B",
+        "SLH-DSA-{SHA2,SHAKE}-256s: category 5, public key 64 B, signature 29,792 B",
+        "SLH-DSA-{SHA2,SHAKE}-256f: category 5, public key 64 B, signature 49,856 B"
       ]
     },
     {
       "heading": "Why 'stateless' matters",
       "paragraphs": [
-        "Earlier NIST-approved hash-based signatures — LMS and XMSS in SP 800-208 — are stateful: each one-time key inside the scheme may be used exactly once, and reusing state after a backup restore or a failover can destroy all security. That state-tracking requirement confines them to tightly controlled signing environments such as HSM-backed firmware pipelines.",
+        "Earlier NIST-approved hash-based signatures (LMS and XMSS in SP 800-208) are stateful: each one-time key inside the scheme may be used exactly once, and reusing state after a backup restore or a failover can destroy all security. That state-tracking requirement confines them to tightly controlled signing environments such as HSM-backed firmware pipelines.",
         "SLH-DSA removes that operational hazard. It signs with a pseudorandomly selected few-time key from an enormous hypertree, so no state needs to be tracked between signatures and a key pair behaves like any conventional signing key. The price of statelessness is exactly the large-signature, slow-signing profile: the structure that makes state unnecessary is what makes each signature tens of kilobytes."
       ]
     },
     {
       "heading": "FIPS 205 versus FIPS 204",
       "paragraphs": [
-        "For general-purpose signing — TLS certificates, tokens, API signatures — FIPS 204's ML-DSA is the default: signatures of 2.4–4.6 KB, fast signing, broad protocol support. FIPS 205 is the right choice when the risk calculus inverts. Firmware and boot-chain signing keys, root CA keys, and document-archival signatures may need to remain trustworthy for 15–30 years with no realistic path to rotation; hash-function-only security is the most conservative assumption available, and verification-heavy, sign-rarely workloads absorb SLH-DSA's costs easily.",
+        "For general-purpose signing (TLS certificates, tokens, API signatures), FIPS 204's ML-DSA is the default: signatures of 2.4–4.6 KB, fast signing, broad protocol support. FIPS 205 is the right choice when the risk calculus inverts. Firmware and boot-chain signing keys, root CA keys, and document-archival signatures may need to remain trustworthy for 15–30 years with no realistic path to rotation; hash-function-only security is the most conservative assumption available, and verification-heavy, sign-rarely workloads absorb SLH-DSA's costs easily.",
         "The two standards are complementary rather than competing, and FIPS 205 itself permits federal systems to use FIPS 204, FIPS 186-5, or SP 800-208 as alternatives. Some designs also pair them: a hash-based root of trust anchoring a lattice-based operational hierarchy diversifies assumptions where they matter most."
       ]
     },
@@ -44,7 +44,7 @@
       "heading": "Ecosystem status and follow-on work",
       "paragraphs": [
         "SLH-DSA support has landed across mainstream cryptographic libraries and HSM firmware, and IETF work defines its use in X.509 certificates and protocols such as CMS. Because SPHINCS+ was modified during standardization, implementations must target the final FIPS 205 specification rather than earlier SPHINCS+ submission versions.",
-        "NIST is extending the standard: draft SP 800-230 (initial public draft, April 2026) proposes six additional SLH-DSA parameter sets with smaller signatures and faster verification for signing software, firmware, and certificates — at the cost of a hard cap of 2^24 signatures per key, which makes them unsuitable for general-purpose use. Teams planning firmware-signing migrations should track its finalization."
+        "NIST is extending the standard: draft SP 800-230 (initial public draft, April 2026) proposes six additional SLH-DSA parameter sets with smaller signatures and faster verification for signing software, firmware, and certificates, at the cost of a hard cap of 2^24 signatures per key, which makes them unsuitable for general-purpose use. Teams planning firmware-signing migrations should track its finalization."
       ]
     }
   ],
@@ -55,7 +55,7 @@
     },
     {
       "question": "When should I use FIPS 205 instead of FIPS 204?",
-      "answer": "Use FIPS 205 when signatures must stay trustworthy for decades and signing volume is low: firmware and software signing, root-of-trust and root CA keys, and long-term archival signatures. Its security relies only on hash functions, the most conservative assumption available. For everyday signing — TLS, tokens, high-volume services — FIPS 204's ML-DSA is faster with signatures roughly a tenth the size."
+      "answer": "Use FIPS 205 when signatures must stay trustworthy for decades and signing volume is low: firmware and software signing, root-of-trust and root CA keys, and long-term archival signatures. Its security relies only on hash functions, the most conservative assumption available. For everyday signing (TLS, tokens, high-volume services), FIPS 204's ML-DSA is faster with signatures roughly a tenth the size."
     },
     {
       "question": "How big are FIPS 205 signatures?",
@@ -67,7 +67,7 @@
     },
     {
       "question": "Is SLH-DSA stateful like LMS and XMSS?",
-      "answer": "No — statelessness is its defining feature. LMS and XMSS (SP 800-208) require the signer to track which one-time keys have been used; losing that state, for example after restoring a backup, can be catastrophic. SLH-DSA needs no state between signatures, so keys can be backed up, replicated, and used like conventional signing keys, at the cost of much larger signatures."
+      "answer": "No; statelessness is its defining feature. LMS and XMSS (SP 800-208) require the signer to track which one-time keys have been used; losing that state, for example after restoring a backup, can be catastrophic. SLH-DSA needs no state between signatures, so keys can be backed up, replicated, and used like conventional signing keys, at the cost of much larger signatures."
     }
   ],
   "related": [
@@ -99,7 +99,7 @@
       "publisher": "NIST"
     }
   ],
-  "cryptiqAngle": "FIPS 205 typically enters a migration plan through firmware signing, secure boot, and root-of-trust keys — exactly the assets a cryptographic inventory must flag as long-lived and hard to rotate. CryptiQ's CBOM identifies where signing keys have multi-decade validity or sit in unpatchable hardware, so teams can route those systems to SLH-DSA while general-purpose signing moves to ML-DSA, and verify that signature-size budgets in each protocol and device actually accommodate 8–50 KB signatures.",
+  "cryptiqAngle": "FIPS 205 typically enters a migration plan through firmware signing, secure boot, and root-of-trust keys. These are exactly the assets a cryptographic inventory must flag as long-lived and hard to rotate. CryptiQ's CBOM identifies where signing keys have multi-decade validity or sit in unpatchable hardware, so teams can route those systems to SLH-DSA while general-purpose signing moves to ML-DSA, and verify that signature-size budgets in each protocol and device actually accommodate 8–50 KB signatures.",
   "datePublished": "2026-07-11",
   "dateModified": "2026-07-11"
 }

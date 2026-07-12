@@ -13,24 +13,24 @@
     {
       "heading": "Timeline of the competition",
       "paragraphs": [
-        "NIST issued its call for proposals in December 2016 and accepted 69 complete submissions into round 1 in late 2017. Public cryptanalysis thinned the field: 26 candidates advanced to round 2 in January 2019, and on July 22, 2020 NIST named 7 finalists plus 8 alternates for round 3. On July 5, 2022 it announced the first algorithms to be standardized — CRYSTALS-Kyber for key establishment and CRYSTALS-Dilithium, Falcon, and SPHINCS+ for signatures — while sending four KEMs (BIKE, Classic McEliece, HQC, SIKE) into a fourth round.",
+        "NIST issued its call for proposals in December 2016 and accepted 69 complete submissions into round 1 in late 2017. Public cryptanalysis thinned the field: 26 candidates advanced to round 2 in January 2019, and on July 22, 2020 NIST named 7 finalists plus 8 alternates for round 3. On July 5, 2022 it announced the first algorithms to be standardized (CRYSTALS-Kyber for key establishment and CRYSTALS-Dilithium, Falcon, and SPHINCS+ for signatures) while sending four KEMs (BIKE, Classic McEliece, HQC, SIKE) into a fourth round.",
         "The finalized standards followed on August 13, 2024, with the algorithms renamed to their FIPS identities: ML-KEM (FIPS 203), ML-DSA (FIPS 204), and SLH-DSA (FIPS 205). On March 11, 2025 NIST concluded round 4 by selecting HQC as a fifth algorithm; a draft HQC standard is expected for public comment with finalization targeted for 2027."
       ],
       "bullets": [
-        "Dec 2016 — formal call for proposals",
-        "Dec 2017 — 69 round-1 candidates accepted",
-        "Jan 2019 — 26 advance to round 2",
-        "Jul 22, 2020 — 7 finalists + 8 alternates (round 3)",
-        "Jul 5, 2022 — Kyber, Dilithium, Falcon, SPHINCS+ selected; 4 KEMs to round 4",
-        "Aug 13, 2024 — FIPS 203, 204, 205 finalized",
-        "Mar 11, 2025 — HQC selected as backup KEM; FIPS standard targeted for 2027",
-        "May 14, 2026 — 9 candidates advance to round 3 of the additional-signatures on-ramp"
+        "Dec 2016: formal call for proposals",
+        "Dec 2017: 69 round-1 candidates accepted",
+        "Jan 2019: 26 advance to round 2",
+        "Jul 22, 2020: 7 finalists + 8 alternates (round 3)",
+        "Jul 5, 2022: Kyber, Dilithium, Falcon, SPHINCS+ selected; 4 KEMs to round 4",
+        "Aug 13, 2024: FIPS 203, 204, 205 finalized",
+        "Mar 11, 2025: HQC selected as backup KEM; FIPS standard targeted for 2027",
+        "May 14, 2026: 9 candidates advance to round 3 of the additional-signatures on-ramp"
       ]
     },
     {
       "heading": "Security categories 1 through 5",
       "paragraphs": [
-        "Rather than quoting bit-security numbers, NIST's call for proposals defined five security categories pegged to the effort of attacking existing symmetric primitives. Categories 1, 3, and 5 require that breaking the scheme be at least as hard as key search on AES-128, AES-192, and AES-256 respectively; categories 2 and 4 are pegged to collision search on SHA-256 and SHA-384. Parameter sets are named against these targets — ML-KEM-768 is a category 3 parameter set, ML-DSA-87 a category 5 one.",
+        "Rather than quoting bit-security numbers, NIST's call for proposals defined five security categories pegged to the effort of attacking existing symmetric primitives. Categories 1, 3, and 5 require that breaking the scheme be at least as hard as key search on AES-128, AES-192, and AES-256 respectively; categories 2 and 4 are pegged to collision search on SHA-256 and SHA-384. Parameter sets are named against these targets: ML-KEM-768 is a category 3 parameter set, ML-DSA-87 a category 5 one.",
         "The categories matter operationally because policy hooks into them: CNSA 2.0, for example, mandates category 5 parameters (ML-KEM-1024, ML-DSA-87) for national security systems, while most commercial TLS deployments settle on category 3."
       ]
     },
@@ -38,33 +38,33 @@
       "heading": "Why multiple math families",
       "paragraphs": [
         "All of NIST's primary selections except SLH-DSA are lattice-based, which concentrates risk: a mathematical breakthrough against structured lattices would take out ML-KEM, ML-DSA, and FN-DSA together. NIST hedged deliberately. SLH-DSA rests only on hash-function security, HQC was chosen precisely because its code-based construction shares no assumptions with ML-KEM, and the additional-signatures on-ramp explicitly prioritizes non-lattice schemes.",
-        "The competition itself demonstrated why diversity is not paranoia. Rainbow, a multivariate round-3 finalist, was broken by classical cryptanalysis in early 2022. SIKE, an isogeny-based KEM, advanced to round 4 in July 2022 and was broken weeks later by the Castryck-Decru attack — again on a classical computer. Both survived years of scrutiny before falling, which is the strongest available argument for standardizing algorithms from independent mathematical families."
+        "The competition itself demonstrated why diversity is not paranoia. Rainbow, a multivariate round-3 finalist, was broken by classical cryptanalysis in early 2022. SIKE, an isogeny-based KEM, advanced to round 4 in July 2022 and was broken weeks later by the Castryck-Decru attack, again on a classical computer. Both survived years of scrutiny before falling, which is the strongest available argument for standardizing algorithms from independent mathematical families."
       ]
     },
     {
       "heading": "What is still in flight",
       "paragraphs": [
-        "Three work streams remain open. FIPS 206 will standardize FN-DSA (Falcon), a compact lattice signature whose floating-point implementation subtleties have made drafting slower than its siblings. The HQC standard is being drafted following the March 2025 selection, with finalization targeted for 2027. And the additional digital signatures on-ramp — a September 2022 call that drew 40 round-1 candidates — narrowed to 14 candidates in October 2024 and to 9 on May 14, 2026 (including UOV, MAYO, SQIsign, HAWK, and FAEST), with roughly two more years of evaluation expected.",
-        "For planning purposes, none of this changes the migration target: NIST is explicit that ML-KEM remains the recommended choice for general encryption and that the newer selections are backups and specialization, not replacements. Waiting for the portfolio to be 'done' is not a strategy — the finalized 2024 standards are the baseline now."
+        "Three work streams remain open. FIPS 206 will standardize FN-DSA (Falcon), a compact lattice signature whose floating-point implementation subtleties have made drafting slower than its siblings. The HQC standard is being drafted following the March 2025 selection, with finalization targeted for 2027. And the additional digital signatures on-ramp (a September 2022 call that drew 40 round-1 candidates) narrowed to 14 candidates in October 2024 and to 9 on May 14, 2026 (including UOV, MAYO, SQIsign, HAWK, and FAEST), with roughly two more years of evaluation expected.",
+        "For planning purposes, none of this changes the migration target: NIST is explicit that ML-KEM remains the recommended choice for general encryption and that the newer selections are backups and specialization, not replacements. Waiting for the portfolio to be 'done' is not a strategy. The finalized 2024 standards are the baseline now."
       ]
     }
   ],
   "faq": [
     {
       "question": "Which algorithms did NIST standardize for post-quantum cryptography?",
-      "answer": "Three standards were finalized on August 13, 2024: ML-KEM (FIPS 203) for key establishment, ML-DSA (FIPS 204) for digital signatures, and SLH-DSA (FIPS 205) for stateless hash-based signatures. FN-DSA, derived from Falcon, is in development as FIPS 206, and the code-based KEM HQC — selected March 11, 2025 — will get its own standard, targeted for 2027."
+      "answer": "Three standards were finalized on August 13, 2024: ML-KEM (FIPS 203) for key establishment, ML-DSA (FIPS 204) for digital signatures, and SLH-DSA (FIPS 205) for stateless hash-based signatures. FN-DSA, derived from Falcon, is in development as FIPS 206, and the code-based KEM HQC, selected March 11, 2025, will get its own standard, targeted for 2027."
     },
     {
       "question": "Is the NIST PQC standardization process finished?",
-      "answer": "The core is done — FIPS 203, 204, and 205 are final and deployable — but the project continues. FIPS 206 (FN-DSA) is being drafted, the HQC standard is expected to finalize around 2027, and the additional digital signatures on-ramp entered its third round in May 2026 with nine candidates. Organizations should migrate against the finalized standards now rather than wait for the portfolio to close."
+      "answer": "The core is done (FIPS 203, 204, and 205 are final and deployable), but the project continues. FIPS 206 (FN-DSA) is being drafted, the HQC standard is expected to finalize around 2027, and the additional digital signatures on-ramp entered its third round in May 2026 with nine candidates. Organizations should migrate against the finalized standards now rather than wait for the portfolio to close."
     },
     {
       "question": "Why did NIST select HQC when ML-KEM already exists?",
-      "answer": "Redundancy across math families. ML-KEM's security rests on structured lattices; HQC's rests on error-correcting codes. If cryptanalysis ever weakens lattice assumptions, a standardized, independently based KEM is ready. NIST is explicit that HQC is a backup — ML-KEM remains the recommended choice for general encryption."
+      "answer": "Redundancy across math families. ML-KEM's security rests on structured lattices; HQC's rests on error-correcting codes. If cryptanalysis ever weakens lattice assumptions, a standardized, independently based KEM is ready. NIST is explicit that HQC is a backup; ML-KEM remains the recommended choice for general encryption."
     },
     {
       "question": "What are NIST security categories 1-5?",
-      "answer": "Strength tiers defined in the original call for proposals. Categories 1, 3, and 5 require attacks to be at least as costly as key search on AES-128, AES-192, and AES-256; categories 2 and 4 are pegged to collision search on SHA-256 and SHA-384. Parameter sets map to them — ML-KEM-768 targets category 3, ML-KEM-1024 and ML-DSA-87 target category 5, which is what CNSA 2.0 requires."
+      "answer": "Strength tiers defined in the original call for proposals. Categories 1, 3, and 5 require attacks to be at least as costly as key search on AES-128, AES-192, and AES-256; categories 2 and 4 are pegged to collision search on SHA-256 and SHA-384. Parameter sets map to them: ML-KEM-768 targets category 3, ML-KEM-1024 and ML-DSA-87 target category 5, which is what CNSA 2.0 requires."
     },
     {
       "question": "Were any NIST PQC candidates broken during the competition?",
@@ -99,7 +99,7 @@
       "publisher": "NIST"
     }
   ],
-  "cryptiqAngle": "The NIST process defines the destination algorithms, but every migration mandate built on it — CNSA 2.0, OMB inventories, sector regulations — starts from the same prerequisite: knowing where quantum-vulnerable cryptography lives today. CryptiQ's cryptographic inventory and CBOM map RSA, ECDH, and ECDSA usage across your estate against the FIPS 203/204/205 targets, so as NIST finalizes FIPS 206 and the HQC standard, your remediation backlog is already ranked and ready.",
+  "cryptiqAngle": "The NIST process defines the destination algorithms, but every migration mandate built on it (CNSA 2.0, OMB inventories, sector regulations) starts from the same prerequisite: knowing where quantum-vulnerable cryptography lives today. CryptiQ's cryptographic inventory and CBOM map RSA, ECDH, and ECDSA usage across your estate against the FIPS 203/204/205 targets, so as NIST finalizes FIPS 206 and the HQC standard, your remediation backlog is already ranked and ready.",
   "datePublished": "2026-07-11",
   "dateModified": "2026-07-11"
 }

@@ -8,19 +8,19 @@
   "definition": [
     "ML-KEM (Module-Lattice-Based Key-Encapsulation Mechanism) is the post-quantum key-establishment algorithm standardized by NIST in FIPS 203, finalized on August 13, 2024. It replaces quantum-vulnerable key-exchange mechanisms such as RSA key transport and elliptic-curve Diffie-Hellman in protocols like TLS, SSH, and VPNs.",
     "As a key-encapsulation mechanism, ML-KEM lets two parties agree on a shared secret over an untrusted network: one party encapsulates a secret against the other's public key, and the recipient decapsulates it with their private key. The shared secret then keys fast symmetric encryption such as AES-256.",
-    "Its security rests on the Module Learning-with-Errors (Module-LWE) problem over structured lattices — a problem with no known efficient solution on either classical or quantum computers. That is what makes ML-KEM safe against Shor's algorithm, which breaks RSA and elliptic-curve cryptography."
+    "Its security rests on the Module Learning-with-Errors (Module-LWE) problem over structured lattices, a problem with no known efficient solution on either classical or quantum computers. That is what makes ML-KEM safe against Shor's algorithm, which breaks RSA and elliptic-curve cryptography."
   ],
   "sections": [
     {
       "heading": "Parameter sets and security levels",
       "paragraphs": [
         "FIPS 203 defines three parameter sets. ML-KEM-512 targets NIST security category 1 (comparable to AES-128), ML-KEM-768 targets category 3 (AES-192), and ML-KEM-1024 targets category 5 (AES-256). ML-KEM-768 is the default choice in most deployments and the parameter set used in the TLS hybrid groups shipped by major browsers.",
-        "Keys and ciphertexts are larger than their elliptic-curve counterparts — kilobytes rather than tens of bytes — but ML-KEM's arithmetic is fast, and in practice handshake latency is dominated by the network, not the math."
+        "Keys and ciphertexts are larger than their elliptic-curve counterparts (kilobytes rather than tens of bytes), but ML-KEM's arithmetic is fast, and in practice handshake latency is dominated by the network, not the math."
       ],
       "bullets": [
-        "ML-KEM-512 — category 1, encapsulation key 800 B, ciphertext 768 B",
-        "ML-KEM-768 — category 3, encapsulation key 1,184 B, ciphertext 1,088 B",
-        "ML-KEM-1024 — category 5, encapsulation key 1,568 B, ciphertext 1,568 B",
+        "ML-KEM-512: category 1, encapsulation key 800 B, ciphertext 768 B",
+        "ML-KEM-768: category 3, encapsulation key 1,184 B, ciphertext 1,088 B",
+        "ML-KEM-1024: category 5, encapsulation key 1,568 B, ciphertext 1,568 B",
         "All parameter sets produce a 32-byte shared secret"
       ]
     },
@@ -34,14 +34,14 @@
     {
       "heading": "From CRYSTALS-Kyber to ML-KEM",
       "paragraphs": [
-        "ML-KEM began as CRYSTALS-Kyber, the key-encapsulation winner of NIST's post-quantum standardization project announced in July 2022. During standardization NIST renamed it ML-KEM and made small technical changes — adjustments to the Fujisaki-Okamoto transform and added input validation — so 'Kyber' implementations are not byte-compatible with final FIPS 203. New systems should implement and advertise ML-KEM, treating Kyber as a historical name."
+        "ML-KEM began as CRYSTALS-Kyber, the key-encapsulation winner of NIST's post-quantum standardization project announced in July 2022. During standardization NIST renamed it ML-KEM and made small technical changes (adjustments to the Fujisaki-Okamoto transform and added input validation), so 'Kyber' implementations are not byte-compatible with final FIPS 203. New systems should implement and advertise ML-KEM, treating Kyber as a historical name."
       ]
     },
     {
       "heading": "Migration considerations",
       "paragraphs": [
-        "Moving to ML-KEM starts with knowing where quantum-vulnerable key establishment happens: TLS terminations, VPN concentrators, SSH fleets, service meshes, and any custom protocol doing RSA or ECDH key exchange. From there, most organizations adopt hybrid groups first — they are backward-deployable and already supported by mainstream stacks.",
-        "Because public keys and ciphertexts grow to roughly a kilobyte, constrained environments — embedded devices, UDP-based protocols sensitive to packet size, HSM-backed systems — need testing rather than assumptions. Certificate chains and PKI are a separate work stream: signatures use ML-DSA or SLH-DSA, not ML-KEM."
+        "Moving to ML-KEM starts with knowing where quantum-vulnerable key establishment happens: TLS terminations, VPN concentrators, SSH fleets, service meshes, and any custom protocol doing RSA or ECDH key exchange. From there, most organizations adopt hybrid groups first; they are backward-deployable and already supported by mainstream stacks.",
+        "Because public keys and ciphertexts grow to roughly a kilobyte, constrained environments (embedded devices, UDP-based protocols sensitive to packet size, HSM-backed systems) need testing rather than assumptions. Certificate chains and PKI are a separate work stream: signatures use ML-DSA or SLH-DSA, not ML-KEM."
       ]
     }
   ],
@@ -52,15 +52,15 @@
     },
     {
       "question": "Is ML-KEM proven secure against quantum computers?",
-      "answer": "ML-KEM's security reduces to the Module-LWE lattice problem, which has withstood decades of classical and quantum cryptanalysis with no known efficient attack. Like all practical cryptography this is a well-studied hardness assumption, not an absolute proof — which is one reason deployments favor hybrid modes combining ML-KEM with elliptic-curve exchange."
+      "answer": "ML-KEM's security reduces to the Module-LWE lattice problem, which has withstood decades of classical and quantum cryptanalysis with no known efficient attack. Like all practical cryptography this is a well-studied hardness assumption, not an absolute proof, which is one reason deployments favor hybrid modes combining ML-KEM with elliptic-curve exchange."
     },
     {
       "question": "Which ML-KEM parameter set should I use?",
-      "answer": "ML-KEM-768 is the sensible default: it targets NIST security category 3, matches what browsers and TLS libraries ship in X25519MLKEM768, and its sizes are manageable. Use ML-KEM-1024 where policy requires category 5 — for example CNSA 2.0 environments — and avoid ML-KEM-512 unless a constrained system genuinely cannot afford the extra bytes."
+      "answer": "ML-KEM-768 is the sensible default: it targets NIST security category 3, matches what browsers and TLS libraries ship in X25519MLKEM768, and its sizes are manageable. Use ML-KEM-1024 where policy requires category 5 (for example CNSA 2.0 environments), and avoid ML-KEM-512 unless a constrained system genuinely cannot afford the extra bytes."
     },
     {
       "question": "Does ML-KEM replace AES?",
-      "answer": "No. ML-KEM establishes the shared secret; AES (or another symmetric cipher) then encrypts the actual data. Symmetric algorithms like AES-256 are already considered quantum-safe at sufficient key lengths — it is the public-key exchange protecting those keys that quantum computers threaten, and that is the part ML-KEM replaces."
+      "answer": "No. ML-KEM establishes the shared secret; AES (or another symmetric cipher) then encrypts the actual data. Symmetric algorithms like AES-256 are already considered quantum-safe at sufficient key lengths. It is the public-key exchange protecting those keys that quantum computers threaten, and that is the part ML-KEM replaces."
     }
   ],
   "related": [
@@ -88,7 +88,7 @@
       "publisher": "NIST"
     }
   ],
-  "cryptiqAngle": "ML-KEM is the destination for most key-exchange migrations, but you can only migrate the RSA and ECDH usage you know about. CryptiQ's cryptographic inventory finds quantum-vulnerable key establishment across your infrastructure — TLS configs, SSH fleets, VPNs, code — and its migration workflow moves each one to ML-KEM or a hybrid group with your team approving every change.",
+  "cryptiqAngle": "ML-KEM is the destination for most key-exchange migrations, but you can only migrate the RSA and ECDH usage you know about. CryptiQ's cryptographic inventory finds quantum-vulnerable key establishment across your infrastructure (TLS configs, SSH fleets, VPNs, code), and its migration workflow moves each one to ML-KEM or a hybrid group with your team approving every change.",
   "datePublished": "2026-07-11",
   "dateModified": "2026-07-11"
 }

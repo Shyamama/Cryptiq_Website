@@ -6,15 +6,15 @@
   "category": "threat",
   "shortDefinition": "Harvest now, decrypt later is an attack where adversaries record encrypted traffic today to decrypt it once quantum computers can break RSA and ECC.",
   "definition": [
-    "Harvest now, decrypt later (HNDL) is an attack strategy in which an adversary collects encrypted data today — network captures, intercepted backups, exfiltrated ciphertext — and stores it until a cryptographically relevant quantum computer can break the public-key cryptography protecting it. Nothing needs to be broken at collection time; the ciphertext simply waits.",
-    "The attack works because most encrypted sessions derive their symmetric keys from an RSA or elliptic-curve handshake. A recorded handshake is frozen forever: once Shor's algorithm can be run at scale against the captured RSA or ECDH parameters, the session keys — and everything they encrypted — fall out retroactively.",
+    "Harvest now, decrypt later (HNDL) is an attack strategy in which an adversary collects encrypted data today (network captures, intercepted backups, exfiltrated ciphertext) and stores it until a cryptographically relevant quantum computer can break the public-key cryptography protecting it. Nothing needs to be broken at collection time; the ciphertext simply waits.",
+    "The attack works because most encrypted sessions derive their symmetric keys from an RSA or elliptic-curve handshake. A recorded handshake is frozen forever: once Shor's algorithm can be run at scale against the captured RSA or ECDH parameters, the session keys, and everything they encrypted, fall out retroactively.",
     "HNDL is the reason post-quantum migration is urgent before quantum computers exist. Any data whose confidentiality must outlive the arrival of a quantum computer is already at risk today, and intelligence agencies are widely assessed to be collecting against that horizon now."
   ],
   "sections": [
     {
       "heading": "Why the attack works",
       "paragraphs": [
-        "In protocols like classical TLS, an eavesdropper who records the full session captures both the key-establishment handshake and the symmetric ciphertext. The symmetric layer (AES) is not the weak point — the handshake is. Breaking the recorded RSA key transport or ECDH exchange with a future quantum computer yields the session keys, which then decrypt the recorded traffic in bulk.",
+        "In protocols like classical TLS, an eavesdropper who records the full session captures both the key-establishment handshake and the symmetric ciphertext. The symmetric layer (AES) is not the weak point; the handshake is. Breaking the recorded RSA key transport or ECDH exchange with a future quantum computer yields the session keys, which then decrypt the recorded traffic in bulk.",
         "Forward secrecy does not help against a quantum adversary: ephemeral ECDH prevents key compromise today from exposing past sessions, but the ephemeral public values are right there in the recorded handshake, and Shor's algorithm breaks them just the same."
       ]
     },
@@ -24,7 +24,7 @@
         "HNDL risk is a function of how long data must stay secret versus when a cryptographically relevant quantum computer arrives. Data that is worthless in five years is a poor harvesting target; data that must stay confidential for decades is exactly what gets collected."
       ],
       "bullets": [
-        "Health and genomic records — sensitive for a lifetime",
+        "Health and genomic records, which stay sensitive for a lifetime",
         "Financial records, deal data, and audit trails with multi-decade retention",
         "Government, defense, and intelligence communications",
         "Trade secrets, designs, and other long-lived intellectual property",
@@ -35,30 +35,30 @@
     {
       "heading": "Policy response",
       "paragraphs": [
-        "Governments treat HNDL as a present-tense threat. In the United States, National Security Memorandum 10 (2022) directed federal agencies to begin migrating to quantum-resistant cryptography, and OMB memorandum M-23-02 required agencies to inventory their cryptographic systems — the inventory exists precisely because harvested data cannot be un-harvested. The NSA's CNSA 2.0 suite sets adoption timelines for national security systems, front-loading the algorithms that protect data in transit.",
+        "Governments treat HNDL as a present-tense threat. In the United States, National Security Memorandum 10 (2022) directed federal agencies to begin migrating to quantum-resistant cryptography, and OMB memorandum M-23-02 required agencies to inventory their cryptographic systems. The inventory exists precisely because harvested data cannot be un-harvested. The NSA's CNSA 2.0 suite sets adoption timelines for national security systems, front-loading the algorithms that protect data in transit.",
         "CISA, NIST, and NSA jointly publish quantum-readiness guidance urging critical infrastructure operators to build cryptographic inventories and migration roadmaps now rather than waiting for a quantum computer to be announced."
       ]
     },
     {
       "heading": "Defending against HNDL",
       "paragraphs": [
-        "The only defense is to stop generating harvestable ciphertext: data encrypted under post-quantum or hybrid key establishment today is safe from retroactive decryption. That is why hybrid TLS groups such as X25519MLKEM768 shipped years before any quantum computer — they close the collection window immediately.",
-        "Prioritization follows Mosca's inequality: if the time your data must remain secret plus the time migration takes exceeds the time until a cryptographically relevant quantum computer, you are already late. Long-lived data and hard-to-change systems go first, which requires knowing where every quantum-vulnerable exchange happens — a cryptographic inventory problem before it is a cryptography problem."
+        "The only defense is to stop generating harvestable ciphertext: data encrypted under post-quantum or hybrid key establishment today is safe from retroactive decryption. That is why hybrid TLS groups such as X25519MLKEM768 shipped years before any quantum computer: they close the collection window immediately.",
+        "Prioritization follows Mosca's inequality: if the time your data must remain secret plus the time migration takes exceeds the time until a cryptographically relevant quantum computer, you are already late. Long-lived data and hard-to-change systems go first, which requires knowing where every quantum-vulnerable exchange happens, a cryptographic inventory problem before it is a cryptography problem."
       ]
     }
   ],
   "faq": [
     {
       "question": "Is harvest now, decrypt later actually happening?",
-      "answer": "Collection is by nature covert, so there is no public proof of a specific campaign. But western security agencies — CISA, NSA, and their counterparts — treat it as an operating assumption, and the entire federal migration timeline is built around it. The economics are compelling for an intelligence service: storage is cheap, and high-value ciphertext only has to be recorded once."
+      "answer": "Collection is by nature covert, so there is no public proof of a specific campaign. But western security agencies (CISA, NSA, and their counterparts) treat it as an operating assumption, and the entire federal migration timeline is built around it. The economics are compelling for an intelligence service: storage is cheap, and high-value ciphertext only has to be recorded once."
     },
     {
       "question": "Does TLS 1.3 or forward secrecy protect against HNDL?",
-      "answer": "No. TLS 1.3's ephemeral ECDH provides forward secrecy against classical key compromise, but the ephemeral public keys are visible in the recorded handshake. A future quantum computer running Shor's algorithm recovers the shared secret from exactly those values. Only post-quantum or hybrid key establishment — such as X25519MLKEM768 — closes the gap."
+      "answer": "No. TLS 1.3's ephemeral ECDH provides forward secrecy against classical key compromise, but the ephemeral public keys are visible in the recorded handshake. A future quantum computer running Shor's algorithm recovers the shared secret from exactly those values. Only post-quantum or hybrid key establishment, such as X25519MLKEM768, closes the gap."
     },
     {
       "question": "Does HNDL affect data at rest too?",
-      "answer": "Yes, when ciphertext leaves your control. Stolen encrypted backups, archives protected by RSA-wrapped keys, and encrypted files shared externally can all be held and decrypted later. Data at rest encrypted purely with AES-256 under well-managed symmetric keys is not meaningfully exposed — the risk concentrates wherever public-key cryptography protects the keys."
+      "answer": "Yes, when ciphertext leaves your control. Stolen encrypted backups, archives protected by RSA-wrapped keys, and encrypted files shared externally can all be held and decrypted later. Data at rest encrypted purely with AES-256 under well-managed symmetric keys is not meaningfully exposed; the risk concentrates wherever public-key cryptography protects the keys."
     },
     {
       "question": "When will harvested data become readable?",
@@ -90,7 +90,7 @@
       "publisher": "CISA"
     }
   ],
-  "cryptiqAngle": "HNDL means the exposure window for your data opened the day it was first sent over quantum-vulnerable encryption. CryptiQ maps where RSA and ECC still protect data in transit across your estate, ranks each finding by data lifetime and exposure, and drives the migration to hybrid and post-quantum key establishment — closing the collection window system by system.",
+  "cryptiqAngle": "HNDL means the exposure window for your data opened the day it was first sent over quantum-vulnerable encryption. CryptiQ maps where RSA and ECC still protect data in transit across your estate, ranks each finding by data lifetime and exposure, and drives the migration to hybrid and post-quantum key establishment, closing the collection window system by system.",
   "datePublished": "2026-07-11",
   "dateModified": "2026-07-11"
 }

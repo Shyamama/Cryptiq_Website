@@ -6,23 +6,23 @@
   "category": "standard",
   "shortDefinition": "CNSA 2.0 is the NSA's quantum-resistant algorithm suite for US National Security Systems: ML-KEM-1024, ML-DSA-87, AES-256, SHA-384/512, and LMS/XMSS.",
   "definition": [
-    "CNSA 2.0 (Commercial National Security Algorithm Suite 2.0) is the NSA's mandated set of quantum-resistant cryptographic algorithms for US National Security Systems (NSS), announced in a Cybersecurity Advisory on September 7, 2022. It succeeds CNSA 1.0 — the suite built on ECDH and ECDSA over P-384, RSA-3072, AES-256, and SHA-384 — and, once mandated, effectively deprecates RSA, Diffie-Hellman, and elliptic-curve cryptography on NSS.",
-    "The suite pairs NIST's lattice standards at their largest parameter sets — ML-KEM-1024 (FIPS 203) for key establishment and ML-DSA-87 (FIPS 204) for digital signatures — with AES-256, SHA-384 or SHA-512, and the stateful hash-based signatures LMS and XMSS (NIST SP 800-208) for signing software and firmware. All parameters are approved for all classification levels; SLH-DSA is not part of the suite.",
-    "CNSA 2.0 binds NSS owners, operators, and their vendors, but its influence reaches much further: it fixes the requirements that defense, intelligence, and government-adjacent products must build toward, so commercial vendors selling into those markets treat its per-technology-class timeline — running from immediate firmware-signing adoption through exclusive use by 2033 — as a de facto product roadmap."
+    "CNSA 2.0 (Commercial National Security Algorithm Suite 2.0) is the NSA's mandated set of quantum-resistant cryptographic algorithms for US National Security Systems (NSS), announced in a Cybersecurity Advisory on September 7, 2022. It succeeds CNSA 1.0 (the suite built on ECDH and ECDSA over P-384, RSA-3072, AES-256, and SHA-384) and, once mandated, effectively deprecates RSA, Diffie-Hellman, and elliptic-curve cryptography on NSS.",
+    "The suite pairs NIST's lattice standards at their largest parameter sets, ML-KEM-1024 (FIPS 203) for key establishment and ML-DSA-87 (FIPS 204) for digital signatures, with AES-256, SHA-384 or SHA-512, and the stateful hash-based signatures LMS and XMSS (NIST SP 800-208) for signing software and firmware. All parameters are approved for all classification levels; SLH-DSA is not part of the suite.",
+    "CNSA 2.0 binds NSS owners, operators, and their vendors, but its influence reaches much further: it fixes the requirements that defense, intelligence, and government-adjacent products must build toward, so commercial vendors selling into those markets treat its per-technology-class timeline, which runs from immediate firmware-signing adoption through exclusive use by 2033, as a de facto product roadmap."
   ],
   "sections": [
     {
       "heading": "What the suite contains",
       "paragraphs": [
-        "CNSA 2.0 deliberately picks the largest standardized parameter sets. ML-KEM-1024 and ML-DSA-87 both target NIST security category 5 (comparable to AES-256), and the advisory requires those Level V parameters at every classification level — including unclassified NSS. The December 2024 FAQ update replaced the original CRYSTALS-Kyber and CRYSTALS-Dilithium names with the final FIPS names and clarified that only implementations conforming to FIPS 203 and FIPS 204 are compliant; pre-standard Kyber or Dilithium implementations are not.",
+        "CNSA 2.0 deliberately picks the largest standardized parameter sets. ML-KEM-1024 and ML-DSA-87 both target NIST security category 5 (comparable to AES-256), and the advisory requires those Level V parameters at every classification level, including unclassified NSS. The December 2024 FAQ update replaced the original CRYSTALS-Kyber and CRYSTALS-Dilithium names with the final FIPS names and clarified that only implementations conforming to FIPS 203 and FIPS 204 are compliant; pre-standard Kyber or Dilithium implementations are not.",
         "Software- and firmware-signing gets its own algorithms because NIST standardized stateful hash-based signatures years before the lattice schemes and the use case is urgent: signing keys baked into secure-boot chains must outlive the transition. NSA recommends LMS with SHA-256/192, approves all SP 800-208 parameter sets, and requires state management and hardware-backed signing per that publication. ML-DSA is also approved for signing once validated implementations exist, but NSA advises vendors not to wait for it."
       ],
       "bullets": [
-        "ML-KEM-1024 (FIPS 203) — key establishment, all classification levels",
-        "ML-DSA-87 (FIPS 204) — digital signatures in any use case, all classification levels",
-        "AES-256 (FIPS 197) — symmetric encryption",
-        "SHA-384 or SHA-512 (FIPS 180-4) — hashing (SHA-512 newly allowed versus CNSA 1.0)",
-        "LMS and XMSS (NIST SP 800-208) — software and firmware signing; LMS with SHA-256/192 recommended",
+        "ML-KEM-1024 (FIPS 203): key establishment, all classification levels",
+        "ML-DSA-87 (FIPS 204): digital signatures in any use case, all classification levels",
+        "AES-256 (FIPS 197): symmetric encryption",
+        "SHA-384 or SHA-512 (FIPS 180-4): hashing (SHA-512 newly allowed versus CNSA 1.0)",
+        "LMS and XMSS (NIST SP 800-208): software and firmware signing; LMS with SHA-256/192 recommended",
         "Not included: SLH-DSA (SPHINCS+), FN-DSA (Falcon), and HashML-DSA are not approved"
       ]
     },
@@ -32,26 +32,26 @@
         "The 2022 advisory sets per-technology-class milestones rather than one flag day, with the whole transition complete by 2035 in line with National Security Memorandum 10. The 2024 update to CNSSP 15 then added cross-cutting acquisition dates: from January 1, 2027, all new NSS acquisitions must be CNSA 2.0 compliant unless otherwise noted; by December 31, 2030, equipment and services that cannot support CNSA 2.0 must be phased out; and by December 31, 2031, CNSA 2.0 algorithms are mandated for use."
       ],
       "bullets": [
-        "Software and firmware signing — begin immediately; support and prefer CNSA 2.0 by 2025; exclusive use by 2030",
-        "Web browsers, servers, and cloud services — support and prefer by 2025; exclusive use by 2033",
-        "Traditional networking equipment (VPNs, routers) — support and prefer by 2026; exclusive use by 2030",
-        "Operating systems — support and prefer by 2027; exclusive use by 2033",
-        "Niche equipment (constrained devices, large PKI systems) — support and prefer by 2030; exclusive use by 2033",
-        "Custom applications and legacy equipment — update or replace by 2033",
+        "Software and firmware signing: begin immediately; support and prefer CNSA 2.0 by 2025; exclusive use by 2030",
+        "Web browsers, servers, and cloud services: support and prefer by 2025; exclusive use by 2033",
+        "Traditional networking equipment (VPNs, routers): support and prefer by 2026; exclusive use by 2030",
+        "Operating systems: support and prefer by 2027; exclusive use by 2033",
+        "Niche equipment (constrained devices, large PKI systems): support and prefer by 2030; exclusive use by 2033",
+        "Custom applications and legacy equipment: update or replace by 2033",
         "CNSSP 15 (2024 update): new acquisitions compliant by January 1, 2027; non-supporting equipment phased out by December 31, 2030; algorithms mandated by December 31, 2031"
       ]
     },
     {
       "heading": "No hybrid requirement",
       "paragraphs": [
-        "CNSA 2.0 diverges sharply from commercial internet practice on hybrids. NSA states it has confidence in the CNSA 2.0 algorithms and will not require NSS developers to use hybrid solutions for security purposes — standalone ML-KEM-1024 is acceptable. This contrasts with the hybrid-first posture of browser and TLS deployments (groups like `X25519MLKEM768`) and with European agencies such as Germany's BSI and France's ANSSI, which have recommended combining post-quantum and classical algorithms during the transition.",
-        "NSA's FAQ argues that hybrids add protocol and library complexity, extra negotiation and error handling, and new interoperability failure modes. It concedes that product availability and interoperability may still lead NSS to adopt hybrid constructions — and that some protocols may need hybrid-like constructions to carry ML-KEM-1024's larger sizes — but positions hybrids as a pragmatic accommodation, not a security requirement."
+        "CNSA 2.0 diverges sharply from commercial internet practice on hybrids. NSA states it has confidence in the CNSA 2.0 algorithms and will not require NSS developers to use hybrid solutions for security purposes; standalone ML-KEM-1024 is acceptable. This contrasts with the hybrid-first posture of browser and TLS deployments (groups like `X25519MLKEM768`) and with European agencies such as Germany's BSI and France's ANSSI, which have recommended combining post-quantum and classical algorithms during the transition.",
+        "NSA's FAQ argues that hybrids add protocol and library complexity, extra negotiation and error handling, and new interoperability failure modes. It concedes that product availability and interoperability may still lead NSS to adopt hybrid constructions (and that some protocols may need hybrid-like constructions to carry ML-KEM-1024's larger sizes), but positions hybrids as a pragmatic accommodation, not a security requirement."
       ]
     },
     {
       "heading": "Who it binds, and the ripple effects",
       "paragraphs": [
-        "Formally, CNSA 2.0 applies to National Security Systems — networks carrying classified information or otherwise critical to military and intelligence missions — via CNSSP 15, with the NSA Director acting as National Manager for NSS. Products providing cryptography for NSS need NIAP or NSA validation, and approving officials measure compliance through the Risk Management Framework. The 2024 CNSSP 15 update also revoked prior waivers, forcing non-compliant systems back through the waiver process.",
+        "Formally, CNSA 2.0 applies to National Security Systems (networks carrying classified information or otherwise critical to military and intelligence missions) via CNSSP 15, with the NSA Director acting as National Manager for NSS. Products providing cryptography for NSS need NIAP or NSA validation, and approving officials measure compliance through the Risk Management Framework. The 2024 CNSSP 15 update also revoked prior waivers, forcing non-compliant systems back through the waiver process.",
         "In practice the suite shapes far more than NSS. Vendors of operating systems, network equipment, HSMs, and secure-boot toolchains build CNSA 2.0 support into mainstream product lines rather than maintaining government-only variants, so its category 5 parameter choices and firmware-signing requirements propagate into commercial products. Organizations outside the NSS perimeter often adopt CNSA 2.0 timelines as a conservative planning baseline for their own post-quantum migrations."
       ]
     }
@@ -59,7 +59,7 @@
   "faq": [
     {
       "question": "Who has to comply with CNSA 2.0?",
-      "answer": "Owners, operators, and vendors of US National Security Systems — networks that carry classified information or are critical to military and intelligence activities. It binds through CNSSP 15, and cryptographic products for NSS need NIAP or NSA validation. It does not directly bind civilian federal agencies (they follow OMB and NIST guidance) or the private sector, but vendors selling into defense and intelligence markets must meet its timelines to stay eligible."
+      "answer": "Owners, operators, and vendors of US National Security Systems: networks that carry classified information or are critical to military and intelligence activities. It binds through CNSSP 15, and cryptographic products for NSS need NIAP or NSA validation. It does not directly bind civilian federal agencies (they follow OMB and NIST guidance) or the private sector, but vendors selling into defense and intelligence markets must meet its timelines to stay eligible."
     },
     {
       "question": "What are the key CNSA 2.0 deadlines?",
@@ -67,11 +67,11 @@
     },
     {
       "question": "Does CNSA 2.0 require hybrid key exchange?",
-      "answer": "No. NSA states it has confidence in the CNSA 2.0 algorithms and will not require hybrid solutions for security purposes — standalone ML-KEM-1024 satisfies the requirement. NSA acknowledges that product availability and interoperability may still lead to hybrid deployments, but views them as added complexity rather than added assurance. That is the opposite of commercial TLS practice, where hybrids like X25519MLKEM768 are the default."
+      "answer": "No. NSA states it has confidence in the CNSA 2.0 algorithms and will not require hybrid solutions for security purposes; standalone ML-KEM-1024 satisfies the requirement. NSA acknowledges that product availability and interoperability may still lead to hybrid deployments, but views them as added complexity rather than added assurance. That is the opposite of commercial TLS practice, where hybrids like X25519MLKEM768 are the default."
     },
     {
       "question": "Why does CNSA 2.0 require ML-KEM-1024 instead of ML-KEM-768?",
-      "answer": "National Security Systems protect data whose confidentiality can matter for decades, so NSA specified the category 5 parameter sets — ML-KEM-1024 and ML-DSA-87, comparable to AES-256 — for all classification levels, including unclassified NSS. That maximizes margin against future cryptanalytic advances at the cost of larger keys, ciphertexts, and signatures than the ML-KEM-768 used in mainstream TLS."
+      "answer": "National Security Systems protect data whose confidentiality can matter for decades, so NSA specified the category 5 parameter sets (ML-KEM-1024 and ML-DSA-87, comparable to AES-256) for all classification levels, including unclassified NSS. That maximizes margin against future cryptanalytic advances at the cost of larger keys, ciphertexts, and signatures than the ML-KEM-768 used in mainstream TLS."
     },
     {
       "question": "Can I use SLH-DSA or Falcon under CNSA 2.0?",
@@ -79,7 +79,7 @@
     },
     {
       "question": "How do CNSA 2.0 and the NIST PQC standards relate?",
-      "answer": "NSA selected its general-purpose algorithms from NIST's standardization winners: ML-KEM comes from FIPS 203 and ML-DSA from FIPS 204. CNSA 2.0 is a profile on top of those standards — it fixes the parameter sets (category 5 only), adds AES-256 and SHA-384/512, prescribes LMS/XMSS for firmware signing, and attaches deployment deadlines. Only implementations conforming to the final FIPS documents count; pre-standard Kyber or Dilithium code is not compliant."
+      "answer": "NSA selected its general-purpose algorithms from NIST's standardization winners: ML-KEM comes from FIPS 203 and ML-DSA from FIPS 204. CNSA 2.0 is a profile on top of those standards: it fixes the parameter sets (category 5 only), adds AES-256 and SHA-384/512, prescribes LMS/XMSS for firmware signing, and attaches deployment deadlines. Only implementations conforming to the final FIPS documents count; pre-standard Kyber or Dilithium code is not compliant."
     }
   ],
   "related": [
@@ -111,7 +111,7 @@
       "publisher": "NIST"
     }
   ],
-  "cryptiqAngle": "CNSA 2.0 compliance is a cryptographic inventory problem before it is an algorithm problem: the per-class deadlines apply to every place CNSA 1.0 algorithms — ECDH and ECDSA P-384, RSA-3072 — still run, including firmware signing chains that must move to LMS/XMSS first. CryptiQ's inventory and CBOM map where those algorithms live across systems and vendor components, tag each finding against the relevant CNSA 2.0 milestone, and track the migration to ML-KEM-1024 and ML-DSA-87 as evidence for approving officials and acquisition reviews.",
+  "cryptiqAngle": "CNSA 2.0 compliance is a cryptographic inventory problem before it is an algorithm problem: the per-class deadlines apply to every place CNSA 1.0 algorithms (ECDH and ECDSA P-384, RSA-3072) still run, including firmware signing chains that must move to LMS/XMSS first. CryptiQ's inventory and CBOM map where those algorithms live across systems and vendor components, tag each finding against the relevant CNSA 2.0 milestone, and track the migration to ML-KEM-1024 and ML-DSA-87 as evidence for approving officials and acquisition reviews.",
   "datePublished": "2026-07-11",
   "dateModified": "2026-07-11"
 }
