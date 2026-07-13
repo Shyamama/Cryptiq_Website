@@ -87,14 +87,10 @@ export default function LatticeCanvas({ progressRef }) {
     const glowRgb = Number.isFinite(gr) && Number.isFinite(gg) && Number.isFinite(gb)
       ? { r: gr, g: gg, b: gb }
       : { r: 130, g: 180, b: 240 };
-    // Connection lines sit slightly darker than the glow and brighten
-    // toward the node-core gray as nodes get closer (same ramp the old
-    // hardcoded blue used: 120→195 red channel at full proximity).
-    const lineBase = {
-      r: Math.max(0, glowRgb.r - 10),
-      g: Math.max(0, glowRgb.g - 10),
-      b: Math.max(0, glowRgb.b - 10),
-    };
+    // Connection lines stay on the accent hue at every distance; only
+    // alpha ramps with proximity. (They previously brightened toward the
+    // node-core gray, which washed the gold out of exactly the closest,
+    // most visible lines.)
 
     // Honor prefers-reduced-motion: draw a single static lattice frame
     // (plus one per resize) instead of running the animation loop, and
@@ -221,13 +217,8 @@ export default function LatticeCanvas({ progressRef }) {
           if (dist < CONNECTION_DIST) {
             const proximity = 1 - dist / CONNECTION_DIST;
             const alpha = proximity * LINE_MAX_ALPHA;
-            // Accent tint on stronger connections
-            const lift = proximity * 0.7;
-            const r = Math.round(lineBase.r + (226 - lineBase.r) * lift);
-            const g = Math.round(lineBase.g + (226 - lineBase.g) * lift);
-            const b = Math.round(lineBase.b + (226 - lineBase.b) * lift);
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            ctx.strokeStyle = `rgba(${glowRgb.r}, ${glowRgb.g}, ${glowRgb.b}, ${alpha})`;
             ctx.lineWidth = 0.6 + proximity * 0.3;
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);

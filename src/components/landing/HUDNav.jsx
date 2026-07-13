@@ -33,6 +33,12 @@ export default function HUDNav() {
           >
             HOME
           </Link>
+          <a
+            href="/#contact"
+            className="font-mono text-xs tracking-wider bg-brand text-black px-4 py-2 hover:bg-brand/90 transition-colors"
+          >
+            REQUEST A DEMO
+          </a>
           <Link
             to="/about"
             className={`font-mono text-xs tracking-wider transition-colors ${

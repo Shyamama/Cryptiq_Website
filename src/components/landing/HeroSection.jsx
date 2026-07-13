@@ -44,11 +44,12 @@ export default function HeroSection() {
             migrates it to quantum-safe standards, with your team approving
             every change.
           </p>
-          <div className="mt-8 flex items-center gap-2 text-brand/65">
-            <div className="w-px h-8 bg-brand/50" />
-            <span className="font-mono text-[11px] tracking-widest animate-pulse">SCROLL</span>
-            <div className="w-px h-8 bg-brand/50" />
-          </div>
+          <a
+            href="#contact"
+            className="mt-8 inline-block font-mono text-xs tracking-widest bg-brand text-black px-6 py-3 hover:bg-brand/90 transition-colors"
+          >
+            REQUEST A DEMO →
+          </a>
         </motion.div>
       </motion.div>
     </section>
