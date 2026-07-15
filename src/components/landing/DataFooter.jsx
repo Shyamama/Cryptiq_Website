@@ -60,6 +60,12 @@ export default function DataFooter() {
                   ABOUT
                 </Link>
                 <Link
+                  to="/download"
+                  className="font-mono text-xs text-foreground/60 hover:text-foreground transition-colors"
+                >
+                  DOWNLOAD
+                </Link>
+                <Link
                   to="/glossary"
                   className="font-mono text-xs text-foreground/60 hover:text-foreground transition-colors"
                 >
