@@ -86,7 +86,7 @@ export default function LatticeCanvas({ progressRef }) {
     const [gr, gg, gb] = glowRaw.split(/[\s,]+/).map(Number);
     const glowRgb = Number.isFinite(gr) && Number.isFinite(gg) && Number.isFinite(gb)
       ? { r: gr, g: gg, b: gb }
-      : { r: 130, g: 180, b: 240 };
+      : { r: 150, g: 150, b: 150 };
     // Connection lines stay on the accent hue at every distance; only
     // alpha ramps with proximity. (They previously brightened toward the
     // node-core gray, which washed the gold out of exactly the closest,
@@ -244,7 +244,7 @@ export default function LatticeCanvas({ progressRef }) {
         // Core
         ctx.beginPath();
         ctx.arc(nodes[i].x, nodes[i].y, nodes[i].radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(226, 226, 226, ${nodes[i].opacity})`;
+        ctx.fillStyle = `rgba(160, 160, 160, ${nodes[i].opacity})`;
         ctx.fill();
       }
 

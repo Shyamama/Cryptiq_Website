@@ -43,7 +43,7 @@ export default function HUDNav() {
           </Link>
           <a
             href="/#contact"
-            className="font-mono text-xs tracking-wider bg-brand text-black px-4 py-2 hover:bg-brand/90 transition-colors"
+            className="font-mono text-xs tracking-wider text-foreground/80 border border-white/20 px-4 py-2 hover:text-brand hover:border-brand/40 transition-colors"
           >
             REQUEST A DEMO
           </a>

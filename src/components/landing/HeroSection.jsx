@@ -46,7 +46,7 @@ export default function HeroSection() {
           </p>
           <a
             href="#contact"
-            className="mt-8 inline-block font-mono text-xs tracking-widest bg-brand text-black px-6 py-3 hover:bg-brand/90 transition-colors"
+            className="mt-8 inline-block font-mono text-xs tracking-widest text-foreground/80 border border-white/20 px-6 py-3 hover:text-brand hover:border-brand/40 transition-colors"
           >
             REQUEST A DEMO →
           </a>

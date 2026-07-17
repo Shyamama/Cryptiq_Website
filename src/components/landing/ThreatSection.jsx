@@ -38,7 +38,7 @@ export default function ThreatSection() {
                 className="w-full h-full object-cover opacity-60"
               />
             </div>
-            <p className="font-mono text-[11px] tracking-widest text-brand/85 mb-3">
+            <p className="font-mono text-[11px] tracking-widest text-foreground/70 mb-3">
               CLASSICAL VULNERABILITY
             </p>
             <p className="font-body text-base text-foreground/70 leading-relaxed">
@@ -62,7 +62,7 @@ export default function ThreatSection() {
                 className="w-full h-full object-cover opacity-60"
               />
             </div>
-            <p className="font-mono text-[11px] tracking-widest text-brand/85 mb-3">
+            <p className="font-mono text-[11px] tracking-widest text-foreground/70 mb-3">
               THE POST-QUANTUM PATH
             </p>
             <p className="font-body text-base text-foreground/70 leading-relaxed">
