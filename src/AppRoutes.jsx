@@ -5,7 +5,6 @@ import ScrollToTop from './components/ScrollToTop';
 import CanonicalUrl from './components/CanonicalUrl';
 import Home from '@/pages/Home';
 import About from '@/pages/About';
-import Download from '@/pages/Download';
 import Glossary from '@/pages/Glossary';
 import GlossaryTerm from '@/pages/GlossaryTerm';
 
@@ -21,7 +20,6 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/download" element={<Download />} />
         <Route path="/glossary" element={<Glossary />} />
         <Route path="/glossary/:slug" element={<GlossaryTerm />} />
         <Route path="*" element={<PageNotFound />} />

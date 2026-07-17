@@ -10,7 +10,6 @@ export default {
   routes: [
     { loc: '/', changefreq: 'weekly', priority: 1.0 },
     { loc: '/about', changefreq: 'monthly', priority: 0.7 },
-    { loc: '/download', changefreq: 'monthly', priority: 0.9 },
   ],
   robotsTxtOptions: {
     policies: [{ userAgent: '*', allow: '/' }],
