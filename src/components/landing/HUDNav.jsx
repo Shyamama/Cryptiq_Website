@@ -33,6 +33,14 @@ export default function HUDNav() {
           >
             HOME
           </Link>
+          <Link
+            to="/download"
+            className={`font-mono text-xs tracking-wider transition-colors ${
+              isActive("/download") ? "text-foreground" : "text-foreground/40 hover:text-foreground/70"
+            }`}
+          >
+            DOWNLOAD
+          </Link>
           <a
             href="/#contact"
             className="font-mono text-xs tracking-wider text-foreground/80 border border-white/20 px-4 py-2 hover:text-brand hover:border-brand/40 transition-colors"

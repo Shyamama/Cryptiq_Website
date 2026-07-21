@@ -9,6 +9,7 @@ export default {
   // content/glossary/ by scripts/lib/routes.mjs.
   routes: [
     { loc: '/', changefreq: 'weekly', priority: 1.0 },
+    { loc: '/download', changefreq: 'weekly', priority: 0.9 },
     { loc: '/about', changefreq: 'monthly', priority: 0.7 },
   ],
   robotsTxtOptions: {
