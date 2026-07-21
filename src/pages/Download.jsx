@@ -7,9 +7,10 @@ import HUDNav from "@/components/landing/HUDNav";
 import DataFooter from "@/components/landing/DataFooter";
 
 const DMG_URL =
-  "https://github.com/rishitarapareddy1/CryptiQ-VPN/releases/latest/download/CryptiQ-Personal-0.6.0.dmg";
+  "https://github.com/rishitarapareddy1/CryptiQ-VPN/releases/latest/download/CryptiQ-Personal-0.7.0.dmg";
 const DMG_SHA256 =
-  "557678e37f5172532a85b4fbbe1acafcd43e14cfb94b43db22765dc1b4506f20";
+  "4d70a6e9ba6a3c6241f8832c1e8ff51f88488bf1fa2dbe2e1e42ee824fda5d96";
+const REPO_URL = "https://github.com/rishitarapareddy1/CryptiQ-VPN";
 
 const COLUMNS = [
   {
@@ -77,6 +78,19 @@ export default function Download() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="font-mono text-xs text-brand max-w-lg mt-5 leading-relaxed"
+        >
+          CryptiQ Personal is a free, open-source macOS VPN — not CryptiQ's
+          core enterprise cryptographic migration platform.{" "}
+          <a href={REPO_URL} className="underline hover:text-foreground transition-colors">
+            Source on GitHub ↗
+          </a>
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.8 }}
           className="font-body text-base text-foreground/70 max-w-lg mt-6 leading-relaxed"
         >
@@ -99,9 +113,9 @@ export default function Download() {
             DOWNLOAD FOR MACOS →
           </a>
           <span className="font-mono text-[11px] text-foreground/40 leading-relaxed">
-            v0.6.0 · Apple Silicon · macOS 12+
+            v0.7.0 · Apple Silicon · macOS 12+
             <br />
-            3.89 MB disk image
+            5.92 MB disk image · WireGuard included, nothing else to install
           </span>
         </motion.div>
 
@@ -110,7 +124,7 @@ export default function Download() {
           <br />
           Verify:{" "}
           <span className="text-foreground/50">
-            shasum -a 256 "CryptiQ-Personal-0.6.0.dmg"
+            shasum -a 256 "CryptiQ-Personal-0.7.0.dmg"
           </span>
         </p>
 
